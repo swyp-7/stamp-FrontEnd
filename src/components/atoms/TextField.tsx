@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 import MuiTextField from "@mui/material/TextField";
 
-export interface Props extends React.ComponentProps<typeof MuiTextField> {}
+export interface Props extends React.ComponentProps<typeof MuiTextField> {
+  text?: string;
+}
 
 const StyledTextField = styled(MuiTextField)<Props>``;
 
