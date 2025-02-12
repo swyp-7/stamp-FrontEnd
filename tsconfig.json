@@ -21,10 +21,10 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Path Aliases */
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@/*": ["./src/*"]
-    // }
+    "baseUrl": "src",
+    "paths": {
+      "assets/*": ["assets/*"]
+    }
   },
   "types": ["node"],
   "include": ["src"]
