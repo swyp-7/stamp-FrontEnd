@@ -10,7 +10,7 @@ export default class ApiService {
 
   constructor() {
     const config: AxiosRequestConfig = {
-      baseURL: `https://api.banthing.net`,
+      // baseURL: "",
     };
 
     this.axiosInstance = axios.create(config);

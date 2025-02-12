@@ -19,7 +19,7 @@ const Home = () => {
         onClick={() => navigate("/login")}
         style={{ marginBottom: "15px" }}
       />
-      <Sign onClick={() => navigate("/signUp/1")}>회원가입</Sign>
+      <Sign onClick={() => navigate("/signUp")}>회원가입</Sign>
     </Layout>
   );
 };

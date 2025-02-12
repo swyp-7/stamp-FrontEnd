@@ -67,7 +67,7 @@ const Login = () => {
         </SocialIcon>
       </SocialWrap>
       <EtcText>아이디/비밀번호 찾기</EtcText>
-      <EtcText onClick={() => navigate("/signUp/1")}>회원가입</EtcText>
+      <EtcText onClick={() => navigate("/signUp")}>회원가입</EtcText>
     </Layout>
   );
 };

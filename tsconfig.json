@@ -23,7 +23,8 @@
     /* Path Aliases */
     "baseUrl": "src",
     "paths": {
-      "assets/*": ["assets/*"]
+      "assets/*": ["assets/*"],
+      "constants/*" : ["constants/*"]
     }
   },
   "types": ["node"],

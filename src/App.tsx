@@ -7,6 +7,7 @@ import NotFound from "./pages/NotFound";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import LoginRedirect from "./pages/LoginRedirect";
+import SignUp from "pages/SignUp";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "login", element: <Login /> },
       { path: "login/redirect", element: <LoginRedirect /> },
+      { path: "signUp", element: <SignUp /> },
     ],
   },
 ]);
