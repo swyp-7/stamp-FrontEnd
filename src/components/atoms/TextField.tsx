@@ -29,7 +29,7 @@ const TextField = forwardRef<HTMLInputElement, Props>(
         </IconWrap>
       </Wrap>
     );
-  },
+  }
 );
 
 TextField.displayName = "TextField";
@@ -49,6 +49,10 @@ const StyledTextField = styled.input<Props>`
 
   :focus {
     outline: none;
+  }
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    display: none;
   }
 `;
 
@@ -73,18 +77,18 @@ const ICON_MAP = {
     component: EyeIcon,
     styles: `
       cursor: pointer;
-    `,
+    `
   },
   check: {
     component: CheckIcon,
     styles: `
-    `,
+    `
   },
   인증: {
     component: () => <div>인증하기</div>,
     styles: `
       font-size: 14px;
       cursor: pointer;
-    `,
-  },
+    `
+  }
 } as const;

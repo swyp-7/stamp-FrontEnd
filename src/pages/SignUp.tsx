@@ -2,32 +2,49 @@ import Button, { AskButton } from "components/atoms/Button";
 import StepTitle from "components/atoms/SignUp/StepTitle";
 import SignStep1 from "components/molecules/SignUp/SignStep1";
 import SignStep2 from "components/molecules/SignUp/SignStep2";
+import SignStep3 from "components/molecules/SignUp/SignStep3";
+import SignStep4 from "components/molecules/SignUp/SignStep4";
 import SignUpNav from "components/molecules/SignUp/SignUpNav";
 import { SignUpTitleText } from "constants/SignUpTitle";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
 const SignUp = () => {
   const [step, setStep] = useState(1);
   const [agree, setAgree] = useState([false, false]);
+  const { register, handleSubmit } = useForm();
 
   const handleClickNext = () => {
     setAgree([true, true]);
     setStep((prev) => prev + 1);
   };
 
+  const handleClickNext2 = () => {
+    setStep((prev) => prev + 1);
+  };
+
+  const handleClickNext3 = handleSubmit((data) => {
+    console.log(data);
+    setStep((prev) => prev + 1);
+  });
+
   return (
     <Layout>
       <AskButton />
       <SignUpNav activeNum={step} />
-      <SignStepWrap>
+      <SignStepWrap $step={step}>
         <StepTitle number={step} $bold={true} text={SignUpTitleText[step]} />
-        <SignContentWrap>
+        <SignContentWrap $step={step}>
           {step === 1 && <SignStep1 agree={agree} setAgree={setAgree} />}
-          {step === 2 && <SignStep2 />}
+          {step === 2 && <SignStep2 register={register} />}
+          {step === 3 && <SignStep3 register={register} />}
+          {step === 4 && <SignStep4 />}
         </SignContentWrap>
         <SignNextBtnWrap>
           {step === 1 && <Button text="모두 동의하고 다음으로" onClick={handleClickNext} />}
+          {step === 2 && <Button text="다음으로" onClick={handleClickNext2} />}
+          {step === 3 && <Button text="다음으로" onClick={handleClickNext3} />}
         </SignNextBtnWrap>
       </SignStepWrap>
     </Layout>
@@ -43,12 +60,22 @@ const Layout = styled.div`
   grid-template-columns: 505px 1fr;
 `;
 
-const SignStepWrap = styled.div`
-  padding: 127px 117px 108px 70px;
+const SignStepWrap = styled.div<{ $step: number }>`
+  padding: 127px 117px 0 70px;
+
+  ${({ $step }) =>
+    $step === 4 &&
+    `
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    `}
 `;
 
-const SignContentWrap = styled.div`
-  padding-left: 66px;
+const SignContentWrap = styled.div<{ $step: number }>`
+  padding-left: ${({ $step }) => ($step === 4 ? 0 : "66px")};
 `;
 
 const SignNextBtnWrap = styled.div`

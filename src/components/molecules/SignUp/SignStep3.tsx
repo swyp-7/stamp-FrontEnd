@@ -11,19 +11,18 @@ interface Props {
   register: UseFormRegister<FieldValues>;
 }
 
-const SignStep2 = ({ register }: Props) => {
+const SignStep3 = ({ register }: Props) => {
   return (
     <>
       <SignDesc>페이지에 대한 설명이 들어갑니다</SignDesc>
-      <SignLabel>사업자등록번호</SignLabel>
+      <SignLabel>이메일</SignLabel>
       <TextField
-        placeholder="숫자만 입력해주세요."
+        placeholder="이메일을 입력해주세요."
         style={{ fontSize: "18px" }}
-        {...register("bNo")}
-        type="number"
+        {...register("email")}
       />
     </>
   );
 };
 
-export default SignStep2;
+export default SignStep3;

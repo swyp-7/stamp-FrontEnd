@@ -30,12 +30,14 @@ export const SignAgreeWrap = styled.div`
     font-weight: 400;
     font-size: 16px;
     color: #5d5a88;
+    cursor: pointer;
   }
 
   input {
     width: 20px;
     height: 20px;
     accent-color: #5d5a88;
+    cursor: pointer;
   }
 `;
 
