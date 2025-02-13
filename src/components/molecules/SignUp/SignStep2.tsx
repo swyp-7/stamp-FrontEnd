@@ -1,9 +1,10 @@
+import styled from "styled-components";
 import { SignDesc, SignLabel } from "components/atoms/SignUp/SignUpAtoms";
 import TextField, { BNoTextField } from "components/atoms/TextField";
 import { useFetchBuisInfo } from "hooks/BuisnessQuery";
 import { useEffect, useState } from "react";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
-import styled from "styled-components";
+import DaumPostcode from "react-daum-postcode";
 
 interface Props {
   register: UseFormRegister<FieldValues>;
@@ -16,10 +17,14 @@ interface Props {
 const SignStep2 = ({ register, watch, setError, clearErrors, errors }: Props) => {
   const [isAuthed, setIsAuthed] = useState(false);
   const [isAuthFailed, setIsAuthFailed] = useState(false);
+  const [isModalActive, setIsModalActive] = useState(false);
   const bNo = watch("bNo");
   const { mutate, data } = useFetchBuisInfo();
   const handleAuthBNo = () => {
     mutate(bNo);
+  };
+  const handlePostcode = () => {
+    setIsModalActive(true);
   };
 
   useEffect(() => {
@@ -58,16 +63,27 @@ const SignStep2 = ({ register, watch, setError, clearErrors, errors }: Props) =>
         </div>
         <div className="storeName">
           <SignLabel>상호명</SignLabel>
-          <TextField />
+          <TextField placeholder="사업자등록증의 상호명으로 입력해주세요" />
         </div>
         <div className="category">
           <SignLabel>사업 종류</SignLabel>
-          <TextField />
+          <TextField placeholder="사업자등록증의 업종을 적어주세요" />
         </div>
         <div className="location">
           <SignLabel>사업장 소재지</SignLabel>
+          <TextField
+            style={{ marginBottom: "16px" }}
+            placeholder="클릭해서 도로명, 지번 주소를 검색해주세요"
+            onClick={handlePostcode}
+          />
+          <TextField placeholder="상세 주소지를 입력해주세요" />
         </div>
       </FormWrap>
+      {isModalActive && (
+        <PostCodeWrap onClick={handlePostcode}>
+          <DaumPostcode className="codeModal" />
+        </PostCodeWrap>
+      )}
     </>
   );
 };
@@ -83,9 +99,12 @@ const FormWrap = styled.div`
 
   .bNo {
     grid-area: a;
+    margin-bottom: 42px;
   }
   .storeName {
     grid-area: b;
+    margin-right: 114px;
+    margin-bottom: 42px;
   }
   .category {
     grid-area: c;
@@ -109,4 +128,21 @@ const AuthText = styled.div`
 const AuthFailedText = styled.div`
   margin-bottom: 18px;
   color: var(--red-1);
+`;
+
+const PostCodeWrap = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .codeModal {
+    width: 400px !important;
+    height: 700px !important;
+  }
 `;

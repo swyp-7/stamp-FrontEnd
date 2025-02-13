@@ -76,7 +76,8 @@ const Layout = styled.div`
 `;
 
 const SignStepWrap = styled.div<{ $step: number }>`
-  padding: 167px 96px 0 100px;
+  position: relative;
+  padding: 117px 96px 0 100px;
 
   ${({ $step }) =>
     $step === 4 &&
@@ -97,4 +98,7 @@ const SignNextBtnWrap = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-end;
+  position: absolute;
+  bottom: 80px;
+  right: 80px;
 `;

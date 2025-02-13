@@ -18,7 +18,7 @@ const StyledButton = styled(MuiButton, {
   padding: ${({ area }) => getPadding(area)};
   border: ${({ isOutline }) => (isOutline ? "1.6px solid #9C93FF" : "none")};
   background-color: ${({ isOutline }) => (isOutline ? "white" : "var(--main-1)")};
-  box-shadow: ${({ isOutline }) => (isOutline ? "none" : "0px 2px 6px 0px rgba(20, 20, 43, 0.6)")};
+  box-shadow: ${({ isOutline }) => (isOutline ? "none" : "0px 2px 6px 0px rgba(20, 20, 43, 0.06)")};
   gap: 8px;
 
   &:hover {

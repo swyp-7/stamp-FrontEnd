@@ -34,7 +34,7 @@ const StyledSignUpNav = styled.nav`
   height: 100vh;
   background-color: #f2f2f2;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
-  padding: 167px 80px;
+  padding: 117px 80px;
   display: flex;
   flex-direction: column;
 
