@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { forwardRef, InputHTMLAttributes, useState } from "react";
 import { ReactComponent as EyeIcon } from "assets/Eye.svg";
 import { ReactComponent as CheckIcon } from "assets/CircleCheck.svg";
+import Button from "./Button";
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   size?: 1 | 2 | 3;
@@ -36,26 +37,38 @@ export default TextField;
 interface BNoProps extends Props {
   isAuthed?: boolean;
   handleAuthBNo: () => void;
+  errors: any;
 }
 
 export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
-  ({ isAuthed = false, handleAuthBNo, ...props }, ref) => {
+  ({ isAuthed = false, handleAuthBNo, errors, ...props }, ref) => {
     return (
-      <Wrap>
-        <StyledTextField ref={ref} {...props} />
-        {isAuthed ? (
-          <IconWrap>
-            <CheckIcon />
-          </IconWrap>
-        ) : (
-          <AuthTextWrap onClick={handleAuthBNo}>인증하기</AuthTextWrap>
-        )}
-      </Wrap>
+      <OuterWrap>
+        <Wrap>
+          <StyledTextField
+            className={errors ? "error" : isAuthed ? "isEntered" : ""}
+            ref={ref}
+            {...props}
+          />
+          {isAuthed && (
+            <IconWrap>
+              <CheckIcon />
+            </IconWrap>
+          )}
+        </Wrap>
+        <Button onClick={handleAuthBNo} text="인증하기" isOutline={true} area={2} />
+      </OuterWrap>
     );
   }
 );
 
 BNoTextField.displayName = "BNoTextField";
+
+const OuterWrap = styled.div`
+  display: flex;
+  gap: 12px;
+  align-items: center;
+`;
 
 const Wrap = styled.div`
   position: relative;
@@ -70,12 +83,23 @@ const StyledTextField = styled.input<Props>`
   border: 1px solid #ddd;
   padding: 18px 33px;
 
-  :focus {
-    outline: none;
-  }
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     display: none;
+  }
+
+  &.isEntered {
+    background-color: #f3f2fa;
+    border: 1px solid var(--main-1);
+  }
+
+  &.error {
+    border: 1px solid var(--red-1);
+  }
+
+  :focus {
+    border: none;
+    outline: 1px solid var(--main-1);
   }
 `;
 
@@ -93,25 +117,6 @@ const IconWrap = styled.span<{ $iconType?: keyof typeof ICON_MAP; eyeColor?: str
   svg {
     stroke: ${({ eyeColor }) => eyeColor};
   }
-`;
-
-const AuthTextWrap = styled.span`
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px;
-  right: 23px;
-  top: 48%;
-  transform: translateY(-50%);
-  font-weight: 400;
-  font-size: 16px;
-  text-decoration: underline;
-  text-decoration-line: var(--main-1);
-  text-underline-offset: 25%;
-  color: var(--main-1);
-  background: #fff;
-  cursor: pointer;
 `;
 
 const ICON_MAP = {

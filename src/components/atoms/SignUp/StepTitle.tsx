@@ -11,7 +11,7 @@ const StepTitle = ({
   number = 1,
   text = "개인정보 동의",
   $bold = true,
-  $active = false,
+  $active = false
 }: Props) => {
   return (
     <Wrap>
