@@ -2,16 +2,14 @@ import styled from "@emotion/styled";
 import { forwardRef, InputHTMLAttributes, useState } from "react";
 import { ReactComponent as EyeIcon } from "assets/Eye.svg";
 import { ReactComponent as CheckIcon } from "assets/CircleCheck.svg";
-import { Control } from "react-hook-form";
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   size?: 1 | 2 | 3;
-  iconType?: "eye" | "check" | "인증";
-  control?: Control<any>;
+  iconType?: "eye";
 }
 
 const TextField = forwardRef<HTMLInputElement, Props>(
-  ({ iconType, control, type = "text", ...props }, ref) => {
+  ({ iconType, type = "text", ...props }, ref) => {
     const [inputType, setInputType] = useState(type);
     const IconComponent = iconType ? ICON_MAP[iconType]?.component : undefined;
 
@@ -35,8 +33,33 @@ const TextField = forwardRef<HTMLInputElement, Props>(
 TextField.displayName = "TextField";
 export default TextField;
 
+interface BNoProps extends Props {
+  isAuthed?: boolean;
+  handleAuthBNo: () => void;
+}
+
+export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
+  ({ isAuthed = false, handleAuthBNo, ...props }, ref) => {
+    return (
+      <Wrap>
+        <StyledTextField ref={ref} {...props} />
+        {isAuthed ? (
+          <IconWrap>
+            <CheckIcon />
+          </IconWrap>
+        ) : (
+          <AuthTextWrap onClick={handleAuthBNo}>인증하기</AuthTextWrap>
+        )}
+      </Wrap>
+    );
+  }
+);
+
+BNoTextField.displayName = "BNoTextField";
+
 const Wrap = styled.div`
   position: relative;
+  width: fit-content;
 `;
 
 const StyledTextField = styled.input<Props>`
@@ -72,22 +95,29 @@ const IconWrap = styled.span<{ $iconType?: keyof typeof ICON_MAP; eyeColor?: str
   }
 `;
 
+const AuthTextWrap = styled.span`
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  right: 23px;
+  top: 48%;
+  transform: translateY(-50%);
+  font-weight: 400;
+  font-size: 16px;
+  text-decoration: underline;
+  text-decoration-line: var(--main-5);
+  text-underline-offset: 25%;
+  color: var(--main-5);
+  background: #fff;
+  cursor: pointer;
+`;
+
 const ICON_MAP = {
   eye: {
     component: EyeIcon,
     styles: `
-      cursor: pointer;
-    `
-  },
-  check: {
-    component: CheckIcon,
-    styles: `
-    `
-  },
-  인증: {
-    component: () => <div>인증하기</div>,
-    styles: `
-      font-size: 14px;
       cursor: pointer;
     `
   }

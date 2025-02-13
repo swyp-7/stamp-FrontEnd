@@ -13,7 +13,7 @@ import styled from "styled-components";
 const SignUp = () => {
   const [step, setStep] = useState(1);
   const [agree, setAgree] = useState([false, false]);
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, watch } = useForm();
 
   const handleClickNext = () => {
     setAgree([true, true]);
@@ -37,7 +37,7 @@ const SignUp = () => {
         <StepTitle number={step} $bold={true} text={SignUpTitleText[step]} />
         <SignContentWrap $step={step}>
           {step === 1 && <SignStep1 agree={agree} setAgree={setAgree} />}
-          {step === 2 && <SignStep2 register={register} />}
+          {step === 2 && <SignStep2 register={register} watch={watch} />}
           {step === 3 && <SignStep3 register={register} />}
           {step === 4 && <SignStep4 />}
         </SignContentWrap>
