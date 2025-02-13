@@ -30,12 +30,11 @@ const SignUpNav = ({ activeNum }: Props) => {
 export default SignUpNav;
 
 const StyledSignUpNav = styled.nav`
-  align-self: end;
   width: 505px;
-  height: calc(100vh - 30px);
+  height: 100vh;
   background-color: #f2f2f2;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
-  padding: 118px 80px;
+  padding: 167px 80px;
   display: flex;
   flex-direction: column;
 

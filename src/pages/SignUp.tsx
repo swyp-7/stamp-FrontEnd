@@ -61,7 +61,7 @@ const Layout = styled.div`
 `;
 
 const SignStepWrap = styled.div<{ $step: number }>`
-  padding: 127px 117px 0 70px;
+  padding: 167px 96px 0 100px;
 
   ${({ $step }) =>
     $step === 4 &&

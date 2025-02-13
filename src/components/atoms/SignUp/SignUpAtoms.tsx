@@ -11,7 +11,7 @@ export const SignLabel = styled.div`
   font-weight: 600;
   font-size: 22px;
   color: #202020;
-  margin-bottom: 22px;
+  margin-bottom: 18px;
 `;
 
 export const SignLabelWrap = styled.div`
@@ -29,14 +29,13 @@ export const SignAgreeWrap = styled.div`
   label {
     font-weight: 400;
     font-size: 16px;
-    color: #5d5a88;
     cursor: pointer;
   }
 
   input {
     width: 20px;
     height: 20px;
-    accent-color: #5d5a88;
+    accent-color: var(--main-1);
     cursor: pointer;
   }
 `;

@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import MuiButton, { ButtonProps as MuiButtonProps } from "@mui/material/Button";
 
 export interface Props extends MuiButtonProps {
@@ -7,7 +7,9 @@ export interface Props extends MuiButtonProps {
   area?: 1 | 2 | 3;
 }
 
-const StyledButton = styled(MuiButton)<Props>`
+const StyledButton = styled(MuiButton, {
+  shouldForwardProp: (prop) => prop !== "isOutline"
+})<Props>`
   height: ${({ area }) => getHeight(area)};
   font-size: ${({ area }) => getFontSize(area)};
   font-weight: ${({ isOutline }) => (isOutline ? 400 : 700)};

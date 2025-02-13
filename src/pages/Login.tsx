@@ -12,10 +12,9 @@ const Login = () => {
   const {
     handleSubmit,
     register,
-    formState: { isValid, errors },
+    formState: { isValid }
   } = useForm();
   const apiKey = process.env.REACT_APP_KAKAO_KEY;
-  console.log(apiKey);
 
   const uri = "http://localhost:3000/login/redirect";
 
@@ -36,7 +35,7 @@ const Login = () => {
         <TextField
           placeholder="이메일을 입력해 주세요."
           {...register("id", {
-            required: "이메일을 입력해주세요.",
+            required: "이메일을 입력해주세요."
             // pattern: /^[a-zA-Z0-9+\-._]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
           })}
         />
@@ -45,7 +44,7 @@ const Login = () => {
           iconType="eye"
           type="password"
           {...register("password", {
-            required: "비밀번호를 입력해 주세요.",
+            required: "비밀번호를 입력해 주세요."
           })}
         />
         <Button type="submit" text="스탬프 시작하기" variant="contained" disabled={!isValid} />
