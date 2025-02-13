@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import LoginRedirect from "./pages/LoginRedirect";
 import SignUp from "pages/SignUp";
+import Main from "pages/Main";
 
 const queryClient = new QueryClient();
 
@@ -21,8 +22,9 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "login/redirect", element: <LoginRedirect /> },
       { path: "signUp", element: <SignUp /> },
-    ],
-  },
+      { path: "main", element: <Main /> }
+    ]
+  }
 ]);
 
 function App() {
