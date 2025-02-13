@@ -44,7 +44,7 @@ const IconOuterWrap = styled.div`
 const ActiveLine = styled.div<{ $isActive: boolean }>`
   width: 6px;
   height: 70px;
-  background-color: ${({ $isActive }) => ($isActive ? "var(--main-5)" : "transparent")};
+  background-color: ${({ $isActive }) => ($isActive ? "var(--main-1)" : "transparent")};
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 `;
@@ -53,7 +53,7 @@ const IconInnerWrap = styled.div<{ $isActive: boolean }>`
   width: 54px;
   height: 54px;
   border-radius: 18px;
-  background-color: ${({ $isActive }) => ($isActive ? "var(--main-5)" : "transparent")};
+  background-color: ${({ $isActive }) => ($isActive ? "var(--main-1)" : "transparent")};
   display: flex;
   justify-content: center;
   align-items: center;

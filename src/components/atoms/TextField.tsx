@@ -107,9 +107,9 @@ const AuthTextWrap = styled.span`
   font-weight: 400;
   font-size: 16px;
   text-decoration: underline;
-  text-decoration-line: var(--main-5);
+  text-decoration-line: var(--main-1);
   text-underline-offset: 25%;
-  color: var(--main-5);
+  color: var(--main-1);
   background: #fff;
   cursor: pointer;
 `;
