@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { forwardRef, InputHTMLAttributes, useState } from "react";
+import { forwardRef, InputHTMLAttributes, useEffect, useState } from "react";
 import { ReactComponent as EyeIcon } from "assets/Eye.svg";
 import { ReactComponent as CheckIcon } from "assets/CircleCheck.svg";
 import Button from "./Button";
@@ -7,30 +7,28 @@ import Dropdown from "./SignUp/EmailDropdown";
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   size?: 1 | 2 | 3;
-  iconType?: "eye";
 }
 
-const TextField = forwardRef<HTMLInputElement, Props>(
-  ({ iconType, type = "text", ...props }, ref) => {
-    const [inputType, setInputType] = useState(type);
-    const IconComponent = iconType ? ICON_MAP[iconType]?.component : undefined;
+const TextField = forwardRef<HTMLInputElement, Props>(({ type = "text", ...props }, ref) => {
+  const [inputType, setInputType] = useState(type);
 
-    const handleEyeClick = () => {
-      if (type === "password") {
-        setInputType(inputType === "password" ? "text" : "password");
-      }
-    };
+  const handleEyeClick = () => {
+    if (type === "password") {
+      setInputType(inputType === "password" ? "text" : "password");
+    }
+  };
 
-    return (
-      <Wrap>
-        <StyledTextField ref={ref} type={inputType} {...props} />
-        <IconWrap $iconType={iconType} onClick={handleEyeClick}>
-          {IconComponent && <IconComponent />}
+  return (
+    <Wrap>
+      <StyledTextField ref={ref} type={inputType} {...props} />
+      {type === "password" && (
+        <IconWrap $type={type} onClick={handleEyeClick}>
+          <EyeIcon style={{ stroke: "#5D5A88" }} />
         </IconWrap>
-      </Wrap>
-    );
-  }
-);
+      )}
+    </Wrap>
+  );
+});
 
 TextField.displayName = "TextField";
 export default TextField;
@@ -65,12 +63,18 @@ export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
 
 BNoTextField.displayName = "BNoTextField";
 
-// export interface EmailProps extends Props {}
+export interface EmailProps extends Props {
+  setValue: any;
+}
 
-export const EmailTextField = forwardRef<HTMLInputElement, Props>(
-  ({ iconType, type = "text", ...props }, ref) => {
+export const EmailTextField = forwardRef<HTMLInputElement, EmailProps>(
+  ({ type = "text", setValue, ...props }, ref) => {
     const options = ["stamp.com", "naver.com", "gmail.com1", "gmail.com2", "gmail.com3"];
     const [selectedDomain, setSelectedDomain] = useState(options[0]);
+
+    useEffect(() => {
+      setValue("email2", selectedDomain);
+    }, [selectedDomain]);
 
     return (
       <EmailWrap>
@@ -128,7 +132,7 @@ const StyledTextField = styled.input<Props>`
   }
 `;
 
-const IconWrap = styled.span<{ $iconType?: keyof typeof ICON_MAP; eyeColor?: string }>`
+const IconWrap = styled.span<{ $type?: string }>`
   position: absolute;
   display: flex;
   align-items: center;
@@ -137,21 +141,8 @@ const IconWrap = styled.span<{ $iconType?: keyof typeof ICON_MAP; eyeColor?: str
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  ${({ $iconType }) => ($iconType ? ICON_MAP[$iconType]?.styles : "")}
-
-  svg {
-    stroke: ${({ eyeColor }) => eyeColor};
-  }
+  cursor: pointer;
 `;
-
-const ICON_MAP = {
-  eye: {
-    component: EyeIcon,
-    styles: `
-      cursor: pointer;
-    `
-  }
-} as const;
 
 const EmailWrap = styled.div`
   display: flex;

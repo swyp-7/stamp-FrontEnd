@@ -32,6 +32,7 @@ const PostCodeModal = ({
 export default PostCodeModal;
 
 const PostCodeWrap = styled.div`
+  z-index: 10;
   position: fixed;
   top: 0;
   left: 0;
@@ -51,6 +52,7 @@ const PostCodeWrap = styled.div`
 `;
 
 const ModalWrap = styled.div`
+  z-index: 15;
   width: 573px;
   height: 868px;
   border-radius: 24px;

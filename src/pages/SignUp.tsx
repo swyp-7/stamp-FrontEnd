@@ -44,7 +44,7 @@ const SignUp = () => {
         <StepTitle number={step} $bold={true} text={SignUpTitleText[step]} />
         <SignContentWrap $step={step}>
           {step === 1 && <SignStep1 agree={agree} setAgree={setAgree} />}
-          {step === 2 && <SignStep2 register={register} />}
+          {step === 2 && <SignStep2 register={register} setValue={setValue} />}
           {step === 3 && (
             <SignStep3
               register={register}

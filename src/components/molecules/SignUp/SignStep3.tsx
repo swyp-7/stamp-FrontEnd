@@ -22,7 +22,7 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
   const businessNumber = watch("businessNumber");
   const { mutate, data } = useFetchBuisInfo();
   const handleAuthBNo = () => {
-    const number = businessNumber.split("-").join("");
+    const number = businessNumber ? businessNumber.split("-").join("") : undefined;
     mutate(number);
   };
   const handlePostcode = () => {
@@ -71,6 +71,7 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
             isAuthed={isAuthed}
             errors={errors}
             {...register("businessNumber")}
+            autoFocus
           />
         </div>
         <div className="storeName">
@@ -82,17 +83,14 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
         </div>
         <div className="category">
           <SignLabel>사업 종류</SignLabel>
-          <TextField
-            placeholder="사업자등록증의 업종을 적어주세요"
-            {...register("businessType ")}
-          />
+          <TextField placeholder="사업자등록증의 업종을 적어주세요" {...register("businessType")} />
         </div>
         <div className="location">
           <SignLabel>사업장 소재지</SignLabel>
           <TextField
             style={{ marginBottom: "16px" }}
             placeholder="클릭해서 도로명, 지번 주소를 검색해주세요"
-            onClick={handlePostcode}
+            onFocus={handlePostcode}
             {...register("address1")}
           />
           <TextField placeholder="상세 주소지를 입력해주세요" {...register("address2")} />
@@ -133,6 +131,7 @@ const FormWrap = styled.div`
   }
   .location {
     grid-area: d;
+    z-index: 5;
   }
 `;
 
