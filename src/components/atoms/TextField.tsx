@@ -3,6 +3,7 @@ import { forwardRef, InputHTMLAttributes, useState } from "react";
 import { ReactComponent as EyeIcon } from "assets/Eye.svg";
 import { ReactComponent as CheckIcon } from "assets/CircleCheck.svg";
 import Button from "./Button";
+import Dropdown from "./SignUp/EmailDropdown";
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   size?: 1 | 2 | 3;
@@ -64,6 +65,30 @@ export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
 
 BNoTextField.displayName = "BNoTextField";
 
+// export interface EmailProps extends Props {}
+
+export const EmailTextField = forwardRef<HTMLInputElement, Props>(
+  ({ iconType, type = "text", ...props }, ref) => {
+    const options = ["stamp.com", "naver.com", "gmail.com1", "gmail.com2", "gmail.com3"];
+    const [selectedDomain, setSelectedDomain] = useState(options[0]);
+
+    return (
+      <EmailWrap>
+        <StyledTextField
+          placeholder="stampcoffee"
+          style={{ width: "198px" }}
+          ref={ref}
+          {...props}
+        />
+        <span>@</span>
+        <Dropdown options={options} value={selectedDomain} onChange={setSelectedDomain} />
+      </EmailWrap>
+    );
+  }
+);
+
+EmailTextField.displayName = "EmailTextField";
+
 const OuterWrap = styled.div`
   display: flex;
   gap: 12px;
@@ -78,10 +103,10 @@ const Wrap = styled.div`
 const StyledTextField = styled.input<Props>`
   width: 480px;
   height: 72px;
-  font-size: 22px;
+  font-size: 20px;
   border-radius: 46px;
   border: 1px solid #ddd;
-  padding: 18px 33px;
+  padding: 18px 30px;
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -127,3 +152,16 @@ const ICON_MAP = {
     `
   }
 } as const;
+
+const EmailWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  span {
+    font-weight: 500;
+    font-size: 20px;
+    color: #656565;
+  }
+`;

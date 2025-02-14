@@ -4,8 +4,7 @@ import TextField, { BNoTextField } from "components/atoms/TextField";
 import { useFetchBuisInfo } from "hooks/BuisnessQuery";
 import { useEffect, useState } from "react";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
-import DaumPostcode from "react-daum-postcode";
-import { ReactComponent as CloseIcon } from "assets/Close.svg";
+import PostCodeModal from "./PostCodeModal";
 
 interface Props {
   register: UseFormRegister<FieldValues>;
@@ -23,7 +22,8 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
   const businessNumber = watch("businessNumber");
   const { mutate, data } = useFetchBuisInfo();
   const handleAuthBNo = () => {
-    mutate(businessNumber);
+    const number = businessNumber.split("-").join("");
+    mutate(number);
   };
   const handlePostcode = () => {
     setIsModalActive(true);
@@ -66,9 +66,7 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
             {isAuthFailed && <AuthFailedText>조회되지 않는 사업자등록번호입니다</AuthFailedText>}
           </BNoLabelWrap>
           <BNoTextField
-            placeholder="숫자만 입력해주세요."
-            type="number"
-            style={{ fontSize: "18px" }}
+            placeholder="000-00-000"
             handleAuthBNo={handleAuthBNo}
             isAuthed={isAuthed}
             errors={errors}
@@ -101,14 +99,12 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
         </div>
       </FormWrap>
       {isModalActive && (
-        <PostCodeWrap key={isModalActive ? "open" : "closed"} onClick={handleOutsideClick}>
-          <ModalWrap>
-            <ModalClose onClick={handleModalClose}>
-              <CloseIcon />
-            </ModalClose>
-            <DaumPostcode className="codeModal" onComplete={handlePostComplete} />
-          </ModalWrap>
-        </PostCodeWrap>
+        <PostCodeModal
+          isModalActive={isModalActive}
+          handleOutsideClick={handleOutsideClick}
+          handleModalClose={handleModalClose}
+          handlePostComplete={handlePostComplete}
+        />
       )}
     </>
   );
@@ -154,40 +150,4 @@ const AuthText = styled.div`
 const AuthFailedText = styled.div`
   margin-bottom: 18px;
   color: var(--red-1);
-`;
-
-const PostCodeWrap = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  background-color: rgba(0, 0, 0, 0.4);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .codeModal {
-    width: 400px !important;
-    height: 700px !important;
-  }
-`;
-
-const ModalWrap = styled.div`
-  width: 400px;
-  height: 730px;
-  display: grid;
-  grid-template-rows: 30px 1fr;
-  background-color: #fff;
-`;
-
-const ModalClose = styled.div`
-  cursor: pointer;
-  padding: 6px 10px;
-  justify-self: end;
-
-  .svg {
-    width: 20px;
-    height: 21px;
-  }
 `;
