@@ -19,6 +19,7 @@ const SignUp = () => {
     watch,
     setError,
     clearErrors,
+    setValue,
     formState: { errors }
   } = useForm();
 
@@ -35,7 +36,6 @@ const SignUp = () => {
     console.log(data);
     setStep((prev) => prev + 1);
   });
-
   return (
     <Layout>
       <AskButton />
@@ -44,16 +44,17 @@ const SignUp = () => {
         <StepTitle number={step} $bold={true} text={SignUpTitleText[step]} />
         <SignContentWrap $step={step}>
           {step === 1 && <SignStep1 agree={agree} setAgree={setAgree} />}
-          {step === 2 && (
-            <SignStep2
+          {step === 2 && <SignStep2 register={register} />}
+          {step === 3 && (
+            <SignStep3
               register={register}
               watch={watch}
               setError={setError}
               clearErrors={clearErrors}
-              errors={errors.bNo}
+              setValue={setValue}
+              errors={errors.businessNumber}
             />
           )}
-          {step === 3 && <SignStep3 register={register} />}
           {step === 4 && <SignStep4 />}
         </SignContentWrap>
         <SignNextBtnWrap>

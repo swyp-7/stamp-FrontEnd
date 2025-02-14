@@ -40,12 +40,12 @@ const Icon = styled.div<Props>`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${({ $bold, $active }) => ($bold || $active ? "var(--main-3)" : "white")};
+  background-color: ${({ $bold, $active }) => ($bold || $active ? "var(--main-1)" : "white")};
   color: ${({ $bold, $active }) => ($bold || $active ? "white" : "var(--main-4)")};
 `;
 
 const Text = styled.div<Props>`
   font-weight: ${({ $bold }) => ($bold ? 600 : 500)};
   font-size: ${({ $bold }) => ($bold ? "28px" : "20px")};
-  color: ${({ $bold, $active }) => ($bold || $active ? "var(--main-3)" : "var(--main-4)")};
+  color: ${({ $bold, $active }) => ($bold || $active ? "var(--main-1)" : "var(--main-4)")};
 `;
