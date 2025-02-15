@@ -85,6 +85,7 @@ const SignStepWrap = styled.div<{ $step: number }>`
   ${({ $step }) =>
     $step === 4 &&
     `
+      padding-top:0;
       display: flex;
       flex-direction: column;
       justify-content: center;
