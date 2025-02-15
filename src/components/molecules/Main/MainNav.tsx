@@ -1,17 +1,24 @@
 import styled from "styled-components";
 import MainNavIcon from "./MainNavIcon";
+import { navIconList, navLink } from "constants/MenuText";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   activeIcon?: "Home" | "Test" | "Calendar" | "Bell" | "User";
 }
 
-const iconList = ["Home", "Test", "Calendar", "Bell", "User"] as const;
-
 const MainNav = ({ activeIcon = "Home" }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <Wrap>
-      {iconList.map((icon, idx) => (
-        <MainNavIcon key={idx} iconType={icon} isActive={icon === activeIcon} />
+      {navIconList.map((icon, idx) => (
+        <MainNavIcon
+          key={idx}
+          iconType={icon}
+          isActive={icon === activeIcon}
+          onClick={() => navigate(navLink[idx])}
+        />
       ))}
     </Wrap>
   );

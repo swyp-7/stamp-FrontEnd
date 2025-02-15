@@ -12,3 +12,7 @@ export const MainNavTitle = {
   Bell: "알림 관리",
   User: "마이페이지"
 };
+
+export const navIconList = ["Home", "Test", "Calendar", "Bell", "User"] as const;
+
+export const navLink = ["/my-store", "/management", "/schedule", "/notification", "/my-page"];

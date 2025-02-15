@@ -9,6 +9,10 @@ import Login from "./pages/Login";
 import LoginRedirect from "./pages/LoginRedirect";
 import SignUp from "pages/SignUp";
 import Main from "pages/Main";
+import Manage from "pages/Manage";
+import Schedule from "pages/Schedule";
+import Notification from "pages/Notification";
+import MyPage from "pages/MyPage";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +26,11 @@ const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "login/redirect", element: <LoginRedirect /> },
       { path: "signUp", element: <SignUp /> },
-      { path: "main", element: <Main /> }
+      { path: "my-store", element: <Main /> },
+      { path: "management", element: <Manage /> },
+      { path: "schedule", element: <Schedule /> },
+      { path: "notification", element: <Notification /> },
+      { path: "my-page", element: <MyPage /> }
     ]
   }
 ]);

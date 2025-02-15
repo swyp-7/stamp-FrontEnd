@@ -9,6 +9,7 @@ import { MainNavTitle } from "constants/MenuText";
 interface Props {
   isActive?: boolean;
   iconType: "Home" | "Test" | "Calendar" | "Bell" | "User";
+  onClick: () => void;
 }
 
 const icons = {
@@ -19,11 +20,11 @@ const icons = {
   User: UserIcon
 } as const;
 
-const MainNavIcon = ({ isActive = false, iconType }: Props) => {
+const MainNavIcon = ({ isActive = false, iconType, onClick }: Props) => {
   const IconComponent = iconType ? icons[iconType] : HomeIcon;
 
   return (
-    <IconOuterWrap $isActive={isActive}>
+    <IconOuterWrap $isActive={isActive} onClick={onClick}>
       <IconComponent />
       <span>{MainNavTitle[iconType]}</span>
     </IconOuterWrap>
@@ -41,7 +42,8 @@ const IconOuterWrap = styled.div<{ $isActive: boolean }>`
   gap: 24px;
   align-items: center;
   margin-bottom: 16px;
-  ${({ $isActive }) => ($isActive ? "background-color: var(--main-1);" : "cursor: pointer;")}
+  cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
+  ${({ $isActive }) => $isActive && "background-color: var(--main-1);"}
 
   svg {
     stroke: ${({ $isActive }) => ($isActive ? "white" : "#545454")};
