@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import StepTitle from "components/atoms/SignUp/StepTitle";
-import { SignUpTitleText } from "constants/SignUpTitle";
+import { SignUpTitleText } from "constants/MenuText";
 
 interface Props {
   activeNum: number;

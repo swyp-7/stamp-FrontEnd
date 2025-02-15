@@ -5,7 +5,7 @@ import SignStep2 from "components/molecules/SignUp/SignStep2";
 import SignStep3 from "components/molecules/SignUp/SignStep3";
 import SignStep4 from "components/molecules/SignUp/SignStep4";
 import SignUpNav from "components/molecules/SignUp/SignUpNav";
-import { SignUpTitleText } from "constants/SignUpTitle";
+import { SignUpTitleText } from "constants/MenuText";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
