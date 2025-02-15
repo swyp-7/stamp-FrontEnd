@@ -38,7 +38,7 @@ const PostCodeWrap = styled.div`
   left: 0;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: var(--modal-base);
   display: flex;
   justify-content: center;
   align-items: center;

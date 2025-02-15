@@ -9,9 +9,10 @@ const dummyData = ["naver.com", "gmail.com", "stamp.com"];
 
 interface Props extends UseControllerProps {
   options?: string[];
+  placeholder?: string;
 }
 
-const Dropdown = ({ options = dummyData, ...props }: Props) => {
+const Dropdown = ({ options = dummyData, placeholder, ...props }: Props) => {
   const {
     field: { value, onChange }
   } = useController(props);
@@ -21,7 +22,7 @@ const Dropdown = ({ options = dummyData, ...props }: Props) => {
   return (
     <DropdownContainer>
       <Selected $isOpen={$isOpen} onClick={() => set$IsOpen(!$isOpen)}>
-        {value}
+        {value || placeholder || options[0]}
         <ArrowIconWrap>{$isOpen ? <UpIcon /> : <DownIcon />}</ArrowIconWrap>
       </Selected>
       <DropdownList $isOpen={$isOpen}>

@@ -10,6 +10,7 @@ export interface Props extends MuiButtonProps {
 const StyledButton = styled(MuiButton, {
   shouldForwardProp: (prop) => prop !== "isOutline"
 })<Props>`
+  font-family: "Pretendard", sans-serif;
   height: ${({ area }) => getHeight(area)};
   font-size: ${({ area }) => getFontSize(area)};
   font-weight: ${({ isOutline }) => (isOutline ? 400 : 700)};

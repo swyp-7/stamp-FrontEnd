@@ -10,7 +10,7 @@ export const SignDesc = styled.div`
 export const SignLabel = styled.div`
   font-weight: 600;
   font-size: 22px;
-  color: #202020;
+  color: #444;
   margin-bottom: 18px;
 `;
 
