@@ -14,11 +14,11 @@ const Layout = ({ children, activeIcon, title }: Props) => {
     <StyledLayout>
       <MainNav activeIcon={activeIcon} />
       <main>
-        <div>
+        <div className="first">
           <h1>{title}</h1>
           <AskButton />
         </div>
-        {children}
+        <div className="second">{children}</div>
       </main>
     </StyledLayout>
   );
@@ -33,12 +33,12 @@ const StyledLayout = styled.div`
   background-color: #f8f8f8;
 
   main {
-    padding: 77px 80px;
+    padding: 67px 70px;
     display: grid;
     grid-template-rows: 50px 1fr;
     gap: 41px;
 
-    > div {
+    div.first {
       width: 100%;
       display: flex;
       justify-content: space-between;
@@ -47,6 +47,13 @@ const StyledLayout = styled.div`
         font-weight: 700;
         font-size: 36px;
       }
+    }
+
+    div.second {
+      border-radius: 12px;
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
     }
   }
 `;
