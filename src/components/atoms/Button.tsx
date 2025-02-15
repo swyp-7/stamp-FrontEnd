@@ -55,7 +55,7 @@ export function AskButton({ ...props }: Props) {
   return (
     <Button
       text="문의하기"
-      style={{ position: "absolute", top: "80px", right: "80px" }}
+      style={{ position: "absolute", top: "80px", right: "80px", zIndex: 3 }}
       className="ask"
       isOutline={true}
       area={2}

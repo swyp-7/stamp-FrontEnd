@@ -2,33 +2,42 @@ import styled from "@emotion/styled";
 import { forwardRef, InputHTMLAttributes, useEffect, useState } from "react";
 import { ReactComponent as EyeIcon } from "assets/Eye.svg";
 import { ReactComponent as CheckIcon } from "assets/CircleCheck.svg";
+import { ReactComponent as FailIcon } from "assets/CircleFail.svg";
 import Button from "./Button";
 import Dropdown from "./SignUp/EmailDropdown";
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   size?: 1 | 2 | 3;
+  isPasswordError?: boolean;
 }
 
-const TextField = forwardRef<HTMLInputElement, Props>(({ type = "text", ...props }, ref) => {
-  const [inputType, setInputType] = useState(type);
+const TextField = forwardRef<HTMLInputElement, Props>(
+  ({ type = "text", isPasswordError = false, ...props }, ref) => {
+    const [inputType, setInputType] = useState(type);
 
-  const handleEyeClick = () => {
-    if (type === "password") {
-      setInputType(inputType === "password" ? "text" : "password");
-    }
-  };
+    const handleEyeClick = () => {
+      if (type === "password") {
+        setInputType(inputType === "password" ? "text" : "password");
+      }
+    };
 
-  return (
-    <Wrap>
-      <StyledTextField ref={ref} type={inputType} {...props} />
-      {type === "password" && (
-        <IconWrap $type={type} onClick={handleEyeClick}>
-          <EyeIcon style={{ stroke: "#5D5A88" }} />
-        </IconWrap>
-      )}
-    </Wrap>
-  );
-});
+    return (
+      <Wrap>
+        {isPasswordError && (
+          <IconWrap style={{ left: "20px" }}>
+            <FailIcon className="fail" />
+          </IconWrap>
+        )}
+        <StyledTextField ref={ref} type={inputType} $isPasswordError={isPasswordError} {...props} />
+        {type === "password" && (
+          <IconWrap $type={type} onClick={handleEyeClick} style={{ right: "20px" }}>
+            <EyeIcon className="eye" />
+          </IconWrap>
+        )}
+      </Wrap>
+    );
+  }
+);
 
 TextField.displayName = "TextField";
 export default TextField;
@@ -104,13 +113,14 @@ const Wrap = styled.div`
   width: fit-content;
 `;
 
-const StyledTextField = styled.input<Props>`
+const StyledTextField = styled.input<{ $isPasswordError?: boolean }>`
   width: 480px;
   height: 72px;
   font-size: 20px;
   border-radius: 46px;
   border: 1px solid #ddd;
   padding: 18px 30px;
+  ${({ $isPasswordError }) => $isPasswordError && "padding-left: 66px; border-color: var(--red-1);"}
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -138,10 +148,19 @@ const IconWrap = styled.span<{ $type?: string }>`
   align-items: center;
   justify-content: center;
   padding: 5px;
-  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+
+  svg.eye {
+    stroke: #5d5a88;
+  }
+  svg.fail {
+    stroke: var(--red-1);
+    width: 24px;
+    height: 24px;
+    margin: 5px;
+  }
 `;
 
 const EmailWrap = styled.div`

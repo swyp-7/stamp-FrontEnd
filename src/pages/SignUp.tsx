@@ -21,7 +21,7 @@ const SignUp = () => {
     clearErrors,
     setValue,
     formState: { errors }
-  } = useForm();
+  } = useForm({ mode: "onChange" });
 
   const handleClickNext = () => {
     setAgree([true, true]);
@@ -44,7 +44,9 @@ const SignUp = () => {
         <StepTitle number={step} $bold={true} text={SignUpTitleText[step]} />
         <SignContentWrap $step={step}>
           {step === 1 && <SignStep1 agree={agree} setAgree={setAgree} />}
-          {step === 2 && <SignStep2 register={register} setValue={setValue} />}
+          {step === 2 && (
+            <SignStep2 register={register} setValue={setValue} watch={watch} errors={errors} />
+          )}
           {step === 3 && (
             <SignStep3
               register={register}
