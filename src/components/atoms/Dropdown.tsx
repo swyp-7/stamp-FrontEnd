@@ -4,15 +4,24 @@ import { useController, UseControllerProps } from "react-hook-form";
 import { ReactComponent as DownIcon } from "assets/DownArrow.svg";
 import { ReactComponent as UpIcon } from "assets/UpArrow.svg";
 import { ReactComponent as CheckIcon } from "assets/Check.svg";
+import { ReactComponent as ClockIcon } from "assets/Clock.svg";
 
-const dummyData = ["naver.com", "gmail.com", "stamp.com"];
+const dummyData = ["항목1", "항목2", "항목3"];
 
 interface Props extends UseControllerProps {
   options?: string[];
   placeholder?: string;
+  width?: string;
+  clockIcon?: boolean;
 }
 
-const Dropdown = ({ options = dummyData, placeholder, ...props }: Props) => {
+const Dropdown = ({
+  width = "200px",
+  clockIcon = false,
+  options = dummyData,
+  placeholder,
+  ...props
+}: Props) => {
   const {
     field: { value, onChange }
   } = useController(props);
@@ -20,8 +29,13 @@ const Dropdown = ({ options = dummyData, placeholder, ...props }: Props) => {
   const [$isOpen, set$IsOpen] = useState(false);
 
   return (
-    <DropdownContainer>
-      <Selected $isOpen={$isOpen} onClick={() => set$IsOpen(!$isOpen)}>
+    <DropdownContainer style={{ width: width }}>
+      <Selected $isOpen={$isOpen} $clockIcon={clockIcon} onClick={() => set$IsOpen(!$isOpen)}>
+        {clockIcon && (
+          <ClockIconWrap>
+            <ClockIcon />
+          </ClockIconWrap>
+        )}
         {value || placeholder || options[0]}
         <ArrowIconWrap>{$isOpen ? <UpIcon /> : <DownIcon />}</ArrowIconWrap>
       </Selected>
@@ -52,16 +66,17 @@ export default Dropdown;
 
 export const DropdownContainer = styled.div`
   position: relative;
-  width: 200px;
 `;
 
-export const Selected = styled.div<{ $isOpen: boolean }>`
+export const Selected = styled.div<{ $isOpen: boolean; $clockIcon: boolean }>`
+  position: relative;
   height: 72px;
   padding: 10px;
   border: 1px solid;
   border-color: ${({ $isOpen }) => ($isOpen ? "var(--main-1)" : "#ddd")};
   border-radius: 46px;
   padding: 22px 32px;
+  ${({ $clockIcon }) => $clockIcon && "padding-left : 62px;"}
   font-size: 20px;
   display: flex;
   justify-content: space-between;
@@ -139,8 +154,24 @@ export const ArrowIconWrap = styled.div`
   height: 24px;
   display: flex;
   justify-content: center;
-  align-items:center svg {
-    width: 14px;
-    height: 7px;
+  align-items: center;
+  svg {
+    width: 20px;
+  }
+`;
+
+export const ClockIconWrap = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 32px;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  background-color: #fff;
+
+  svg {
+    stroke: #676767;
+    width: 20px;
+    height: 20px;
   }
 `;

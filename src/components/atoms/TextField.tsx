@@ -128,7 +128,7 @@ const Wrap = styled.div`
   width: fit-content;
 `;
 
-const StyledTextField = styled.input<{ $isPasswordError?: boolean }>`
+export const StyledTextField = styled.input<{ $isPasswordError?: boolean }>`
   width: 480px;
   height: 72px;
   font-size: 20px;

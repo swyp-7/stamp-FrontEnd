@@ -9,10 +9,12 @@ import {
   SignPersonal
 } from "components/atoms/SignUp/SignUpAtoms";
 import TextField, { TextArea } from "components/atoms/TextField";
-import { useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import Dropdown from "components/atoms/Dropdown";
 import Button from "components/atoms/Button";
 import StyledDatePicker, { DatePickerInForm } from "components/atoms/DatePicker";
+import DropdownTextField from "../DropdownTextField";
+import ClockDropdowns from "./ClockDropdowns";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
@@ -29,8 +31,15 @@ const AddModal = ({ setIsModalActive }: Props) => {
     control,
     formState: { errors }
   } = useForm();
+
   const handlePostcode = () => {
-    console.log(123);
+    console.log("주소창띄우기");
+  };
+
+  const onSubmit: SubmitHandler<any> = (data) => {
+    console.log("제출");
+
+    console.log(data);
   };
 
   return (
@@ -43,7 +52,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
           <CloseIcon />
         </div>
       </TitleWrap>
-      <form action="">
+      <form onSubmit={handleSubmit(onSubmit)}>
         <InfoTitle>기본 정보</InfoTitle>
         <InputWrap>
           <div className="short">
@@ -94,7 +103,14 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap style={{ marginBottom: "120px" }}>
           <div>
             <SignLabel>급여 계좌</SignLabel>
-            <TextField placeholder="계좌" />
+            <DropdownTextField
+              width="195px"
+              control={control}
+              dropdownName="bank"
+              textFieldName="bankNumber"
+              txtPlaceholder="계좌번호"
+              placeholder="은행"
+            />
           </div>
         </InputWrap>
         <InfoTitle>근무 정보</InfoTitle>
@@ -107,7 +123,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap>
           <div>
             <SignLabel>근무 시간</SignLabel>
-            <TextField placeholder="시간" />
+            <ClockDropdowns name1="clock1" name2="clock2" control={control} />
           </div>
         </InputWrap>
         <InputWrap>
@@ -119,7 +135,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap style={{ marginBottom: "60px" }}>
           <div>
             <SignLabel>근무 시간</SignLabel>
-            <TextField placeholder="시간" />
+            <ClockDropdowns name1="clock1" name2="clock2" control={control} />
           </div>
         </InputWrap>
         <InputWrap style={{ marginBottom: "120px" }}>
@@ -128,7 +144,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <TextArea placeholder="특이사항이 있으면 적어주세요" {...register("etc")} />
           </div>
         </InputWrap>
-        <Button text="저장하기" />
+        <Button type="submit" text="저장하기" />
       </form>
     </ModalWrap>
   );
