@@ -28,7 +28,7 @@ export const DatePickerInForm = ({ name, control }: Props) => {
       render={({ field: { onChange, value } }) => (
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="ko">
           <DatePicker
-            defaultValue={dayjs(new Date())}
+            // defaultValue={dayjs(new Date())}
             value={value ? dayjs(value) : null}
             onChange={(date) => {
               onChange(date ? date.format("YYYY.MM.DD") : null);

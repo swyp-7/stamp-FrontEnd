@@ -135,7 +135,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap style={{ marginBottom: "60px" }}>
           <div>
             <SignLabel>근무 시간</SignLabel>
-            <ClockDropdowns name1="clock1" name2="clock2" control={control} />
+            <ClockDropdowns name1="clock3" name2="clock4" control={control} />
           </div>
         </InputWrap>
         <InputWrap style={{ marginBottom: "120px" }}>
