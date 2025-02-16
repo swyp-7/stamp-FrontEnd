@@ -48,7 +48,7 @@
 }
 
 * {
-  font-family: "Pretendard", sans-serif;
+  font-family: "Pretendard", sans-serif !important;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -66,4 +66,42 @@ ul {
 
 button {
   cursor: pointer;
+}
+
+.workingDatePicker .css-1b1fjlj-MuiFormControl-root-MuiTextField-root *:hover {
+  border: none;
+  outline: none;
+}
+
+.workingDatePicker .css-jupps9-MuiInputBase-root-MuiOutlinedInput-root {
+  background-color: #fff;
+  border-radius: 46px;
+  width: 313px;
+  height: 72px;
+  font-size: 20px;
+
+  &*:hover {
+    border: none;
+    outline: none;
+  }
+}
+
+.workingDatePicker .css-1ll44ll-MuiOutlinedInput-notchedOutline {
+  border: 1px solid #dddddd;
+}
+
+.workingDatePicker .css-1dune0f-MuiInputBase-input-MuiOutlinedInput-input {
+  padding: 22px 32px;
+}
+
+.workingDatePicker .Mui-focused fieldset.MuiOutlinedInput-notchedOutline {
+  border: 1px solid var(--main-1);
+}
+
+.workingDatePicker .css-1ysp02-MuiButtonBase-root-MuiIconButton-root {
+  margin-right: 10px;
+
+  &:hover {
+    background: none;
+  }
 }

@@ -8,10 +8,11 @@ import {
   SignLabelWrap,
   SignPersonal
 } from "components/atoms/SignUp/SignUpAtoms";
-import TextField from "components/atoms/TextField";
+import TextField, { TextArea } from "components/atoms/TextField";
 import { useForm } from "react-hook-form";
 import Dropdown from "components/atoms/Dropdown";
 import Button from "components/atoms/Button";
+import StyledDatePicker, { DatePickerInForm } from "components/atoms/DatePicker";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
@@ -47,22 +48,30 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap>
           <div className="short">
             <SignLabel>이름</SignLabel>
-            <TextField placeholder="이름을 입력해주세요" style={{ width: "313px" }} />
+            <TextField
+              placeholder="이름을 입력해주세요"
+              style={{ width: "313px" }}
+              {...register("name")}
+            />
           </div>
           <div className="short">
             <SignLabel>생년월일</SignLabel>
-            <TextField placeholder="0000.00.00" style={{ width: "313px" }} />
+            <TextField placeholder="0000.00.00" style={{ width: "313px" }} {...register("birth")} />
           </div>
         </InputWrap>
         <InputWrap>
           <div className="short">
             <SignLabel>연락처</SignLabel>
-            <TextField placeholder="010-0000-000" style={{ width: "313px" }} />
+            <TextField
+              placeholder="010-0000-000"
+              style={{ width: "313px" }}
+              {...register("contact")}
+            />
           </div>
         </InputWrap>
         <InputWrap>
           <div>
-            <SignLabel>사업장 소재지</SignLabel>
+            <SignLabel>주소</SignLabel>
             <TextField
               style={{ marginBottom: "16px" }}
               placeholder="클릭해서 도로명, 지번 주소를 검색해주세요"
@@ -75,11 +84,11 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap>
           <div className="short">
             <SignLabel>근무 시작일</SignLabel>
-            <TextField placeholder="0000.00.00" style={{ width: "313px" }} />
+            <DatePickerInForm name="startDay" control={control} />
           </div>
           <div className="short">
             <SignLabel>근무 종료일</SignLabel>
-            <TextField placeholder="0000.00.00" style={{ width: "313px" }} />
+            <DatePickerInForm name="endDay" control={control} />
           </div>
         </InputWrap>
         <InputWrap style={{ marginBottom: "120px" }}>
@@ -116,7 +125,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap style={{ marginBottom: "120px" }}>
           <div>
             <SignLabel>특이사항</SignLabel>
-            <TextField placeholder="특이사항" />
+            <TextArea placeholder="특이사항이 있으면 적어주세요" {...register("etc")} />
           </div>
         </InputWrap>
         <Button text="저장하기" />

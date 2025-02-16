@@ -1,5 +1,11 @@
 import styled from "@emotion/styled";
-import { forwardRef, InputHTMLAttributes, useEffect, useState } from "react";
+import {
+  forwardRef,
+  InputHTMLAttributes,
+  TextareaHTMLAttributes,
+  useEffect,
+  useState
+} from "react";
 import { ReactComponent as EyeIcon } from "assets/Eye.svg";
 import { ReactComponent as CheckIcon } from "assets/CircleCheck.svg";
 import { ReactComponent as FailIcon } from "assets/CircleFail.svg";
@@ -102,6 +108,15 @@ export const EmailTextField = forwardRef<HTMLInputElement, EmailProps>(
 
 EmailTextField.displayName = "EmailTextField";
 
+export const TextArea = forwardRef<
+  HTMLTextAreaElement,
+  TextareaHTMLAttributes<HTMLTextAreaElement>
+>(({ ...props }, ref) => {
+  return <StyledTextArea ref={ref} {...props} />;
+});
+
+TextArea.displayName = "TextArea";
+
 const OuterWrap = styled.div`
   display: flex;
   gap: 12px;
@@ -173,5 +188,32 @@ const EmailWrap = styled.div`
     font-weight: 500;
     font-size: 20px;
     color: #656565;
+  }
+`;
+
+const StyledTextArea = styled.textarea`
+  width: 683px;
+  height: 150px;
+  font-size: 20px;
+  border-radius: 24px;
+  border: 1px solid #c7c7c7;
+  padding-top: 24px;
+  padding-right: 20px;
+  padding-bottom: 24px;
+  padding-left: 20px;
+  resize: none;
+
+  &.isEntered {
+    background-color: #f3f2fa;
+    border: 1px solid var(--main-1);
+  }
+
+  &.error {
+    border: 1px solid var(--red-1);
+  }
+
+  :focus {
+    border: none;
+    outline: 1px solid var(--main-1);
   }
 `;
