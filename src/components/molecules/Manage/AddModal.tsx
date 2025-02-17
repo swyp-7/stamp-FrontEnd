@@ -44,15 +44,16 @@ const AddModal = ({ setIsModalActive }: Props) => {
 
   return (
     <ModalWrap>
-      <TitleWrap>
+      <TitleWrap className="title">
         <h3>
           직원 정보 <span>입력</span>
         </h3>
-        <div onClick={() => setIsModalActive(false)}>
-          <CloseIcon />
-        </div>
       </TitleWrap>
-      <form onSubmit={handleSubmit(onSubmit)}>
+
+      <CloseButton className="close" onClick={() => setIsModalActive(false)}>
+        <CloseIcon />
+      </CloseButton>
+      <form onSubmit={handleSubmit(onSubmit)} className="form">
         <InfoTitle>기본 정보</InfoTitle>
         <InputWrap>
           <div className="short">
@@ -144,7 +145,9 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <TextArea placeholder="특이사항이 있으면 적어주세요" {...register("etc")} />
           </div>
         </InputWrap>
-        <Button type="submit" text="저장하기" />
+        <ButtonWrap>
+          <Button type="submit" text="저장하기" />
+        </ButtonWrap>
       </form>
     </ModalWrap>
   );
@@ -153,6 +156,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
 export default AddModal;
 
 const ModalWrap = styled.div`
+  position: relative;
   width: 827px;
   height: 620px;
   border-radius: 24px;
@@ -161,6 +165,13 @@ const ModalWrap = styled.div`
   margin-top: 40px;
   padding: 54px 72px;
   overflow-y: scroll;
+  display: grid;
+  grid-template-rows: 85px 1fr;
+  grid-template-columns: 1fr 1fr;
+
+  form {
+    grid-column: 1/3;
+  }
 
   &::-webkit-scrollbar {
     width: 8px;
@@ -183,11 +194,6 @@ const ModalWrap = styled.div`
 `;
 
 const TitleWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 50px;
   margin-bottom: 32px;
 
   * {
@@ -197,16 +203,6 @@ const TitleWrap = styled.div`
 
   span {
     color: var(--main-1);
-  }
-
-  div {
-    padding-left: 10px;
-    cursor: pointer;
-
-    svg {
-      width: 24px;
-      height: 24px;
-    }
   }
 `;
 
@@ -224,5 +220,33 @@ const InputWrap = styled.div`
 
   .short {
     width: 313px;
+  }
+`;
+
+const ButtonWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+const CloseButton = styled.div`
+  position: sticky;
+  top: 0;
+  right: 0;
+  justify-self: end;
+  z-index: 6;
+  width: 44px;
+  height: 44px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0px 2px 12px 0px rgba(20, 20, 43, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    width: 24px;
+    height: 24px;
   }
 `;

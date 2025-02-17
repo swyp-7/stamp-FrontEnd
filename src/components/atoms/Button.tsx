@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import MuiButton, { ButtonProps as MuiButtonProps } from "@mui/material/Button";
 
-export interface Props extends MuiButtonProps {
+export interface ButtonProps extends MuiButtonProps {
   text?: string;
   isOutline?: boolean;
   area?: 1 | 2 | 3;
@@ -9,7 +9,7 @@ export interface Props extends MuiButtonProps {
 
 const StyledButton = styled(MuiButton, {
   shouldForwardProp: (prop) => prop !== "isOutline"
-})<Props>`
+})<ButtonProps>`
   font-family: "Pretendard", sans-serif;
   height: ${({ area }) => getHeight(area)};
   font-size: ${({ area }) => getFontSize(area)};
@@ -44,7 +44,7 @@ const StyledButton = styled(MuiButton, {
   }
 `;
 
-export default function Button({ text, ...props }: Props) {
+export default function Button({ text, ...props }: ButtonProps) {
   return (
     <StyledButton disableRipple {...props}>
       {text || "버튼"}
@@ -52,7 +52,7 @@ export default function Button({ text, ...props }: Props) {
   );
 }
 
-export function AskButton({ ...props }: Props) {
+export function AskButton({ ...props }: ButtonProps) {
   return (
     <Button
       text="문의하기"

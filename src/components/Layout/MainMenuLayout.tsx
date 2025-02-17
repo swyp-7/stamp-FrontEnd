@@ -1,21 +1,33 @@
-import { AskButton } from "components/atoms/Button";
+import Button, { AskButton, ButtonProps } from "components/atoms/Button";
 import MainNav from "components/molecules/Main/MainNav";
 import { ReactElement } from "react";
 import styled from "styled-components";
 
-interface Props {
+interface Props extends ButtonProps {
   children: ReactElement;
   activeIcon: "Home" | "Test" | "Calendar" | "Bell" | "User";
   title: string;
+  isBtnActive?: boolean;
+  btnTxt?: string;
 }
 
-const Layout = ({ children, activeIcon, title }: Props) => {
+const Layout = ({
+  children,
+  activeIcon,
+  title,
+  isBtnActive = false,
+  btnTxt = "버튼",
+  ...props
+}: Props) => {
   return (
     <StyledLayout>
       <MainNav activeIcon={activeIcon} />
       <main>
         <div className="first">
-          <h1>{title}</h1>
+          <TitleWrap>
+            <h1>{title}</h1>
+            {isBtnActive && <Button text={btnTxt} {...props} />}
+          </TitleWrap>
           <AskButton />
         </div>
         <div className="second">{children}</div>
@@ -42,11 +54,6 @@ const StyledLayout = styled.div`
       width: 100%;
       display: flex;
       justify-content: space-between;
-
-      h1 {
-        font-weight: 700;
-        font-size: 36px;
-      }
     }
 
     div.second {
@@ -55,5 +62,16 @@ const StyledLayout = styled.div`
       height: 100%;
       background-color: #fff;
     }
+  }
+`;
+
+const TitleWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 22px;
+
+  h1 {
+    font-weight: 700;
+    font-size: 36px;
   }
 `;

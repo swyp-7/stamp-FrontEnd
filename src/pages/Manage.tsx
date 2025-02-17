@@ -13,8 +13,19 @@ const Manage = () => {
     console.log(isModalActive, ModalType);
   }, [isModalActive]);
 
+  const handleClickNew = () => {
+    setIsModalActive(true);
+    setModalType("add");
+  };
+
   return (
-    <Layout activeIcon="Test" title="직원 관리">
+    <Layout
+      activeIcon="Test"
+      title="직원 관리"
+      isBtnActive={true}
+      btnTxt="신규 등록하기"
+      onClick={handleClickNew}
+    >
       <Wrap onClick={() => setIsModalActive(false)}>
         <Table
           key={isModalActive ? "ModalOpen" : "ModalClose"}

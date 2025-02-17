@@ -68,7 +68,7 @@ export const DropdownContainer = styled.div`
   position: relative;
 `;
 
-export const Selected = styled.div<{ $isOpen: boolean; $clockIcon: boolean }>`
+export const Selected = styled.div<{ $isOpen: boolean; $clockIcon?: boolean }>`
   position: relative;
   height: 72px;
   padding: 10px;
