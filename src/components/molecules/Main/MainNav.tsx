@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import MainNavIcon from "./MainNavIcon";
-import { navIconList, navLink } from "constants/MenuText";
-import { useNavigate } from "react-router-dom";
+import MainNavIcon, { MainNavIconSub } from "./MainNavIcon";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface Props {
   activeIcon?: "Home" | "Test" | "Calendar" | "Bell" | "User";
@@ -9,17 +8,41 @@ interface Props {
 
 const MainNav = ({ activeIcon = "Home" }: Props) => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   return (
     <Wrap>
-      {navIconList.map((icon, idx) => (
-        <MainNavIcon
-          key={idx}
-          iconType={icon}
-          isActive={icon === activeIcon}
-          onClick={() => navigate(navLink[idx])}
+      <MainNavIcon
+        iconType={"Home"}
+        isActive={"Home" === activeIcon}
+        onClick={() => navigate("/my-store")}
+      />
+      <MainNavIcon
+        iconType={"Test"}
+        isActive={"Test" === activeIcon}
+        onClick={() => navigate("/management/register")}
+      />
+      {pathname.includes("management") && (
+        <MainNavIconSub
+          texts={["직원 정보 등록", "직원 근태 관리", "직원 급여 관리"]}
+          links={["/management/register", "/management/attend", "/management/pay"]}
         />
-      ))}
+      )}
+      <MainNavIcon
+        iconType={"Calendar"}
+        isActive={"Calendar" === activeIcon}
+        onClick={() => navigate("/schedule")}
+      />
+      <MainNavIcon
+        iconType={"Bell"}
+        isActive={"Bell" === activeIcon}
+        onClick={() => navigate("/notification")}
+      />
+      <MainNavIcon
+        iconType={"User"}
+        isActive={"User" === activeIcon}
+        onClick={() => navigate("/my-page")}
+      />
     </Wrap>
   );
 };
