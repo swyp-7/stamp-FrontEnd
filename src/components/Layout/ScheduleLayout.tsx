@@ -2,6 +2,7 @@ import Button, { AskButton, ButtonProps } from "components/atoms/Button";
 import MainNav from "components/molecules/Main/MainNav";
 import { ReactElement } from "react";
 import styled from "styled-components";
+import { TitleWrap } from "./MainMenuLayout";
 
 interface Props extends ButtonProps {
   children: ReactElement;
@@ -9,6 +10,8 @@ interface Props extends ButtonProps {
   title: string;
   isBtnActive?: boolean;
   btnTxt?: string;
+  subTitleTxt1: string;
+  subTitleTxt2: string;
 }
 
 const Layout = ({
@@ -17,6 +20,8 @@ const Layout = ({
   title,
   isBtnActive = false,
   btnTxt = "버튼",
+  subTitleTxt1 = "2000",
+  subTitleTxt2 = "01월",
   ...props
 }: Props) => {
   return (
@@ -30,6 +35,10 @@ const Layout = ({
           </TitleWrap>
           <AskButton />
         </div>
+        <SubDateTitle>
+          <p>{subTitleTxt2}</p>
+          <p>{subTitleTxt1}</p>
+        </SubDateTitle>
         <div className="second">{children}</div>
       </main>
     </StyledLayout>
@@ -38,7 +47,7 @@ const Layout = ({
 
 export default Layout;
 
-export const StyledLayout = styled.div`
+const StyledLayout = styled.div`
   height: 100vh;
   display: grid;
   grid-template-columns: 242px 1fr;
@@ -47,8 +56,8 @@ export const StyledLayout = styled.div`
   main {
     padding: 67px 70px;
     display: grid;
-    grid-template-rows: 50px 1fr;
-    gap: 41px;
+    grid-template-rows: 50px 57px 1fr;
+    gap: 13px;
 
     div.first {
       width: 100%;
@@ -66,13 +75,19 @@ export const StyledLayout = styled.div`
   }
 `;
 
-export const TitleWrap = styled.div`
+const SubDateTitle = styled.div`
   display: flex;
   align-items: center;
-  gap: 22px;
+  gap: 11px;
 
-  h1 {
+  p:first-child {
     font-weight: 700;
-    font-size: 36px;
+    font-size: 40px;
+    color: var(--main-1);
+  }
+  p:last-child {
+    font-weight: 600;
+    font-size: 24px;
+    color: #202020;
   }
 `;
