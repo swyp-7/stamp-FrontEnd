@@ -9,10 +9,12 @@ import Login from "./pages/Login";
 import LoginRedirect from "./pages/LoginRedirect";
 import SignUp from "pages/SignUp";
 import Main from "pages/Main";
-import Manage from "pages/Manage";
+import Manage from "pages/Manage/Manage";
 import Schedule from "pages/Schedule";
 import Notification from "pages/Notification";
 import MyPage from "pages/MyPage";
+import ManageAttend from "pages/Manage/ManageAttend";
+import ManagePay from "pages/Manage/ManagePay";
 
 const queryClient = new QueryClient();
 
@@ -27,7 +29,9 @@ const router = createBrowserRouter([
       { path: "login/redirect", element: <LoginRedirect /> },
       { path: "signUp", element: <SignUp /> },
       { path: "my-store", element: <Main /> },
-      { path: "management", element: <Manage /> },
+      { path: "management/register", element: <Manage /> },
+      { path: "management/attend", element: <ManageAttend /> },
+      { path: "management/pay", element: <ManagePay /> },
       { path: "schedule", element: <Schedule /> },
       { path: "notification", element: <Notification /> },
       { path: "my-page", element: <MyPage /> }
