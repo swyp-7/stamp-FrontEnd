@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   ArrowIconWrap,
   CheckIconWrap,
@@ -14,7 +14,7 @@ import { ReactComponent as CheckIcon } from "assets/Check.svg";
 interface Props {
   options: string[];
   value: string;
-  onChange: (value: string) => void;
+  onChange: Dispatch<SetStateAction<any>>;
 }
 
 const Dropdown = ({ options, value, onChange }: Props) => {

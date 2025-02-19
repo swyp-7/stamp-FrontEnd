@@ -1,7 +1,7 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldValues } from "react-hook-form";
 import dayjs from "dayjs";
 import "dayjs/locale/ko";
 
@@ -17,7 +17,7 @@ export default StyledDatePicker;
 
 interface Props {
   name: string;
-  control: any;
+  control: Control<FieldValues, any>;
 }
 
 export const DatePickerInForm = ({ name, control }: Props) => {

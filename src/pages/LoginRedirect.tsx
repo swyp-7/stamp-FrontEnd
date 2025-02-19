@@ -1,12 +1,12 @@
-import { useQueryClient } from "@tanstack/react-query";
+// import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { useFetchKakaoLogin } from "../hooks/UsersQuery";
 import { useEffect } from "react";
-import { getAllCookiesByName, removeAllCookiesByName, setCookie } from "../utils/Cookie";
+// import { getAllCookiesByName, removeAllCookiesByName, setCookie } from "../utils/Cookie";
 
 const LoginRedirect = () => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+  // const queryClient = useQueryClient();
   const code = new URL(document.location.toString()).searchParams.get("code");
   const errorDesc = new URL(document.location.toString()).searchParams.get("error_description");
   const { data, isLoading } = useFetchKakaoLogin(code || "");

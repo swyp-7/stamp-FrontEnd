@@ -11,6 +11,7 @@ import { ReactComponent as CheckIcon } from "assets/CircleCheck.svg";
 import { ReactComponent as FailIcon } from "assets/CircleFail.svg";
 import Button from "./Button";
 import Dropdown from "./SignUp/EmailDropdown";
+import { FieldErrors, FieldValues, UseFormSetValue } from "react-hook-form";
 
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   size?: 1 | 2 | 3;
@@ -51,7 +52,7 @@ export default TextField;
 interface BNoProps extends Props {
   isAuthed?: boolean;
   handleAuthBNo: () => void;
-  errors: any;
+  errors: FieldErrors<FieldValues>;
 }
 
 export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
@@ -79,7 +80,7 @@ export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
 BNoTextField.displayName = "BNoTextField";
 
 export interface EmailProps extends Props {
-  setValue: any;
+  setValue: UseFormSetValue<FieldValues>;
 }
 
 export const EmailTextField = forwardRef<HTMLInputElement, EmailProps>(

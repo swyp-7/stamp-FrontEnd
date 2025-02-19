@@ -12,7 +12,7 @@ import {
   TitleWrap
 } from "components/atoms/SignUp/SignUpAtoms";
 import TextField from "components/atoms/TextField";
-import { Controller, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import Dropdown from "components/atoms/Dropdown";
 import Button from "components/atoms/Button";
 import { DatePickerInForm } from "components/atoms/DatePicker";
@@ -30,13 +30,13 @@ const AddModal = ({ setIsModalActive }: Props) => {
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
-    clearErrors,
+    // watch,
+    // setError,
+    // clearErrors,
     setValue,
     reset,
-    control,
-    formState: { errors }
+    control
+    // formState: { errors }
   } = useForm();
   const {
     fields: workDays,
