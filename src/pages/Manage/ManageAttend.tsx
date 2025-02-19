@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import { ReactComponent as CloseIcon } from "assets/Close.svg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "dayjs/locale/ko";
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
@@ -20,6 +20,8 @@ const ManageAttend = () => {
   const endMonth = currentDate.endOf("month");
   const startDate = startMonth.startOf("week");
   const endDate = endMonth.endOf("week");
+
+  setCurrentDate(dayjs());
 
   const days: dayjs.Dayjs[] = [];
   let day = startDate;

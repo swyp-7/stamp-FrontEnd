@@ -84,7 +84,7 @@ export interface EmailProps extends Props {
 }
 
 export const EmailTextField = forwardRef<HTMLInputElement, EmailProps>(
-  ({ type = "text", setValue, ...props }, ref) => {
+  ({ setValue, ...props }, ref) => {
     const options = ["stamp.com", "naver.com", "gmail.com1", "gmail.com2", "gmail.com3"];
     const [selectedDomain, setSelectedDomain] = useState(options[0]);
 
