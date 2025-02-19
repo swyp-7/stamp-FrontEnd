@@ -70,3 +70,111 @@ export const SignNextBtnWrap = styled.div`
   display: flex;
   justify-content: flex-end;
 `;
+
+export const DaysWrap = styled.div`
+  display: flex;
+  gap: 40px;
+  margin-bottom: 16px;
+`;
+
+export const LabelWrap = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
+
+export const ModalWrap = styled.div`
+  position: relative;
+  width: 827px;
+  height: 620px;
+  border-radius: 24px;
+  background: #fafafa;
+  box-shadow: 0px 2px 12px 0px rgba(20, 20, 43, 0.08);
+  margin-top: 40px;
+  padding: 54px 72px;
+  overflow-y: scroll;
+  display: grid;
+  grid-template-rows: 85px 1fr;
+  grid-template-columns: 1fr 1fr;
+
+  form {
+    grid-column: 1/3;
+  }
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    width: 8px;
+    padding-right: 5px;
+    margin: 50px 0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 3px;
+    height: 36px;
+    background: #c5c5c5;
+    border-radius: 10px;
+    border-right: 8px solid white;
+    border-left: 6px solid #c5c5c5;
+  }
+`;
+
+export const TitleWrap = styled.div`
+  margin-bottom: 32px;
+
+  * {
+    font-weight: 700;
+    font-size: 36px;
+  }
+
+  span {
+    color: var(--main-1);
+  }
+`;
+
+export const InfoTitle = styled.div`
+  font-weight: 600;
+  font-size: 28px;
+  color: #363636;
+  margin-bottom: 40px;
+`;
+
+export const InputWrap = styled.div`
+  display: flex;
+  gap: 42px;
+  margin-bottom: 32px;
+
+  .short {
+    width: 313px;
+  }
+`;
+
+export const ButtonWrap = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
+export const CloseButton = styled.div`
+  position: sticky;
+  top: 0;
+  right: 0;
+  justify-self: end;
+  z-index: 6;
+  width: 44px;
+  height: 44px;
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0px 2px 12px 0px rgba(20, 20, 43, 0.08);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;

@@ -13,6 +13,7 @@ interface Props extends UseControllerProps {
   placeholder?: string;
   width?: string;
   clockIcon?: boolean;
+  isRadioList?: boolean;
 }
 
 const Dropdown = ({
@@ -20,6 +21,7 @@ const Dropdown = ({
   clockIcon = false,
   options = dummyData,
   placeholder,
+  isRadioList = false,
   ...props
 }: Props) => {
   const {
@@ -50,10 +52,15 @@ const Dropdown = ({
             }}
           >
             {option}
-            {option === value && (
+            {option === value && !isRadioList && (
               <CheckIconWrap>
                 <CheckIcon />
               </CheckIconWrap>
+            )}
+            {isRadioList && (
+              <RadioButtonWrap $isChecked={option === value}>
+                <p></p>
+              </RadioButtonWrap>
             )}
           </ListItem>
         ))}
@@ -173,5 +180,24 @@ export const ClockIconWrap = styled.div`
     stroke: #676767;
     width: 20px;
     height: 20px;
+  }
+`;
+
+const RadioButtonWrap = styled.div<{ $isChecked?: boolean }>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid;
+  border-color: ${({ $isChecked }) => ($isChecked ? "var(--main-1)" : "#9d9d9d")};
+
+  p {
+    ${({ $isChecked }) => !$isChecked && "display: none"};
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--main-1);
   }
 `;

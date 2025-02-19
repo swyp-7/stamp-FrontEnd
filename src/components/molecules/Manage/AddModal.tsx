@@ -1,24 +1,30 @@
-import styled from "styled-components";
 import { ReactComponent as CloseIcon } from "assets/Close.svg";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import {
-  SignAgreeWrap,
-  SignDesc,
+  ButtonWrap,
+  CloseButton,
+  DaysWrap,
+  InfoTitle,
+  InputWrap,
+  LabelWrap,
+  ModalWrap,
   SignLabel,
-  SignLabelWrap,
-  SignPersonal
+  TitleWrap
 } from "components/atoms/SignUp/SignUpAtoms";
-import TextField, { TextArea } from "components/atoms/TextField";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import TextField from "components/atoms/TextField";
+import { Controller, SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import Dropdown from "components/atoms/Dropdown";
 import Button from "components/atoms/Button";
-import StyledDatePicker, { DatePickerInForm } from "components/atoms/DatePicker";
+import { DatePickerInForm } from "components/atoms/DatePicker";
 import DropdownTextField from "../DropdownTextField";
 import ClockDropdowns from "./ClockDropdowns";
+import PostCodeModal from "../SignUp/PostCodeModal";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
+
+const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 
 const AddModal = ({ setIsModalActive }: Props) => {
   const {
@@ -28,17 +34,55 @@ const AddModal = ({ setIsModalActive }: Props) => {
     setError,
     clearErrors,
     setValue,
+    reset,
     control,
     formState: { errors }
   } = useForm();
+  const {
+    fields: workDays,
+    append: appendWorkDay
+    // remove: removeWorkDay
+  } = useFieldArray({
+    control,
+    name: "workDays"
+  });
 
+  const {
+    fields: addWorkDays,
+    append: appendAddWorkDay
+    // remove: removeAddWorkDay
+  } = useFieldArray({
+    control,
+    name: "addWorkDays"
+  });
+
+  useEffect(() => {
+    reset();
+    appendWorkDay({});
+    appendAddWorkDay({});
+  }, []);
+
+  // 주소모달 관련 함수
+  const [isPostModalActive, setIsPostModalActive] = useState(false);
   const handlePostcode = () => {
-    console.log("주소창띄우기");
+    setIsPostModalActive(true);
+  };
+  const handleOutsideClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      setIsPostModalActive(false);
+    }
+  };
+  const handleModalClose = () => {
+    setIsPostModalActive(false);
+  };
+  const handlePostComplete = (data: any) => {
+    setIsPostModalActive(false);
+    setValue("address1", data.address);
   };
 
+  // 제출 함수
   const onSubmit: SubmitHandler<any> = (data) => {
     console.log("제출");
-
     console.log(data);
   };
 
@@ -117,136 +161,91 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InfoTitle>근무 정보</InfoTitle>
         <InputWrap>
           <div>
-            <SignLabel>근무일</SignLabel>
-            <Dropdown name="day" control={control} placeholder="요일 선택" />
+            <LabelWrap>
+              <SignLabel>근무일 설정</SignLabel>
+              <Button
+                text="추가하기"
+                isOutline={true}
+                area={1}
+                style={{ marginBottom: "18px" }}
+                onClick={() => appendWorkDay({})}
+              />
+            </LabelWrap>
+            {workDays.map((field, idx) => (
+              <DaysWrap key={field.id}>
+                <Dropdown
+                  width="195px"
+                  isRadioList={true}
+                  name={`workDays.${idx}.dayOfWeek`}
+                  control={control}
+                  placeholder="요일 선택"
+                  options={dayList}
+                />
+                <ClockDropdowns
+                  name1={`workDays.${idx}.startTime`}
+                  name2={`workDays.${idx}.endTime`}
+                  control={control}
+                />
+              </DaysWrap>
+            ))}
           </div>
         </InputWrap>
         <InputWrap>
           <div>
-            <SignLabel>근무 시간</SignLabel>
-            <ClockDropdowns name1="clock1" name2="clock2" control={control} />
-          </div>
-        </InputWrap>
-        <InputWrap>
-          <div>
-            <SignLabel>가능한 추가 근무일</SignLabel>
-            <Dropdown name="day1" control={control} placeholder="요일 선택" />
-          </div>
-        </InputWrap>
-        <InputWrap style={{ marginBottom: "60px" }}>
-          <div>
-            <SignLabel>근무 시간</SignLabel>
-            <ClockDropdowns name1="clock3" name2="clock4" control={control} />
-          </div>
-        </InputWrap>
-        <InputWrap style={{ marginBottom: "120px" }}>
-          <div>
-            <SignLabel>특이사항</SignLabel>
-            <TextArea placeholder="특이사항이 있으면 적어주세요" {...register("etc")} />
+            <LabelWrap>
+              <SignLabel>가능한 추가 근무일</SignLabel>
+              <Button
+                text="추가하기"
+                isOutline={true}
+                area={1}
+                style={{ marginBottom: "18px" }}
+                onClick={() => appendAddWorkDay({})}
+              />
+            </LabelWrap>
+            {/* <DaysWrap>
+              <Dropdown
+                width="195px"
+                isRadioList={true}
+                name="day1"
+                control={control}
+                placeholder="요일 선택"
+                options={dayList}
+              />
+              <ClockDropdowns name1="clock3" name2="clock4" control={control} />
+            </DaysWrap> */}
+            {addWorkDays.map((field, idx) => (
+              <DaysWrap key={field.id}>
+                <Dropdown
+                  width="195px"
+                  isRadioList={true}
+                  name={`addWorkDays.${idx}.dayOfWeek`}
+                  control={control}
+                  placeholder="요일 선택"
+                  options={dayList}
+                />
+                <ClockDropdowns
+                  name1={`addWorkDays.${idx}.startTime`}
+                  name2={`addWorkDays.${idx}.endTime`}
+                  control={control}
+                />
+              </DaysWrap>
+            ))}
           </div>
         </InputWrap>
         <ButtonWrap>
           <Button type="submit" text="저장하기" />
         </ButtonWrap>
       </form>
+      {isPostModalActive && (
+        <PostCodeModal
+          isModalActive={isPostModalActive}
+          handleOutsideClick={handleOutsideClick}
+          handleModalClose={handleModalClose}
+          handlePostComplete={handlePostComplete}
+        />
+      )}
     </ModalWrap>
   );
 };
 
 export default AddModal;
-
-const ModalWrap = styled.div`
-  position: relative;
-  width: 827px;
-  height: 620px;
-  border-radius: 24px;
-  background: #fafafa;
-  box-shadow: 0px 2px 12px 0px rgba(20, 20, 43, 0.08);
-  margin-top: 40px;
-  padding: 54px 72px;
-  overflow-y: scroll;
-  display: grid;
-  grid-template-rows: 85px 1fr;
-  grid-template-columns: 1fr 1fr;
-
-  form {
-    grid-column: 1/3;
-  }
-
-  &::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  &::-webkit-scrollbar-track {
-    width: 8px;
-    padding-right: 5px;
-    margin: 50px 0;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    width: 3px;
-    height: 36px;
-    background: #c5c5c5;
-    border-radius: 10px;
-    border-right: 8px solid white;
-    border-left: 6px solid #c5c5c5;
-  }
-`;
-
-const TitleWrap = styled.div`
-  margin-bottom: 32px;
-
-  * {
-    font-weight: 700;
-    font-size: 36px;
-  }
-
-  span {
-    color: var(--main-1);
-  }
-`;
-
-const InfoTitle = styled.div`
-  font-weight: 600;
-  font-size: 28px;
-  color: #363636;
-  margin-bottom: 40px;
-`;
-
-const InputWrap = styled.div`
-  display: flex;
-  gap: 42px;
-  margin-bottom: 32px;
-
-  .short {
-    width: 313px;
-  }
-`;
-
-const ButtonWrap = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-`;
-
-const CloseButton = styled.div`
-  position: sticky;
-  top: 0;
-  right: 0;
-  justify-self: end;
-  z-index: 6;
-  width: 44px;
-  height: 44px;
-  background-color: #fff;
-  border-radius: 16px;
-  box-shadow: 0px 2px 12px 0px rgba(20, 20, 43, 0.08);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  svg {
-    width: 24px;
-    height: 24px;
-  }
-`;
