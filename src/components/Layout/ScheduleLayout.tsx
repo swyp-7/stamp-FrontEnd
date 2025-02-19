@@ -67,7 +67,8 @@ const StyledLayout = styled.div`
 
     div.second {
       border-radius: 12px;
-      width: 100%;
+      /* width: 100%; */
+      width: calc(100% - 378px);
       height: 100%;
       background-color: #fff;
       box-shadow: 0px 2px 6px 0px rgba(20, 20, 43, 0.06);

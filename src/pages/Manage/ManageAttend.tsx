@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import weekOfYear from "dayjs/plugin/weekOfYear";
 import { ReactComponent as CloseIcon } from "assets/Close.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "dayjs/locale/ko";
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
@@ -21,7 +21,9 @@ const ManageAttend = () => {
   const startDate = startMonth.startOf("week");
   const endDate = endMonth.endOf("week");
 
-  setCurrentDate(dayjs());
+  useEffect(() => {
+    setCurrentDate(dayjs());
+  }, []);
 
   const days: dayjs.Dayjs[] = [];
   let day = startDate;
@@ -31,18 +33,23 @@ const ManageAttend = () => {
   }
 
   const handleClickDay = (event: React.MouseEvent<HTMLDivElement>, date: Date) => {
+    const parentElement = event.currentTarget.closest(".second") as HTMLElement;
+    const parentRect = parentElement.getBoundingClientRect();
+
     const rect = event.currentTarget.getBoundingClientRect();
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-    const rightSpace = windowWidth - (rect.right + 5);
+    const rightSpace = parentRect.right - (rect.right + 5);
     const showOnRight = rightSpace >= 293;
-    let left = showOnRight ? rect.right + 5 : rect.left - 293;
+    let left = showOnRight ? rect.right + 5 : rect.left - 298;
     let top = rect.top + rect.height / 2 - 326 / 2;
     if (top < 0) {
       top = 0;
-    } else if (top + 326 > windowHeight) {
-      top = windowHeight - 326;
+    } else if (top + 326 > parentRect.bottom) {
+      top = parentRect.bottom - 326;
     }
+
+    console.log(rect);
+    console.log("레프트", top);
+    console.log("부모요소", parentRect);
 
     setModalPosition({ top, left });
     setClickedDate(date);
@@ -109,14 +116,16 @@ const ManageAttend = () => {
                   </ModalTitleWrap>
                   <ModalContentWrap>
                     <div>근무 인원</div>
-                    <div>
-                      <span>김모모</span>
-                      <span>18:00~22:00</span>
-                    </div>
-                    <div>
-                      <span>이모모</span>
-                      <span>18:00~22:00</span>
-                    </div>
+                    <WorkerList>
+                      <div>
+                        <span>김모모</span>
+                        <span>18:00~22:00</span>
+                      </div>
+                      <div>
+                        <span>이모모</span>
+                        <span>18:00~22:00</span>
+                      </div>
+                    </WorkerList>
                   </ModalContentWrap>
                 </Modal>
               )}
@@ -270,24 +279,37 @@ const ModalTitleWrap = styled.div`
 const ModalContentWrap = styled.div`
   width: 100%;
 
-  div:first-child {
+  > div {
     font-weight: 600;
     font-size: 22px;
     margin-bottom: 12px;
     text-align: left;
   }
+`;
 
-  div:not(:first-child) {
+const WorkerList = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  div {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    margin-bottom: 14px;
-    padding: 0 6px;
+    align-items: center;
+    padding: 6px;
+    border-radius: 4px;
+
+    &:hover {
+      background-color: #f0f0f0;
+    }
 
     span:first-child {
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 18px;
+      font-weight: 400;
       width: 59px;
       height: 29px;
       border-radius: 8px;
@@ -299,9 +321,5 @@ const ModalContentWrap = styled.div`
       font-weight: 500;
       font-size: 18px;
     }
-  }
-
-  div:last-child {
-    margin-bottom: 0;
   }
 `;
