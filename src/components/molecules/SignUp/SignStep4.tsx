@@ -1,8 +1,10 @@
 import Button from "components/atoms/Button";
 import { SignDesc } from "components/atoms/SignUp/SignUpAtoms";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const SignStep3 = () => {
+  const navigate = useNavigate();
   return (
     <>
       <SignDesc style={{ margin: "19px 0 44px" }}>페이지에 대한 설명이 들어갑니다</SignDesc>
@@ -13,7 +15,12 @@ const SignStep3 = () => {
           <UserName>대표 김모모</UserName>
         </ProfileTxt>
       </ProfileCardWrap>
-      <Button text="스탬프 시작하기" />
+      <Button
+        text="스탬프 시작하기"
+        onClick={() => {
+          navigate("/my-store");
+        }}
+      />
     </>
   );
 };
