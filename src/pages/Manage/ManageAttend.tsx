@@ -15,6 +15,7 @@ const ManageAttend = () => {
   const [clickedDate, setClickedDate] = useState<Date | undefined>();
   const [isModalActive, setIsModalActive] = useState(false);
   const [modalPosition, setModalPosition] = useState({ top: 0, left: 0 });
+  const [isDetailView, setIsDetailView] = useState(false);
   const currentDateTxt = currentDate.format("YYYY-MM").split("-");
   const startMonth = currentDate.startOf("month");
   const endMonth = currentDate.endOf("month");
@@ -33,7 +34,10 @@ const ManageAttend = () => {
   }
 
   const handleClickDay = (event: React.MouseEvent<HTMLDivElement>, date: Date) => {
-    const parentElement = event.currentTarget.closest(".second") as HTMLElement;
+    document.querySelectorAll(".clicked").forEach((el) => el.classList.remove("clicked"));
+    event.currentTarget.classList.add("clicked");
+
+    const parentElement = event.currentTarget.closest(".second-left") as HTMLElement;
     const parentRect = parentElement.getBoundingClientRect();
 
     const rect = event.currentTarget.getBoundingClientRect();
@@ -47,19 +51,36 @@ const ManageAttend = () => {
       top = parentRect.bottom - 326;
     }
 
-    console.log(rect);
-    console.log("레프트", top);
-    console.log("부모요소", parentRect);
-
     setModalPosition({ top, left });
     setClickedDate(date);
     setIsModalActive(true);
     setClickedDate(date);
   };
 
+  useEffect(() => {
+    if (isDetailView) {
+      const clickedElement = document.querySelector(".clicked") as HTMLElement;
+      if (clickedElement) {
+        const parentElement = document.querySelector(".second-left") as HTMLElement;
+        const parentRect = parentElement.getBoundingClientRect();
+        const rect = clickedElement.getBoundingClientRect();
+        const rightSpace = parentRect.right - (rect.right + 5);
+        const showOnRight = rightSpace >= 293;
+
+        let left = showOnRight ? rect.right + 5 : rect.left - 298;
+        let top = rect.top + rect.height / 2 - 326 / 2;
+        if (top < 0) top = 0;
+        else if (top + 326 > parentRect.bottom) top = parentRect.bottom - 326;
+
+        setModalPosition({ top, left });
+      }
+    }
+  }, [isDetailView]);
+
   const handleModalClose = (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     setIsModalActive(false);
+    setIsDetailView(false);
     setClickedDate(undefined);
   };
 
@@ -69,6 +90,7 @@ const ManageAttend = () => {
       title="직원 근태 관리"
       subTitleTxt1={currentDateTxt[0]}
       subTitleTxt2={currentDateTxt[1] + "월"}
+      isDetailView={isDetailView}
     >
       <CalendarWrapper>
         {/* <CalendarHeader>
@@ -117,7 +139,7 @@ const ManageAttend = () => {
                   <ModalContentWrap>
                     <div>근무 인원</div>
                     <WorkerList>
-                      <div>
+                      <div onClick={() => setIsDetailView(true)}>
                         <span>김모모</span>
                         <span>18:00~22:00</span>
                       </div>
@@ -293,6 +315,7 @@ const WorkerList = styled.div`
   gap: 8px;
 
   div {
+    cursor: pointer;
     width: 100%;
     display: flex;
     justify-content: space-between;

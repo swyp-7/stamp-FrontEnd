@@ -12,6 +12,7 @@ interface Props extends ButtonProps {
   btnTxt?: string;
   subTitleTxt1: string;
   subTitleTxt2: string;
+  isDetailView: boolean;
 }
 
 const Layout = ({
@@ -22,10 +23,11 @@ const Layout = ({
   btnTxt = "버튼",
   subTitleTxt1 = "2000",
   subTitleTxt2 = "01월",
+  isDetailView,
   ...props
 }: Props) => {
   return (
-    <StyledLayout>
+    <StyledLayout $isDetailView={isDetailView}>
       <MainNav activeIcon={activeIcon} />
       <main>
         <div className="first">
@@ -39,7 +41,23 @@ const Layout = ({
           <p>{subTitleTxt2}</p>
           <p>{subTitleTxt1}</p>
         </SubDateTitle>
-        <div className="second">{children}</div>
+        <div className="second">
+          <div className="second-left">{children}</div>
+          {isDetailView && (
+            <WorkDetailWrap>
+              <DetailTitle>
+                <span>이모모님</span>
+                <br />
+                <span>근무정보</span>
+              </DetailTitle>
+
+              <DetailButtonWrap>
+                <Button text="취소하기" isOutline={true} area={1} />
+                <Button text="저장하기" area={1} />
+              </DetailButtonWrap>
+            </WorkDetailWrap>
+          )}
+        </div>
       </main>
     </StyledLayout>
   );
@@ -47,7 +65,7 @@ const Layout = ({
 
 export default Layout;
 
-const StyledLayout = styled.div`
+const StyledLayout = styled.div<{ $isDetailView: boolean }>`
   height: 100vh;
   display: grid;
   grid-template-columns: 242px 1fr;
@@ -66,12 +84,17 @@ const StyledLayout = styled.div`
     }
 
     div.second {
-      border-radius: 12px;
-      /* width: 100%; */
-      width: calc(100% - 378px);
-      height: 100%;
-      background-color: #fff;
-      box-shadow: 0px 2px 6px 0px rgba(20, 20, 43, 0.06);
+      display: grid;
+      ${({ $isDetailView }) => $isDetailView && "grid-template-columns: 1fr 378px"};
+      gap: 20px;
+
+      > div {
+        border-radius: 12px;
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        box-shadow: 0px 2px 6px 0px rgba(20, 20, 43, 0.06);
+      }
     }
   }
 `;
@@ -91,4 +114,40 @@ const SubDateTitle = styled.div`
     font-size: 24px;
     color: #202020;
   }
+`;
+
+const WorkDetailWrap = styled.div`
+  width: 378px;
+  height: 100%;
+  border-radius: 24px;
+  background-color: #fff;
+`;
+
+const DetailTitle = styled.div`
+  height: 147px;
+  border-bottom: 1px solid #e5e5e5;
+  padding: 36px;
+
+  span:first-child {
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+  span:last-child {
+    font-weight: 600;
+    font-size: 28px;
+  }
+`;
+
+const DetailContent = styled.div`
+  padding: 31px;
+`;
+
+const DetailButtonWrap = styled.div`
+  height: 81px;
+  border-top: 1px solid #e5e5e5;
+  padding: 14px 20px;
+  display: flex;
+  gap: 14px;
+  justify-content: flex-end;
 `;
