@@ -55,7 +55,7 @@ const Table = ({ setIsModalActive, isModalActive }: Props) => {
 
 export default Table;
 
-const StyledTable = styled.table`
+export const StyledTable = styled.table`
   width: 100%;
   height: 100%;
   font-size: 18px;
@@ -114,7 +114,7 @@ const StyledTable = styled.table`
   }
 `;
 
-const Profile = styled.div`
+export const Profile = styled.div`
   min-width: 112px;
   height: 52px;
   padding: 0 0 0 36px;
