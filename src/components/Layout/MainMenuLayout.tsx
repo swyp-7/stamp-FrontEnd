@@ -25,7 +25,10 @@ const Layout = ({
       <main>
         <div className="first">
           <TitleWrap>
-            <h1>{title}</h1>
+            <div className="text">
+              <h1>{title}</h1>
+              <p>메뉴 설명이 들어오는 곳</p>
+            </div>
             {isBtnActive && <Button text={btnTxt} {...props} />}
           </TitleWrap>
           <AskButton />
@@ -71,8 +74,17 @@ export const TitleWrap = styled.div`
   align-items: center;
   gap: 22px;
 
-  h1 {
-    font-weight: 700;
-    font-size: 36px;
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    h1 {
+      font-weight: 700;
+      font-size: 36px;
+    }
+    p {
+      font-weight: 600;
+      font-size: 24px;
+    }
   }
 `;
