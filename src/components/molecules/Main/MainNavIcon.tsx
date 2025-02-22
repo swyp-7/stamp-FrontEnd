@@ -25,9 +25,12 @@ const MainNavIcon = ({ isActive = false, iconType, onClick }: Props) => {
   const IconComponent = iconType ? icons[iconType] : HomeIcon;
 
   return (
-    <IconOuterWrap $isActive={isActive} onClick={onClick}>
-      <IconComponent />
-      <span>{MainNavTitle[iconType]}</span>
+    <IconOuterWrap>
+      <IconActiveBar $isActive={isActive} />
+      <IconInnerWrap $isActive={isActive} onClick={onClick}>
+        <IconComponent />
+        <span>{MainNavTitle[iconType]}</span>
+      </IconInnerWrap>
     </IconOuterWrap>
   );
 };
@@ -58,7 +61,23 @@ export const MainNavIconSub = ({ texts, links }: SubProps) => {
   );
 };
 
-const IconOuterWrap = styled.div<{ $isActive: boolean }>`
+const IconOuterWrap = styled.div`
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const IconActiveBar = styled.div<{ $isActive: boolean }>`
+  width: 6px;
+  height: 70px;
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  background-color: ${({ $isActive }) => ($isActive ? "var(--main-1)" : "transparent")};
+`;
+
+const IconInnerWrap = styled.div<{ $isActive: boolean }>`
   width: 184px;
   height: 54px;
   border-radius: 18px;
@@ -66,7 +85,7 @@ const IconOuterWrap = styled.div<{ $isActive: boolean }>`
   display: flex;
   gap: 24px;
   align-items: center;
-  margin-top: 16px;
+  /* margin-top: 16px; */
   cursor: ${({ $isActive }) => ($isActive ? "default" : "pointer")};
   ${({ $isActive }) => $isActive && "background-color: var(--main-1);"}
 
@@ -83,6 +102,7 @@ const IconOuterWrap = styled.div<{ $isActive: boolean }>`
 
 const IconSubOuterWrap = styled.div`
   margin-top: 12px;
+  margin-left: 29px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -100,6 +120,6 @@ const IconSubWrap = styled.div<{ $isSubActive?: boolean }>`
     width: 163px;
     height: 44px;
     border-radius: 18px;
-    ${({ $isSubActive }) => $isSubActive && "background-color: var(--main-1); color: white;"}
+    ${({ $isSubActive }) => $isSubActive && "color:var(--main-1);"}
   }
 `;
