@@ -9,6 +9,7 @@ import {
   LabelWrap,
   ModalWrap,
   SignLabel,
+  SmallCloseButton,
   TitleWrap
 } from "components/atoms/SignUp/SignUpAtoms";
 import TextField from "components/atoms/TextField";
@@ -40,17 +41,16 @@ const AddModal = ({ setIsModalActive }: Props) => {
   } = useForm();
   const {
     fields: workDays,
-    append: appendWorkDay
-    // remove: removeWorkDay
+    append: appendWorkDay,
+    remove: removeWorkDay
   } = useFieldArray({
     control,
     name: "workDays"
   });
-
   const {
     fields: addWorkDays,
-    append: appendAddWorkDay
-    // remove: removeAddWorkDay
+    append: appendAddWorkDay,
+    remove: removeAddWorkDay
   } = useFieldArray({
     control,
     name: "addWorkDays"
@@ -61,6 +61,14 @@ const AddModal = ({ setIsModalActive }: Props) => {
     appendWorkDay({});
     appendAddWorkDay({});
   }, []);
+
+  // 근무일 삭제 함수들
+  const remove1 = (idx: number) => {
+    if (workDays.length > 1) removeWorkDay(idx);
+  };
+  const remove2 = (idx: number) => {
+    if (addWorkDays.length > 1) removeAddWorkDay(idx);
+  };
 
   // 주소모달 관련 함수
   const [isPostModalActive, setIsPostModalActive] = useState(false);
@@ -101,7 +109,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InfoTitle>기본 정보</InfoTitle>
         <InputWrap>
           <div className="short">
-            <SignLabel>이름</SignLabel>
+            <SignLabel $req={true}>이름</SignLabel>
             <TextField
               placeholder="이름을 입력해주세요"
               style={{ width: "313px" }}
@@ -115,7 +123,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         </InputWrap>
         <InputWrap>
           <div className="short">
-            <SignLabel>연락처</SignLabel>
+            <SignLabel $req={true}>연락처</SignLabel>
             <TextField
               placeholder="010-0000-000"
               style={{ width: "313px" }}
@@ -137,7 +145,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         </InputWrap>
         <InputWrap>
           <div className="short">
-            <SignLabel>근무 시작일</SignLabel>
+            <SignLabel $req={true}>근무 시작일</SignLabel>
             <DatePickerInForm name="startDay" control={control} />
           </div>
           <div className="short">
@@ -147,7 +155,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         </InputWrap>
         <InputWrap style={{ marginBottom: "120px" }}>
           <div>
-            <SignLabel>급여 계좌</SignLabel>
+            <SignLabel $req={true}>급여 계좌</SignLabel>
             <DropdownTextField
               width="195px"
               control={control}
@@ -162,7 +170,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         <InputWrap>
           <div>
             <LabelWrap>
-              <SignLabel>근무일 설정</SignLabel>
+              <SignLabel $req={true}>근무일 설정</SignLabel>
               <Button
                 text="추가하기"
                 isOutline={true}
@@ -174,7 +182,8 @@ const AddModal = ({ setIsModalActive }: Props) => {
             {workDays.map((field, idx) => (
               <DaysWrap key={field.id}>
                 <Dropdown
-                  width="195px"
+                  className="dropDown"
+                  width="160px"
                   isRadioList={true}
                   name={`workDays.${idx}.dayOfWeek`}
                   control={control}
@@ -186,6 +195,9 @@ const AddModal = ({ setIsModalActive }: Props) => {
                   name2={`workDays.${idx}.endTime`}
                   control={control}
                 />
+                <SmallCloseButton onClick={() => remove1(idx)}>
+                  <CloseIcon />
+                </SmallCloseButton>
               </DaysWrap>
             ))}
           </div>
@@ -202,21 +214,11 @@ const AddModal = ({ setIsModalActive }: Props) => {
                 onClick={() => appendAddWorkDay({})}
               />
             </LabelWrap>
-            {/* <DaysWrap>
-              <Dropdown
-                width="195px"
-                isRadioList={true}
-                name="day1"
-                control={control}
-                placeholder="요일 선택"
-                options={dayList}
-              />
-              <ClockDropdowns name1="clock3" name2="clock4" control={control} />
-            </DaysWrap> */}
             {addWorkDays.map((field, idx) => (
               <DaysWrap key={field.id}>
                 <Dropdown
-                  width="195px"
+                  className="dropDown"
+                  width="160px"
                   isRadioList={true}
                   name={`addWorkDays.${idx}.dayOfWeek`}
                   control={control}
@@ -228,6 +230,9 @@ const AddModal = ({ setIsModalActive }: Props) => {
                   name2={`addWorkDays.${idx}.endTime`}
                   control={control}
                 />
+                <SmallCloseButton onClick={() => remove2(idx)}>
+                  <CloseIcon />
+                </SmallCloseButton>
               </DaysWrap>
             ))}
           </div>

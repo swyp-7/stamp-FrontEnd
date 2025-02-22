@@ -7,11 +7,24 @@ export const SignDesc = styled.div`
   color: #656565;
 `;
 
-export const SignLabel = styled.div`
+export const SignLabel = styled.div<{ $req?: boolean }>`
   font-weight: 600;
   font-size: 22px;
   color: #444;
   margin-bottom: 18px;
+
+  ${({ $req }) =>
+    $req &&
+    `
+    &::before {
+      display: inline-block;
+      transform: translateY(20%);
+      width: 18px;
+      height: 20px;
+      content: "*";
+      color: var(--main-1);
+    }
+  `}
 `;
 
 export const SignLabelWrap = styled.div`
@@ -73,8 +86,13 @@ export const SignNextBtnWrap = styled.div`
 
 export const DaysWrap = styled.div`
   display: flex;
-  gap: 40px;
+  align-items: center;
+  gap: 15px;
   margin-bottom: 16px;
+
+  .dropDown {
+    margin-right: 17px;
+  }
 `;
 
 export const LabelWrap = styled.div`
@@ -176,5 +194,22 @@ export const CloseButton = styled.div`
   svg {
     width: 24px;
     height: 24px;
+  }
+`;
+
+export const SmallCloseButton = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 10.08px;
+  border: 0.56px solid #d4d4d4;
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  svg {
+    width: 13px;
+    height: 13px;
   }
 `;

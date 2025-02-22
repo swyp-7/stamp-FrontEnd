@@ -14,6 +14,7 @@ interface Props extends UseControllerProps {
   width?: string;
   clockIcon?: boolean;
   isRadioList?: boolean;
+  className?: string;
 }
 
 const Dropdown = ({
@@ -22,6 +23,7 @@ const Dropdown = ({
   options = dummyData,
   placeholder,
   isRadioList = false,
+  className = "",
   ...props
 }: Props) => {
   const {
@@ -31,7 +33,7 @@ const Dropdown = ({
   const [$isOpen, set$IsOpen] = useState(false);
 
   return (
-    <DropdownContainer style={{ width: width }}>
+    <DropdownContainer style={{ width: width }} className={className}>
       <Selected $isOpen={$isOpen} $clockIcon={clockIcon} onClick={() => set$IsOpen(!$isOpen)}>
         {clockIcon && (
           <ClockIconWrap>
@@ -78,13 +80,12 @@ export const DropdownContainer = styled.div`
 export const Selected = styled.div<{ $isOpen: boolean; $clockIcon?: boolean }>`
   position: relative;
   height: 72px;
-  padding: 10px;
   border: 1px solid;
   border-color: ${({ $isOpen }) => ($isOpen ? "var(--main-1)" : "#ddd")};
   border-radius: 46px;
-  padding: 22px 32px;
+  padding: 25px;
   ${({ $clockIcon }) => $clockIcon && "padding-left : 62px;"}
-  font-size: 20px;
+  font-size: 19px;
   display: flex;
   justify-content: space-between;
   align-items: center;
