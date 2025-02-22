@@ -6,6 +6,7 @@ import googleIcon from "assets/google.png";
 import kakaoIcon from "assets/kakao.png";
 import naverIcon from "assets/naver.png";
 import { useNavigate } from "react-router-dom";
+import MainLogoButton from "components/atoms/MainLogoButton";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ const Login = () => {
 
   return (
     <Layout>
+      <MainLogoButton style={{ position: "absolute", top: "60px", left: "60px" }} />
       <h1>로그인</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import Button from "components/atoms/Button";
+import MainLogoButton from "components/atoms/MainLogoButton";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -7,6 +8,8 @@ const Home = () => {
 
   return (
     <Layout>
+      <MainLogoButton style={{ position: "absolute", top: "60px", left: "60px" }} />
+      <MainLogoButton style={{ marginBottom: "16px" }} />
       <h1>스탬프</h1>
       <h2>
         사장님과 직원을 위한, <span>스케줄 관리</span> 서비스
@@ -32,6 +35,7 @@ const Layout = styled.div`
   justify-content: center;
   align-items: center;
   text-align: center;
+  background: #fafafa;
 
   h1 {
     width: 100%;
