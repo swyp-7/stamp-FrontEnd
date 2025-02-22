@@ -1,4 +1,4 @@
-import Button, { AskButton, ButtonProps } from "components/atoms/Button";
+import { ButtonProps } from "components/atoms/Button";
 import MainNav from "components/molecules/Main/MainNav";
 import { ReactNode } from "react";
 import styled from "styled-components";
@@ -18,7 +18,6 @@ const Layout = ({ children, activeIcon }: Props) => {
             <h1>알림 관리</h1>
             <p>Stamp Coffee의 직원 스케줄입니다</p>
           </TitleWrap>
-          <AskButton />
         </div>
         <div className="second">{children}</div>
       </main>

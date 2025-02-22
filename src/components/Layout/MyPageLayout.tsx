@@ -1,4 +1,4 @@
-import Button, { AskButton } from "components/atoms/Button";
+import Button from "components/atoms/Button";
 import MainNav from "components/molecules/Main/MainNav";
 import { ReactElement } from "react";
 import { StyledLayout, TitleWrap } from "./MainMenuLayout";
@@ -21,7 +21,6 @@ const MyPageLayout = ({ activeIcon, children }: Props) => {
             </div>
             <Button text="편집하기" isOutline={true} area={2} style={{ marginLeft: "18px" }} />
           </TitleWrap>
-          <AskButton />
         </div>
         <div className="second" style={{ backgroundColor: "transparent", boxShadow: "none" }}>
           {children}

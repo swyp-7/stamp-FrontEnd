@@ -1,4 +1,4 @@
-import Button, { AskButton } from "components/atoms/Button";
+import Button from "components/atoms/Button";
 import StepTitle from "components/atoms/SignUp/StepTitle";
 import SignStep1 from "components/molecules/SignUp/SignStep1";
 import SignStep2 from "components/molecules/SignUp/SignStep2";
@@ -38,7 +38,6 @@ const SignUp = () => {
   });
   return (
     <Layout>
-      <AskButton />
       <SignUpNav activeNum={step} />
       <SignStepWrap $step={step}>
         <StepTitle number={step} $bold={true} text={SignUpTitleText[step]} />

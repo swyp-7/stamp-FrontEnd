@@ -1,14 +1,12 @@
 import styled from "@emotion/styled";
-import Button from "../components/atoms/Button";
+import Button from "components/atoms/Button";
 import { useNavigate } from "react-router-dom";
-import { AskButton } from "./../components/atoms/Button";
 
 const Home = () => {
   const navigate = useNavigate();
 
   return (
     <Layout>
-      <AskButton />
       <h1>스탬프</h1>
       <h2>
         사장님과 직원을 위한, <span>스케줄 관리</span> 서비스

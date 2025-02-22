@@ -1,6 +1,6 @@
-import Button, { AskButton } from "../components/atoms/Button";
+import Button from "components/atoms/Button";
 import styled from "@emotion/styled";
-import TextField from "../components/atoms/TextField";
+import TextField from "components/atoms/TextField";
 import { SubmitHandler, useForm } from "react-hook-form";
 import googleIcon from "assets/google.png";
 import kakaoIcon from "assets/kakao.png";
@@ -29,7 +29,6 @@ const Login = () => {
 
   return (
     <Layout>
-      <AskButton />
       <h1>로그인</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
@@ -41,7 +40,6 @@ const Login = () => {
         />
         <TextField
           placeholder="비밀번호를 입력해 주세요."
-          iconType="eye"
           type="password"
           {...register("password", {
             required: "비밀번호를 입력해 주세요."

@@ -1,4 +1,4 @@
-import Button, { AskButton, ButtonProps } from "components/atoms/Button";
+import Button, { ButtonProps } from "components/atoms/Button";
 import MainNav from "components/molecules/Main/MainNav";
 import { ReactElement } from "react";
 import styled from "styled-components";
@@ -31,7 +31,6 @@ const Layout = ({
             </div>
             {isBtnActive && <Button text={btnTxt} {...props} />}
           </TitleWrap>
-          <AskButton />
         </div>
         <div className="second">{children}</div>
       </main>
