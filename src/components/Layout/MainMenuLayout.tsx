@@ -47,6 +47,7 @@ export const StyledLayout = styled.div`
   background-color: #f8f8f8;
 
   main {
+    height: 100vh;
     padding: 67px 70px;
     display: grid;
     grid-template-rows: 50px 1fr;

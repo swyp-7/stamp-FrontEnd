@@ -47,7 +47,7 @@ const Schedule = () => {
             </DateWrap>
           </TopRight>
         </div>
-        <div className="bottom">
+        <div className="bottom" style={{ width: "1120px", height: "616px" }}>
           <ScheduleTable />
         </div>
       </MainWrap>

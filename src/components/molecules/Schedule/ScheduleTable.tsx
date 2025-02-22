@@ -2,6 +2,14 @@ import { TimeList } from "constants/MenuText";
 import styled from "styled-components";
 
 const ScheduleTable = () => {
+  // 샘플 작업 데이터
+  const tasks = [
+    { id: 1, row: 0, start: 2, duration: 3 }, // 02:00 - 05:00
+    { id: 2, row: 1, start: 5, duration: 2 }, // 05:00 - 07:00
+    { id: 3, row: 2, start: 8, duration: 4 }, // 08:00 - 12:00
+    { id: 4, row: 0, start: 14, duration: 3 } // 14:00 - 17:00
+  ];
+
   return (
     <Container>
       <TimeLine>
@@ -11,7 +19,20 @@ const ScheduleTable = () => {
           </div>
         ))}
       </TimeLine>
-      <TableBody></TableBody>
+      <TableBody>
+        {[...Array(6)].map((_, rowIdx) => (
+          <TableRow key={rowIdx}>
+            {[...Array(25)].map((_, colIdx) => (
+              <Cell key={colIdx} />
+            ))}
+            {tasks
+              .filter((task) => task.row === rowIdx)
+              .map((task) => (
+                <TaskBar key={task.id} $start={task.start} $duration={task.duration} />
+              ))}
+          </TableRow>
+        ))}
+      </TableBody>
     </Container>
   );
 };
@@ -20,10 +41,8 @@ export default ScheduleTable;
 
 const Container = styled.div`
   width: 100%;
-  max-width: 100%;
   height: 100%;
-  overflow: scroll;
-  overflow-x: auto;
+  overflow: auto;
   display: grid;
   grid-template-rows: 48px 1fr;
 
@@ -49,26 +68,44 @@ const Container = styled.div`
 `;
 
 const TimeLine = styled.div`
-  width: fit-content;
-  min-width: 100%;
-  height: 48px;
-  border-bottom: 1px solid #f9f9f9;
   display: flex;
+  align-items: center;
+  border-bottom: 1px solid #f9f9f9;
 
   .timeCell {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100px;
-    font-size: 16px;
     text-align: center;
+    font-size: 16px;
     color: #363636;
   }
 `;
 
 const TableBody = styled.div`
-  background-image:
-    linear-gradient(to right, #f9f9f9 1px, transparent 1px),
-    linear-gradient(to bottom, #f9f9f9 1px, transparent 1px);
-  background-size: 103px 103px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  height: fit-content;
+`;
+
+const TableRow = styled.div`
+  display: flex;
+  position: relative;
+`;
+
+const Cell = styled.div`
+  width: 100px;
+  height: 100px;
+  border-left: 1px solid #f9f9f9;
+  border-bottom: 1px solid #f9f9f9;
+`;
+
+const TaskBar = styled.div<{ $start: number; $duration: number }>`
+  position: absolute;
+  top: 50%;
+  left: ${({ $start }) => $start * 100}px;
+  width: ${({ $duration }) => $duration * 100}px;
+  height: 20px;
+  background: #9389ff;
+  border-radius: 8px;
+  transform: translateY(-50%);
 `;
