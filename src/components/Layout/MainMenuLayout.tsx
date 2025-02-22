@@ -78,12 +78,12 @@ export const TitleWrap = styled.div`
     flex-direction: column;
     gap: 10px;
     h1 {
-      font-weight: 700;
+      font-weight: 600;
       font-size: 36px;
     }
     p {
-      font-weight: 600;
-      font-size: 24px;
+      font-weight: 400;
+      font-size: 20px;
     }
   }
 `;

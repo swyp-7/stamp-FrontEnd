@@ -1,4 +1,4 @@
-import Layout from "components/Layout/ScheduleLayout";
+import Layout from "components/Layout/AttendLayout";
 import styled from "styled-components";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
