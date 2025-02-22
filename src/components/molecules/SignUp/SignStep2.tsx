@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SignDesc, SignLabel } from "components/atoms/SignUp/SignUpAtoms";
+import { SignLabel } from "components/atoms/SignUp/SignUpAtoms";
 import TextField, { EmailTextField } from "components/atoms/TextField";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { ReactComponent as InfoIcon } from "assets/Info.svg";
@@ -23,7 +23,6 @@ const SignStep2 = ({ register, setValue, errors, watch }: Props) => {
 
   return (
     <>
-      <SignDesc>페이지에 대한 설명이 들어갑니다</SignDesc>
       <FormWrap>
         <div style={{ marginRight: "114px" }}>
           <SignLabel>성함</SignLabel>

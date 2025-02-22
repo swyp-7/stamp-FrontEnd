@@ -94,6 +94,7 @@ const SignStepWrap = styled.div<{ $step: number }>`
 `;
 
 const SignContentWrap = styled.div<{ $step: number }>`
+  margin-top: 80px;
   padding-left: ${({ $step }) => ($step === 4 ? 0 : "66px")};
 `;
 

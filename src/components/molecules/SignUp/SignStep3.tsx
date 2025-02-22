@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { SignDesc, SignLabel } from "components/atoms/SignUp/SignUpAtoms";
+import { SignLabel } from "components/atoms/SignUp/SignUpAtoms";
 import TextField, { BNoTextField } from "components/atoms/TextField";
 import { useFetchBuisInfo } from "hooks/BuisnessQuery";
 import { useEffect, useState } from "react";
@@ -57,7 +57,6 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
   }, [data]);
   return (
     <>
-      <SignDesc>페이지에 대한 설명이 들어갑니다</SignDesc>
       <FormWrap>
         <div className="bNo">
           <BNoLabelWrap>

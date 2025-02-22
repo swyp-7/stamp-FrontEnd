@@ -1,9 +1,8 @@
 import {
   SignAgreeWrap,
-  SignDesc,
   SignLabel,
   SignLabelWrap,
-  SignPersonal,
+  SignPersonal
 } from "components/atoms/SignUp/SignUpAtoms";
 import { terms1 } from "constants/TermsText";
 import { Dispatch, Fragment, SetStateAction } from "react";
@@ -22,7 +21,6 @@ const SignStep1 = ({ agree, setAgree }: Props) => {
 
   return (
     <>
-      <SignDesc>페이지에 대한 설명이 들어갑니다</SignDesc>
       <SignLabelWrap>
         <SignLabel>개인정보보호법의 이름</SignLabel>
         <SignAgreeWrap>

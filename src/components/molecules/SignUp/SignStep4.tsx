@@ -1,5 +1,4 @@
 import Button from "components/atoms/Button";
-import { SignDesc } from "components/atoms/SignUp/SignUpAtoms";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
@@ -7,7 +6,6 @@ const SignStep3 = () => {
   const navigate = useNavigate();
   return (
     <>
-      <SignDesc style={{ margin: "19px 0 44px" }}>페이지에 대한 설명이 들어갑니다</SignDesc>
       <ProfileCardWrap>
         <ProfileImg />
         <ProfileTxt>
