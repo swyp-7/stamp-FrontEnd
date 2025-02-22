@@ -1,10 +1,10 @@
 import MainNav from "components/molecules/Main/MainNav";
-import { ReactElement } from "react";
+import { ReactNode } from "react";
 import { StyledLayout, TitleWrap } from "./MainMenuLayout";
 import styled from "styled-components";
 
 interface Props {
-  children: ReactElement;
+  children: ReactNode;
   activeIcon: "Home" | "Test" | "Calendar" | "Bell" | "User";
 }
 
@@ -35,6 +35,10 @@ const EditLayout = styled(StyledLayout)`
   #second {
     background-color: transparent;
     box-shadow: none;
-    margin-top: 40px;
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1120px 356px;
+    gap: 28px;
+    justify-content: space-between;
   }
 `;
