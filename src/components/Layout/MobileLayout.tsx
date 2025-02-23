@@ -12,7 +12,7 @@ const MobileLayout = () => {
 export default MobileLayout;
 
 const LayoutBox = styled.div`
-  width: 375px;
+  /* width: 375px; */
   min-height: 100vh;
   margin: 0 auto;
   overflow-x: hidden;

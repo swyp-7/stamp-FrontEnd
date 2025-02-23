@@ -17,6 +17,7 @@ import ManageAttend from "pages/Manage/ManageAttend";
 import ManagePay from "pages/Manage/ManagePay";
 import MobileLayout from "components/Layout/MobileLayout";
 import MobileHome from "pages/Mobile/MobileHome";
+import MobileMain from "pages/Mobile/MobileMain";
 
 const queryClient = new QueryClient();
 
@@ -43,8 +44,8 @@ const router = createBrowserRouter([
     path: "/m",
     element: <MobileLayout />,
     children: [
-      { path: "home", element: <MobileHome /> }
-      // { path: "main", element: <MobileMain /> }
+      { path: "home", element: <MobileHome /> },
+      { path: "main", element: <MobileMain /> }
     ]
   }
 ]);

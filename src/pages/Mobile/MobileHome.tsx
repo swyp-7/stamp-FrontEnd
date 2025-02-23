@@ -22,6 +22,9 @@ const MobileHome = () => {
 export default MobileHome;
 
 const Wrap = styled.div`
+  margin: 0 auto;
+  width: 100%;
+  max-width: 375px;
   position: relative;
   height: 100%;
   min-height: inherit;
