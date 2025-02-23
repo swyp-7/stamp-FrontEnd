@@ -15,6 +15,8 @@ import Notification from "pages/Notification";
 import MyPage from "pages/MyPage";
 import ManageAttend from "pages/Manage/ManageAttend";
 import ManagePay from "pages/Manage/ManagePay";
+import MobileLayout from "components/Layout/MobileLayout";
+import MobileHome from "pages/Mobile/MobileHome";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
       { path: "schedule", element: <Schedule /> },
       { path: "notification", element: <Notification /> },
       { path: "my-page", element: <MyPage /> }
+    ]
+  },
+  {
+    path: "/m",
+    element: <MobileLayout />,
+    children: [
+      { path: "home", element: <MobileHome /> }
+      // { path: "main", element: <MobileMain /> }
     ]
   }
 ]);
