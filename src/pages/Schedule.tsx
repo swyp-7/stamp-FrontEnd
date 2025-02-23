@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
-import styled from "styled-components";
+// import styled from "styled-components";
 import Button from "components/atoms/Button";
 import Layout from "components/Layout/ScheduleLayout";
 import { ReactComponent as LeftArrow } from "assets/LeftArrow.svg";

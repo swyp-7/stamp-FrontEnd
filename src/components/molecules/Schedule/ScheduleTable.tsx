@@ -1,13 +1,14 @@
 import { TimeList } from "constants/MenuText";
 import styled from "styled-components";
+import TaskBar from "./TaskBar";
 
 const ScheduleTable = () => {
   // 샘플 작업 데이터
   const tasks = [
     { id: 1, row: 0, start: 2, duration: 3 }, // 02:00 - 05:00
-    { id: 2, row: 1, start: 5, duration: 2 }, // 05:00 - 07:00
+    { id: 2, row: 1, start: 5, duration: 6 }, // 05:00 - 07:00
     { id: 3, row: 2, start: 8, duration: 4 }, // 08:00 - 12:00
-    { id: 4, row: 0, start: 14, duration: 3 } // 14:00 - 17:00
+    { id: 4, row: 3, start: 14, duration: 3 } // 14:00 - 17:00
   ];
 
   return (
@@ -27,8 +28,8 @@ const ScheduleTable = () => {
             ))}
             {tasks
               .filter((task) => task.row === rowIdx)
-              .map((task) => (
-                <TaskBar key={task.id} $start={task.start} $duration={task.duration} />
+              .map((task, idx) => (
+                <TaskBar key={idx} start={task.start} duration={task.duration} />
               ))}
           </TableRow>
         ))}
@@ -97,15 +98,4 @@ const Cell = styled.div`
   height: 100px;
   border-left: 1px solid #f9f9f9;
   border-bottom: 1px solid #f9f9f9;
-`;
-
-const TaskBar = styled.div<{ $start: number; $duration: number }>`
-  position: absolute;
-  top: 50%;
-  left: ${({ $start }) => $start * 100}px;
-  width: ${({ $duration }) => $duration * 100}px;
-  height: 20px;
-  background: #9389ff;
-  border-radius: 8px;
-  transform: translateY(-50%);
 `;
