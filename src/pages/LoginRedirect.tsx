@@ -1,8 +1,10 @@
-// import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { useFetchKakaoLogin } from "../hooks/UsersQuery";
+import { useFetchKakaoLogin, useFetchKakaoLogin_token } from "../hooks/UsersQuery";
 import { useEffect } from "react";
+// import { useQueryClient } from "@tanstack/react-query";
 // import { getAllCookiesByName, removeAllCookiesByName, setCookie } from "../utils/Cookie";
+import styled from "styled-components";
+import { ClipLoader } from "react-spinners";
 
 const LoginRedirect = () => {
   const navigate = useNavigate();
@@ -12,10 +14,11 @@ const LoginRedirect = () => {
   const { data, isLoading } = useFetchKakaoLogin(code || "");
   console.log("토큰", data, isLoading);
 
-  // const { data: tokenData, isLoading: isTokenLoading } = useFetchKakaoLogin_token(
-  //   data?.access_token || "",
-  //   code || "",
-  // );
+  const { data: tokenData, isLoading: isTokenLoading } = useFetchKakaoLogin_token(
+    data?.access_token || ""
+  );
+
+  console.log(tokenData, "jwt 토큰데이터", isTokenLoading);
 
   // 유저가 로그인 동의했을 때
   // useEffect(() => {
@@ -44,7 +47,19 @@ const LoginRedirect = () => {
     }
   }, [errorDesc]);
 
-  return <div>LoginRedirect</div>;
+  return (
+    <SpinnerWarp>
+      <ClipLoader color="#4A3AFF" size={60} />
+    </SpinnerWarp>
+  );
 };
 
 export default LoginRedirect;
+
+const SpinnerWarp = styled.div`
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
