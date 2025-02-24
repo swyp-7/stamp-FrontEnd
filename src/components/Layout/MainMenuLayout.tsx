@@ -9,6 +9,7 @@ interface Props extends ButtonProps {
   title: string;
   isBtnActive?: boolean;
   btnTxt?: string;
+  subTitleTxt?: string;
 }
 
 const Layout = ({
@@ -17,6 +18,7 @@ const Layout = ({
   title,
   isBtnActive = false,
   btnTxt = "버튼",
+  subTitleTxt,
   ...props
 }: Props) => {
   return (
@@ -27,7 +29,7 @@ const Layout = ({
           <TitleWrap>
             <div className="text">
               <h1>{title}</h1>
-              <p>메뉴 설명이 들어오는 곳</p>
+              {subTitleTxt && <p>{subTitleTxt}</p>}
             </div>
             {isBtnActive && <Button text={btnTxt} {...props} />}
           </TitleWrap>

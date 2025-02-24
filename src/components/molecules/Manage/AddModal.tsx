@@ -153,7 +153,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <DatePickerInForm name="endDay" control={control} />
           </div>
         </InputWrap>
-        <InputWrap style={{ marginBottom: "120px" }}>
+        <InputWrap>
           <div>
             <SignLabel $req={true}>급여 계좌</SignLabel>
             <DropdownTextField
@@ -163,6 +163,16 @@ const AddModal = ({ setIsModalActive }: Props) => {
               textFieldName="bankNumber"
               txtPlaceholder="계좌번호"
               placeholder="은행"
+            />
+          </div>
+        </InputWrap>
+        <InputWrap style={{ marginBottom: "120px" }}>
+          <div>
+            <SignLabel $req={true}>시급</SignLabel>
+            <TextField
+              style={{ width: "313px" }}
+              placeholder="시간당 급여액을 적어주세요"
+              {...register("pay")}
             />
           </div>
         </InputWrap>
@@ -203,7 +213,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
           </div>
         </InputWrap>
         <InputWrap>
-          <div>
+          <div style={{ width: "100%" }}>
             <LabelWrap>
               <SignLabel>가능한 추가 근무일</SignLabel>
               <Button
@@ -224,11 +234,6 @@ const AddModal = ({ setIsModalActive }: Props) => {
                   control={control}
                   placeholder="요일 선택"
                   options={dayList}
-                />
-                <ClockDropdowns
-                  name1={`addWorkDays.${idx}.startTime`}
-                  name2={`addWorkDays.${idx}.endTime`}
-                  control={control}
                 />
                 <SmallCloseButton onClick={() => remove2(idx)}>
                   <CloseIcon />

@@ -43,7 +43,7 @@ const ClockDropdowns = ({ name1, name2, control }: Props) => {
         control={control}
         clockIcon={true}
         options={times}
-        placeholder="00:00"
+        placeholder="시작 시간"
         width="216px"
       />
       <Dropdown
@@ -51,7 +51,7 @@ const ClockDropdowns = ({ name1, name2, control }: Props) => {
         control={control}
         clockIcon={true}
         options={times}
-        placeholder="00:00"
+        placeholder="종료 시간"
         width="216px"
       />
     </Wrap>
