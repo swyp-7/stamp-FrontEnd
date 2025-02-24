@@ -2,15 +2,21 @@ import styled from "styled-components";
 import { ReactComponent as MegaphoneIcon } from "assets/Megaphone.svg";
 import Button from "components/atoms/Button";
 
-const WorkDetail = () => {
+interface Props {
+  height?: string;
+}
+
+const WorkDetail = ({ height }: Props) => {
   return (
-    <WorkDetailWrap>
-      <DetailTitle>
-        <span>이모모님</span>
-        <br />
-        <span>근무정보</span>
-      </DetailTitle>
-      <DetailContentWrap>
+    <WorkDetailWrap $height={height}>
+      {!height && (
+        <DetailTitle>
+          <span>이모모님</span>
+          <br />
+          <span>근무정보</span>
+        </DetailTitle>
+      )}
+      <DetailContentWrap $height={height}>
         <DetailContent>
           <div className="date">
             <div className="left">11월 17일 근무</div>
@@ -95,11 +101,13 @@ const WorkDetail = () => {
 
 export default WorkDetail;
 
-const WorkDetailWrap = styled.div`
+const WorkDetailWrap = styled.div<{ $height?: string }>`
   display: grid;
-  grid-template-rows: 147px 1fr 81px;
-  height: 100%;
+  grid-template-rows: ${({ $height }) => ($height === "616px" ? "1fr 81px" : "147px 1fr 81px")};
+  height: ${({ $height }) => ($height ? $height : "100%")};
   min-height: 0;
+  background-color: #fff;
+  border-radius: 24px;
 `;
 
 const DetailTitle = styled.div`
@@ -118,9 +126,9 @@ const DetailTitle = styled.div`
   }
 `;
 
-const DetailContentWrap = styled.div`
+const DetailContentWrap = styled.div<{ $height?: string }>`
   height: 100%;
-  max-height: calc(652px - 147px - 81px);
+  max-height: ${({ $height }) => ($height ? $height : "calc(652px - 147px - 81px)")};
   overflow-y: auto;
 
   &::-webkit-scrollbar {
@@ -144,7 +152,7 @@ const DetailContentWrap = styled.div`
 `;
 
 const DetailContent = styled.div`
-  padding: 31px;
+  padding: 31px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -228,4 +236,5 @@ const DetailButtonWrap = styled.div`
   display: flex;
   gap: 14px;
   justify-content: flex-end;
+  /* border-radius: 0 0 24px 24px; */
 `;

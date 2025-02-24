@@ -14,14 +14,18 @@ import {
   TopLeft,
   TopRight
 } from "components/atoms/ScheduleAtoms";
-import { BlankNotiCard } from "components/molecules/Notification/NotiCard";
 import ScheduleTable from "components/molecules/Schedule/ScheduleTable";
+import { renderContent } from "hooks/Schedule";
+import { useScheduleSideModeStore } from "store/ScheduleStore";
 
 const Schedule = () => {
   const [date, setDate] = useState(dayjs());
+  const { sideMode, setSideMode } = useScheduleSideModeStore();
 
   const handlePrevDay = () => setDate(date.subtract(1, "day"));
   const handleNextDay = () => setDate(date.add(1, "day"));
+
+  const { txt, txt2, content } = renderContent(sideMode);
 
   return (
     <Layout activeIcon="Calendar">
@@ -32,7 +36,7 @@ const Schedule = () => {
               <span>오늘의 근무 일정</span>
               <p>지금 4명의 직원들이 열심히 일하고 있어요</p>
             </TitleWrap>
-            <Button text="스케줄 추가" area={2} />
+            <Button text="스케줄 추가" area={2} onClick={() => setSideMode("add")} />
           </TopLeft>
           <TopRight>
             <Today>Today</Today>
@@ -53,12 +57,10 @@ const Schedule = () => {
       </MainWrap>
       <MainWrap>
         <TitleWrap>
-          <span>오늘의 근태 요약</span>
-          <p>3개의 근태 알림이 있어요</p>
+          <span>{txt}</span>
+          <p>{txt2}</p>
         </TitleWrap>
-        <div>
-          <BlankNotiCard />
-        </div>
+        <div>{content}</div>
       </MainWrap>
     </Layout>
   );

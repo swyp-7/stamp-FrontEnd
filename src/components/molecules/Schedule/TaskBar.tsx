@@ -6,6 +6,7 @@ interface Props {
   name?: string;
   cate?: string;
   leftTime?: string;
+  onClick: any;
 }
 
 const TaskBar = ({
@@ -13,10 +14,11 @@ const TaskBar = ({
   duration,
   name = "김모모",
   cate = "직원",
-  leftTime = "3시간 15분"
+  leftTime = "3시간 15분",
+  onClick
 }: Props) => {
   return (
-    <StyledTaskBar $start={start} $duration={duration}>
+    <StyledTaskBar $start={start} $duration={duration} onClick={onClick}>
       <TaskBarInfo>
         <NameInfo>
           <span>{name}</span>
@@ -39,7 +41,7 @@ const StyledTaskBar = styled.div<{ $start: number; $duration: number }>`
   width: ${({ $duration }) => $duration * 100}px;
   height: 20px;
   background: var(--main-1);
-  border-radius: 8px;
+  border-radius: 24px;
   transform: translateY(-50%);
 `;
 

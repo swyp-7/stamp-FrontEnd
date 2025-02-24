@@ -1,8 +1,11 @@
 import { TimeList } from "constants/MenuText";
 import styled from "styled-components";
 import TaskBar from "./TaskBar";
+import { useScheduleSideModeStore } from "store/ScheduleStore";
 
 const ScheduleTable = () => {
+  const { setSideMode } = useScheduleSideModeStore();
+
   // 샘플 작업 데이터
   const tasks = [
     { id: 1, row: 0, start: 2, duration: 3 }, // 02:00 - 05:00
@@ -10,6 +13,10 @@ const ScheduleTable = () => {
     { id: 3, row: 2, start: 8, duration: 4 }, // 08:00 - 12:00
     { id: 4, row: 3, start: 14, duration: 3 } // 14:00 - 17:00
   ];
+
+  const handleClickBar = () => {
+    setSideMode("edit");
+  };
 
   return (
     <Container>
@@ -29,7 +36,12 @@ const ScheduleTable = () => {
             {tasks
               .filter((task) => task.row === rowIdx)
               .map((task, idx) => (
-                <TaskBar key={idx} start={task.start} duration={task.duration} />
+                <TaskBar
+                  key={idx}
+                  start={task.start}
+                  duration={task.duration}
+                  onClick={handleClickBar}
+                />
               ))}
           </TableRow>
         ))}
