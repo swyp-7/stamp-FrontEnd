@@ -7,11 +7,8 @@ const SignStep3 = () => {
   return (
     <>
       <ProfileCardWrap>
-        <ProfileImg />
-        <ProfileTxt>
-          <StoreName>Stamp Coffee</StoreName>
-          <UserName>대표 김모모</UserName>
-        </ProfileTxt>
+        <StoreName>Stamp Coffee</StoreName>
+        <UserName>대표 김모모</UserName>
       </ProfileCardWrap>
       <Button
         text="스탬프 시작하기"
@@ -26,33 +23,18 @@ const SignStep3 = () => {
 export default SignStep3;
 
 const ProfileCardWrap = styled.div`
-  width: 745px;
-  height: 280px;
-  gap: 38px;
+  width: 507px;
+  height: 206px;
+  gap: 15px;
   border-radius: 24px;
   padding: 40px 80px;
   background-color: #fff;
   box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.25);
   margin-bottom: 44px;
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const ProfileImg = styled.div`
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background-color: gray;
-`;
-
-const ProfileTxt = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  text-align: left;
+  align-items: center;
+  justify-content: center;
 `;
 
 const StoreName = styled.div`

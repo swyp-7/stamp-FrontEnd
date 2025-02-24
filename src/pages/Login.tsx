@@ -55,17 +55,10 @@ const Login = () => {
         <span></span>
       </SocialTitle>
       <SocialWrap>
-        <SocialIcon>
-          <img src={naverIcon} alt="네이버 로고" />
-        </SocialIcon>
         <SocialIcon onClick={handleKaKaoLogin}>
           <img src={kakaoIcon} alt="카카오톡 로고" />
         </SocialIcon>
-        <SocialIcon>
-          <img src={googleIcon} alt="구글 로고" />
-        </SocialIcon>
       </SocialWrap>
-      <EtcText>아이디/비밀번호 찾기</EtcText>
       <EtcText onClick={() => navigate("/signUp")}>회원가입</EtcText>
     </Layout>
   );
@@ -144,4 +137,7 @@ const EtcText = styled.div`
   color: #999;
   cursor: pointer;
   margin-bottom: 12px;
+  text-decoration: underline;
+  text-decoration-line: #999;
+  text-underline-offset: 5px;
 `;
