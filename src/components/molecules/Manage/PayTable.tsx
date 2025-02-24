@@ -1,4 +1,4 @@
-import Button from "components/atoms/Button";
+import { PayComplete, PayGray } from "components/atoms/Manage/Paybutton";
 import { Profile, StyledTable } from "./Table";
 
 const tHeads = ["이름", "근무시간", "시급", "지급예정금액", "급여 지급 상태"];
@@ -28,7 +28,24 @@ const PayTable = () => {
           <td>12:00~18:00</td>
           <td>현재 근무중</td>
           <td>
-            <Button text="편집하기" area={2} isOutline={true} />
+            <PayComplete />
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <Profile>
+              <div className="img"></div>
+              <div className="txt">
+                <span className="name">김모모</span>
+                <span className="category">직원</span>
+              </div>
+            </Profile>
+          </td>
+          <td>월, 화, 수, 금</td>
+          <td>12:00~18:00</td>
+          <td>현재 근무중</td>
+          <td>
+            <PayGray />
           </td>
         </tr>
       </tbody>
