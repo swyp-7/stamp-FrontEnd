@@ -4,6 +4,7 @@ import ApiService from "utils/ApiService";
 const apiService = new ApiService();
 
 // TODO: 서비스key 분리
+// 사업자인증번호 조회
 export const useFetchBuisInfo = () => {
   return useMutation({
     mutationFn: async (bNo: number) => {

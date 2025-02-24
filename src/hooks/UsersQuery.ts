@@ -3,10 +3,23 @@ import ApiService from "../utils/ApiService";
 
 const apiService = new ApiService();
 
-// 카카오 로그인 토큰 받기
+// 로그인
+export const useFetchCustomLogin = () => {
+  return useQuery({
+    queryKey: ["customLogin"],
+    queryFn: async () => {
+      return await apiService.post<any>("/signUp", {});
+    }
+  });
+};
+
+// 인가코드로 카카오 로그인 토큰 받기
 export const useFetchKakaoLogin = (code: string) => {
   const KEY = process.env.REACT_APP_KAKAO_KEY;
-  const URI = "http://localhost:3000/login/redirect";
+  const URI =
+    process.env.NODE_ENV === "production"
+      ? "https://stamp.swygbro.com/login/redirect"
+      : "http://localhost:3000/login/redirect";
 
   return useQuery({
     queryKey: ["kakaoLogin", code],
@@ -17,24 +30,27 @@ export const useFetchKakaoLogin = (code: string) => {
           grant_type: "authorization_code",
           client_id: KEY,
           redirect_uri: URI,
-          code: code,
+          code: code
         },
-        "application/x-www-form-urlencoded;charset=utf-8",
+        "application/x-www-form-urlencoded;charset=utf-8"
       );
     },
     enabled: !!code,
-    retry: false,
+    retry: false
   });
 };
 
-// 인가코드 백엔드에 넘기고 JWT 토큰 받기
-// export const useFetchKakaoLogin_token = (token: string, code: string) => {
-//   return useQuery({
-//     queryKey: ["kakaoLogin_token", token, code],
-//     queryFn: async () => {
-//       return await apiService.get<any>(`user/kakao?token=${token}`, {});
-//     },
-//     enabled: !!token && !!code,
-//     retry: false,
-//   });
-// };
+// 카카오에서 받은 토큰 백엔드에 넘기고 JWT 토큰 받기
+export const useFetchKakaoLogin_token = (token: string) => {
+  return useQuery({
+    queryKey: ["kakaoLogin_token", token],
+    queryFn: async () => {
+      return await apiService.get<any>(`/oauth/login`, {
+        providerType: "KAKAO",
+        accessToken: token
+      });
+    },
+    enabled: !!token,
+    retry: false
+  });
+};

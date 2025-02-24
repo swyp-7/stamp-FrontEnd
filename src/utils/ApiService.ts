@@ -10,7 +10,7 @@ export default class ApiService {
 
   constructor() {
     const config: AxiosRequestConfig = {
-      // baseURL: "",
+      baseURL: "https://3.35.211.97"
     };
 
     this.axiosInstance = axios.create(config);
@@ -22,7 +22,7 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean,
+    withCredentials?: boolean
   ): Promise<T> {
     // console.log("🟣 get ", path, parameters);
     return this.makeRequest<T>("get", path, parameters, header, withCredentials);
@@ -32,7 +32,7 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean,
+    withCredentials?: boolean
   ): Promise<T> {
     //console.log("🟣 post ", path, parameters);
     return this.makeRequest<T>("post", path, parameters, header, withCredentials);
@@ -42,7 +42,7 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean,
+    withCredentials?: boolean
   ): Promise<T> {
     // console.log("🟣 put ", path, parameters);
     return this.makeRequest<T>("put", path, parameters, header, withCredentials);
@@ -52,7 +52,7 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean,
+    withCredentials?: boolean
   ): Promise<T> {
     // console.log("🟣 patch ", path, parameters);
     return this.makeRequest<T>("patch", path, parameters, header, withCredentials);
@@ -62,7 +62,7 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean,
+    withCredentials?: boolean
   ): Promise<T> {
     // console.log("🟣 delete ", path, parameters);
     return this.makeRequest<T>("delete", path, parameters, header, withCredentials);
@@ -73,15 +73,14 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials = false,
+    withCredentials = false
   ): Promise<T> {
     const { promise, resolve, reject } = Promise.withResolvers<T>();
     const config: AxiosRequestConfig = {
       headers: {
-        "Content-Type":
-          header === "multipart/form-data" ? "" : header ? header : "application/json",
+        "Content-Type": header === "multipart/form-data" ? "" : header ? header : "application/json"
       },
-      withCredentials,
+      withCredentials
     };
     if (method === "get" || method === "delete") {
       config.params = parameters;
