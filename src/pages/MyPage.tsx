@@ -13,7 +13,7 @@ const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일"
 
 const Mypage = () => {
   const [isModalActive, setIsModalActive] = useState(false);
-  const { register, handleSubmit, setValue, control } = useForm();
+  const { register, setValue, control } = useForm();
 
   const { fields, append } = useFieldArray({
     control,
