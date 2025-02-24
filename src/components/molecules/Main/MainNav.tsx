@@ -37,11 +37,11 @@ const MainNav = ({ activeIcon = "Home" }: Props) => {
         isActive={"Calendar" === activeIcon}
         onClick={() => navigate("/schedule")}
       />
-      <MainNavIcon
+      {/* <MainNavIcon
         iconType={"Bell"}
         isActive={"Bell" === activeIcon}
         onClick={() => navigate("/notification")}
-      />
+      /> */}
       <MainNavIcon
         iconType={"User"}
         isActive={"User" === activeIcon}

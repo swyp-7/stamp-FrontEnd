@@ -32,7 +32,6 @@ const Table = ({ setIsModalActive, isModalActive }: Props) => {
         <tr>
           <td>
             <Profile>
-              <div className="img"></div>
               <div className="txt">
                 <span className="name">이모모</span>
                 <span className="category">매니저</span>
@@ -121,13 +120,6 @@ export const Profile = styled.div`
   display: flex;
   gap: 12px;
   align-items: center;
-
-  div.img {
-    border-radius: 18px;
-    width: 52px;
-    height: 52px;
-    background: #d9d9d9;
-  }
 
   div.txt {
     display: flex;
