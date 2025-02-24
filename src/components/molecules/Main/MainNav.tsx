@@ -12,11 +12,15 @@ const MainNav = ({ activeIcon = "Home" }: Props) => {
 
   return (
     <Wrap>
-      <MainNavIcon
+      <ProfileWrap>
+        <span>Stamp Coffee</span>
+        <p>대표 김모모</p>
+      </ProfileWrap>
+      {/* <MainNavIcon
         iconType={"Home"}
         isActive={"Home" === activeIcon}
         onClick={() => navigate("/my-store")}
-      />
+      /> */}
       <MainNavIcon
         iconType={"Test"}
         isActive={"Test" === activeIcon}
@@ -52,8 +56,25 @@ export default MainNav;
 const Wrap = styled.nav`
   height: 100vh;
   width: 242px;
-  padding: 117px 29px 117px 0;
+  padding: 117px 0;
   background-color: #f2f2f2;
   box-shadow: 1px 0px 7px rgba(0, 0, 0, 0.1);
   gap: 14px;
+`;
+
+const ProfileWrap = styled.div`
+  text-align: center;
+  margin-bottom: 63px;
+
+  span {
+    font-weight: 600;
+    font-size: 28px;
+    color: #202020;
+  }
+
+  p {
+    font-weight: 400;
+    font-size: 18px;
+    color: #202020;
+  }
 `;

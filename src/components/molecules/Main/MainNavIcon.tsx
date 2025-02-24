@@ -67,6 +67,7 @@ const IconOuterWrap = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-right: 29px;
 `;
 
 const IconActiveBar = styled.div<{ $isActive: boolean }>`
