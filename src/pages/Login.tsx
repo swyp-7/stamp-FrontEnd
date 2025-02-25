@@ -2,9 +2,7 @@ import Button from "components/atoms/Button";
 import styled from "@emotion/styled";
 import TextField from "components/atoms/TextField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import googleIcon from "assets/google.png";
 import kakaoIcon from "assets/kakao.png";
-import naverIcon from "assets/naver.png";
 import { useNavigate } from "react-router-dom";
 import MainLogoButton from "components/atoms/MainLogoButton";
 
@@ -17,7 +15,7 @@ const Login = () => {
   } = useForm();
   const apiKey = process.env.REACT_APP_KAKAO_KEY;
 
-  const uri = "http://localhost:3000/login/redirect";
+  const uri = "http://localhost:3000/oauth/redirected/kakao";
 
   const handleKaKaoLogin = () => {
     // 카카오 로그인(인가 코드 받기)

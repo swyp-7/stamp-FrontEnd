@@ -92,8 +92,8 @@ const WorkDetail = ({ height }: Props) => {
         </DetailContent>
       </DetailContentWrap>
       <DetailButtonWrap>
-        <Button text="취소하기" isOutline={true} area={1} />
-        <Button text="저장하기" area={1} />
+        <Button text="취소하기" isOutline={true} area={1} disabled />
+        <Button text="저장하기" area={1} disabled />
       </DetailButtonWrap>
     </WorkDetailWrap>
   );

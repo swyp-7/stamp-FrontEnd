@@ -13,7 +13,7 @@ const SignStep3 = () => {
       <Button
         text="스탬프 시작하기"
         onClick={() => {
-          navigate("/my-store");
+          navigate("/management/register");
         }}
       />
     </>

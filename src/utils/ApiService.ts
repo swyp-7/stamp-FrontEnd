@@ -10,7 +10,7 @@ export default class ApiService {
 
   constructor() {
     const config: AxiosRequestConfig = {
-      baseURL: "https://3.35.211.97"
+      baseURL: "http://3.35.211.97:8080/api/v1"
     };
 
     this.axiosInstance = axios.create(config);
@@ -22,50 +22,55 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean
+    withCredentials?: boolean,
+    query?: boolean
   ): Promise<T> {
     // console.log("🟣 get ", path, parameters);
-    return this.makeRequest<T>("get", path, parameters, header, withCredentials);
+    return this.makeRequest<T>("get", path, parameters, header, withCredentials, query);
   }
 
   post<T>(
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean
+    withCredentials?: boolean,
+    query?: boolean
   ): Promise<T> {
     //console.log("🟣 post ", path, parameters);
-    return this.makeRequest<T>("post", path, parameters, header, withCredentials);
+    return this.makeRequest<T>("post", path, parameters, header, withCredentials, query);
   }
 
   put<T>(
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean
+    withCredentials?: boolean,
+    query?: boolean
   ): Promise<T> {
     // console.log("🟣 put ", path, parameters);
-    return this.makeRequest<T>("put", path, parameters, header, withCredentials);
+    return this.makeRequest<T>("put", path, parameters, header, withCredentials, query);
   }
 
   patch<T>(
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean
+    withCredentials?: boolean,
+    query?: boolean
   ): Promise<T> {
     // console.log("🟣 patch ", path, parameters);
-    return this.makeRequest<T>("patch", path, parameters, header, withCredentials);
+    return this.makeRequest<T>("patch", path, parameters, header, withCredentials, query);
   }
 
   delete<T>(
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials?: boolean
+    withCredentials?: boolean,
+    query?: boolean
   ): Promise<T> {
     // console.log("🟣 delete ", path, parameters);
-    return this.makeRequest<T>("delete", path, parameters, header, withCredentials);
+    return this.makeRequest<T>("delete", path, parameters, header, withCredentials, query);
   }
 
   private makeRequest<T>(
@@ -73,7 +78,8 @@ export default class ApiService {
     path: string,
     parameters: unknown,
     header?: string,
-    withCredentials = false
+    withCredentials = false,
+    query = method === "get" || method === "delete"
   ): Promise<T> {
     const { promise, resolve, reject } = Promise.withResolvers<T>();
     const config: AxiosRequestConfig = {
@@ -85,9 +91,12 @@ export default class ApiService {
     if (method === "get" || method === "delete") {
       config.params = parameters;
     }
+    if (query) {
+      config.params = parameters;
+    }
 
     (path.startsWith("http") ? axios : this.axiosInstance)
-      [method](path, method === "get" || method === "delete" ? config : parameters, config)
+      [method](path, query ? config : parameters, query ? undefined : config)
       .then((response: AxiosResponse) => {
         console.log(`🟢 ${method} `, path, parameters, response);
         resolve(response.data);

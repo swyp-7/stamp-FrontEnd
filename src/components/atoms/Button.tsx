@@ -38,9 +38,9 @@ const StyledButton = styled(MuiButton, {
 
   &:disabled {
     box-shadow: none;
-    background-color: #d4d4d4;
+    background-color: ${({ isOutline }) => (isOutline ? "transparent" : "#d4d4d4")};
     color: #b0b0b0;
-    ${({ isOutline }) => (isOutline ? "1.6px solid #B0B0B0" : "none")};
+    ${({ isOutline }) => isOutline && "border: 1.6px solid #B0B0B0"};
   }
 `;
 

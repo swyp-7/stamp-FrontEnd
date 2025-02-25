@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <Home /> },
       { path: "login", element: <Login /> },
-      { path: "login/redirect", element: <LoginRedirect /> },
+      { path: "oauth/redirected/kakao", element: <LoginRedirect /> },
       { path: "signUp", element: <SignUp /> },
       { path: "my-store", element: <Main /> },
       { path: "management/register", element: <Manage /> },

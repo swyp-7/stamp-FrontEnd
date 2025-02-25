@@ -18,8 +18,8 @@ export const useFetchKakaoLogin = (code: string) => {
   const KEY = process.env.REACT_APP_KAKAO_KEY;
   const URI =
     process.env.NODE_ENV === "production"
-      ? "https://stamp.swygbro.com/login/redirect"
-      : "http://localhost:3000/login/redirect";
+      ? "https://stamp.swygbro.com/oauth/redirected/kakao"
+      : "http://localhost:3000/oauth/redirected/kakao";
 
   return useQuery({
     queryKey: ["kakaoLogin", code],
@@ -45,10 +45,16 @@ export const useFetchKakaoLogin_token = (token: string) => {
   return useQuery({
     queryKey: ["kakaoLogin_token", token],
     queryFn: async () => {
-      return await apiService.get<any>(`/oauth/login`, {
-        providerType: "KAKAO",
-        accessToken: token
-      });
+      return await apiService.post<any>(
+        `/oauth/login`,
+        {
+          providerType: "KAKAO",
+          accessToken: token
+        },
+        undefined,
+        false,
+        false
+      );
     },
     enabled: !!token,
     retry: false
