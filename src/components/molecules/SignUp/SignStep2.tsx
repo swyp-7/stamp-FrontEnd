@@ -3,7 +3,6 @@ import { SignLabel } from "components/atoms/SignUp/SignUpAtoms";
 import TextField, { EmailTextField } from "components/atoms/TextField";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 import { ReactComponent as InfoIcon } from "assets/Info.svg";
-import { useEffect } from "react";
 
 interface Props {
   register: UseFormRegister<FieldValues>;
@@ -13,13 +12,11 @@ interface Props {
 }
 
 const SignStep2 = ({ register, setValue, errors, watch }: Props) => {
+  const nameErr = errors.name;
+  const contactErr = errors.contact;
+  const emailErr = errors.email;
   const passErr = errors.password;
   const passCheckErr = errors.passwordCheck;
-
-  useEffect(() => {
-    console.log(passErr);
-    console.log(passCheckErr);
-  }, [errors.password, errors.passwordCheck]);
 
   return (
     <>
@@ -27,6 +24,7 @@ const SignStep2 = ({ register, setValue, errors, watch }: Props) => {
         <div style={{ marginRight: "114px" }}>
           <SignLabel>성함</SignLabel>
           <TextField
+            isError={nameErr}
             placeholder="사업자등록증 상 대표자 이름을 적어주세요."
             {...register("name")}
             autoFocus
@@ -35,6 +33,7 @@ const SignStep2 = ({ register, setValue, errors, watch }: Props) => {
         <div>
           <SignLabel>연락처</SignLabel>
           <TextField
+            isError={contactErr}
             placeholder="010-0000-0000"
             style={{ width: "313px" }}
             {...register("contact")}
@@ -42,7 +41,7 @@ const SignStep2 = ({ register, setValue, errors, watch }: Props) => {
         </div>
         <div>
           <SignLabel>이메일</SignLabel>
-          <EmailTextField setValue={setValue} {...register("email")} />
+          <EmailTextField isError={emailErr} setValue={setValue} {...register("email")} />
         </div>
         <div>
           <PasswordLabelWrap $isPassErr={!!passErr}>

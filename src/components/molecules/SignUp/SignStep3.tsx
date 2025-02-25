@@ -20,6 +20,8 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
   const [isAuthFailed, setIsAuthFailed] = useState(false);
   const [isModalActive, setIsModalActive] = useState(false);
   const businessNumber = watch("businessNumber");
+  const nameErr = errors?.businessName || false;
+
   const { mutate, data } = useFetchBuisInfo();
   const handleAuthBNo = () => {
     const number = businessNumber ? businessNumber.split("-").join("") : undefined;
@@ -42,7 +44,6 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
   };
 
   useEffect(() => {
-    console.log(businessNumber, data?.data[0].tax_type);
     if (data) {
       if (data?.data[0].tax_type !== "국세청에 등록되지 않은 사업자등록번호입니다.") {
         setIsAuthed(true);
@@ -68,7 +69,7 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
             placeholder="000-00-000"
             handleAuthBNo={handleAuthBNo}
             isAuthed={isAuthed}
-            errors={errors}
+            errors={errors?.businessNumber || ""}
             {...register("businessNumber")}
             autoFocus
           />
@@ -76,6 +77,7 @@ const SignStep3 = ({ register, watch, setError, clearErrors, errors, setValue }:
         <div className="storeName">
           <SignLabel>상호명</SignLabel>
           <TextField
+            isError={nameErr}
             placeholder="사업자등록증의 상호명으로 입력해주세요"
             {...register("businessName")}
           />

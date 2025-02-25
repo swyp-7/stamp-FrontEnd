@@ -16,10 +16,11 @@ import { FieldErrors, FieldValues, UseFormSetValue } from "react-hook-form";
 export interface Props extends InputHTMLAttributes<HTMLInputElement> {
   size?: 1 | 2 | 3;
   isPasswordError?: boolean;
+  isError?: boolean;
 }
 
 const TextField = forwardRef<HTMLInputElement, Props>(
-  ({ type = "text", isPasswordError = false, ...props }, ref) => {
+  ({ type = "text", isPasswordError = false, isError = false, ...props }, ref) => {
     const [inputType, setInputType] = useState(type);
 
     const handleEyeClick = () => {
@@ -35,7 +36,13 @@ const TextField = forwardRef<HTMLInputElement, Props>(
             <FailIcon className="fail" />
           </IconWrap>
         )}
-        <StyledTextField ref={ref} type={inputType} $isPasswordError={isPasswordError} {...props} />
+        <StyledTextField
+          ref={ref}
+          type={inputType}
+          $isPasswordError={isPasswordError}
+          $isError={isError}
+          {...props}
+        />
         {type === "password" && (
           <IconWrap $type={type} onClick={handleEyeClick} style={{ right: "20px" }}>
             <EyeIcon className="eye" />
@@ -56,7 +63,7 @@ interface BNoProps extends Props {
 }
 
 export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
-  ({ isAuthed = false, handleAuthBNo, errors, ...props }, ref) => {
+  ({ isAuthed = false, handleAuthBNo, errors, isError = false, ...props }, ref) => {
     return (
       <OuterWrap>
         <Wrap>
@@ -66,7 +73,7 @@ export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
             {...props}
           />
           {isAuthed && (
-            <IconWrap>
+            <IconWrap style={{ left: 0, right: "24px" }}>
               <CheckIcon />
             </IconWrap>
           )}
@@ -84,7 +91,7 @@ export interface EmailProps extends Props {
 }
 
 export const EmailTextField = forwardRef<HTMLInputElement, EmailProps>(
-  ({ setValue, ...props }, ref) => {
+  ({ setValue, isError = false, ...props }, ref) => {
     const options = ["stamp.com", "naver.com", "gmail.com1", "gmail.com2", "gmail.com3"];
     const [selectedDomain, setSelectedDomain] = useState(options[0]);
 
@@ -97,6 +104,7 @@ export const EmailTextField = forwardRef<HTMLInputElement, EmailProps>(
         <StyledTextField
           placeholder="stampcoffee"
           style={{ width: "198px" }}
+          $isError={isError}
           ref={ref}
           {...props}
         />
@@ -129,7 +137,7 @@ const Wrap = styled.div`
   width: fit-content;
 `;
 
-export const StyledTextField = styled.input<{ $isPasswordError?: boolean }>`
+export const StyledTextField = styled.input<{ $isPasswordError?: boolean; $isError?: boolean }>`
   width: 480px;
   height: 72px;
   font-size: 20px;
@@ -137,6 +145,7 @@ export const StyledTextField = styled.input<{ $isPasswordError?: boolean }>`
   border: 1px solid #ddd;
   padding: 18px 30px;
   ${({ $isPasswordError }) => $isPasswordError && "padding-left: 66px; border-color: var(--red-1);"}
+  ${({ $isError }) => $isError && "border-color: var(--red-1);"}
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
@@ -165,6 +174,7 @@ const IconWrap = styled.span<{ $type?: string }>`
   justify-content: center;
   padding: 5px;
   top: 50%;
+  /* right: 24px; */
   transform: translateY(-50%);
   cursor: pointer;
 

@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import ApiService from "../utils/ApiService";
 import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
 
@@ -10,6 +10,31 @@ export const useFetchCustomLogin = () => {
     queryKey: ["customLogin"],
     queryFn: async () => {
       return await apiService.post<any>("/signUp", {});
+    }
+  });
+};
+
+// 회원가입
+export const useFetchSignUp = () => {
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const formData = {
+        createEmployerUserReq: {
+          name: data.name,
+          email: `${data.email}@${data.email2}`,
+          password: data.password,
+          contact: data.contact
+        },
+        createStoreReq: {
+          businessNumber: data.businessNumber,
+          name: data.businessName,
+          addressCommon: data.address1,
+          addressDetail: data.address2,
+          businessType: data.businessType
+        }
+      };
+
+      return await apiService.post<any>("/signUp", formData);
     }
   });
 };

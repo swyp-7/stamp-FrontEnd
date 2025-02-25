@@ -2,13 +2,18 @@ import Button from "components/atoms/Button";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
-const SignStep3 = () => {
+interface Props {
+  name: string;
+  storeName: string;
+}
+
+const SignStep3 = ({ name, storeName }: Props) => {
   const navigate = useNavigate();
   return (
     <>
       <ProfileCardWrap>
-        <StoreName>Stamp Coffee</StoreName>
-        <UserName>대표 김모모</UserName>
+        <StoreName>{storeName}</StoreName>
+        <UserName>대표 {name}</UserName>
       </ProfileCardWrap>
       <Button
         text="스탬프 시작하기"

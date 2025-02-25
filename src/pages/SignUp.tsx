@@ -6,7 +6,8 @@ import SignStep3 from "components/molecules/SignUp/SignStep3";
 import SignStep4 from "components/molecules/SignUp/SignStep4";
 import SignUpNav from "components/molecules/SignUp/SignUpNav";
 import { SignUpTitleText } from "constants/MenuText";
-import { useState } from "react";
+import { useFetchSignUp } from "hooks/UsersQuery";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -20,8 +21,13 @@ const SignUp = () => {
     setError,
     clearErrors,
     setValue,
+    getValues,
     formState: { errors }
   } = useForm({ mode: "onChange" });
+  const formData = getValues();
+  const { mutate, data: signUpResult } = useFetchSignUp();
+  const name = watch("name");
+  const businessName = watch("businessName");
 
   const handleClickNext = () => {
     setAgree([true, true]);
@@ -29,13 +35,47 @@ const SignUp = () => {
   };
 
   const handleClickNext2 = () => {
-    setStep((prev) => prev + 1);
+    let hasError = false;
+    if (!formData.name) {
+      setError("name", {});
+      hasError = true;
+    }
+    if (!formData.contact) {
+      setError("contact", {});
+      hasError = true;
+    }
+    if (!formData.email) {
+      setError("email", {});
+      hasError = true;
+    }
+    if (!formData.password) {
+      setError("password", {});
+      hasError = true;
+    }
+    if (!formData.passwordCheck) {
+      setError("passwordCheck", {});
+      hasError = true;
+    }
+    if (!hasError) {
+      setStep((prev) => prev + 1);
+    }
   };
 
   const handleClickNext3 = handleSubmit((data) => {
-    console.log(data);
-    setStep((prev) => prev + 1);
+    if (!data.businessName) {
+      return setError("businessName", {});
+    }
+    mutate(data);
   });
+
+  useEffect(() => {
+    if (signUpResult?.message === "SUCCESS") {
+      setStep((prev) => prev + 1);
+    } else {
+      alert(signUpResult?.message);
+    }
+  }, [signUpResult]);
+
   return (
     <Layout>
       <SignUpNav activeNum={step} />
@@ -53,12 +93,15 @@ const SignUp = () => {
               setError={setError}
               clearErrors={clearErrors}
               setValue={setValue}
-              errors={errors.businessNumber}
+              errors={errors}
             />
           )}
-          {step === 4 && <SignStep4 />}
+          {step === 4 && <SignStep4 name={name} storeName={businessName} />}
         </SignContentWrap>
         <SignNextBtnWrap>
+          {step !== 4 && (
+            <Button text="←" onClick={() => setStep((prev) => prev - 1)} isOutline={true} />
+          )}
           {step === 1 && <Button text="모두 동의하고 다음으로" onClick={handleClickNext} />}
           {step === 2 && <Button text="다음으로" onClick={handleClickNext2} />}
           {step === 3 && <Button text="다음으로" onClick={handleClickNext3} />}
@@ -105,4 +148,10 @@ const SignNextBtnWrap = styled.div`
   position: absolute;
   bottom: 80px;
   right: 80px;
+  gap: 20px;
+
+  button:first-child {
+    width: 100px;
+    padding: 0;
+  }
 `;
