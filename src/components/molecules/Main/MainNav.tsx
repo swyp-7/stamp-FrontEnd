@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import MainNavIcon, { MainNavIconSub } from "./MainNavIcon";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useStoreInfoStore } from "store/StoreStore";
 
 interface Props {
   activeIcon?: "Home" | "Test" | "Calendar" | "Bell" | "User";
@@ -9,12 +10,14 @@ interface Props {
 const MainNav = ({ activeIcon = "Home" }: Props) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const { storeData } = useStoreInfoStore();
+  console.log(storeData, "가게데이터");
 
   return (
     <Wrap>
       <ProfileWrap>
-        <span>Stamp Coffee</span>
-        <p>대표 김모모</p>
+        <span>{storeData ? storeData?.store?.name : "상호명_더미"}</span>
+        <p>대표 {storeData ? storeData?.name : "이름_더미"}</p>
       </ProfileWrap>
       {/* <MainNavIcon
         iconType={"Home"}
