@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import kakaoIcon from "assets/kakao.png";
 import { useNavigate } from "react-router-dom";
 import MainLogoButton from "components/atoms/MainLogoButton";
+import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const Login = () => {
   } = useForm();
   const apiKey = process.env.REACT_APP_KAKAO_KEY;
 
-  const uri = "http://localhost:3000/oauth/redirected/kakao";
+  const uri = process.env.NODE_ENV === "production" ? host_kakao_login_uri : local_kakao_login_uri;
 
   const handleKaKaoLogin = () => {
     // 카카오 로그인(인가 코드 받기)

@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import ApiService from "../utils/ApiService";
+import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
 
 const apiService = new ApiService();
 
@@ -16,10 +17,7 @@ export const useFetchCustomLogin = () => {
 // 인가코드로 카카오 로그인 토큰 받기
 export const useFetchKakaoLogin = (code: string) => {
   const KEY = process.env.REACT_APP_KAKAO_KEY;
-  const URI =
-    process.env.NODE_ENV === "production"
-      ? "https://stamp.swygbro.com/oauth/redirected/kakao"
-      : "http://localhost:3000/oauth/redirected/kakao";
+  const URI = process.env.NODE_ENV === "production" ? host_kakao_login_uri : local_kakao_login_uri;
 
   return useQuery({
     queryKey: ["kakaoLogin", code],
