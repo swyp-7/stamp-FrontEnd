@@ -42,6 +42,7 @@ const Mypage = () => {
     setIsModalActive(false);
     setValue("address1", data.address);
   };
+  // TODO: 내정보 전역상태 불러와서 폼에 반영하기, 반영 후 전역상태 업데이트 하기(나브에 반영되는지 확인)
 
   return (
     <MyPageLayout activeIcon="User">
