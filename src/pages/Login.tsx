@@ -6,7 +6,7 @@ import kakaoIcon from "assets/kakao.png";
 import { useNavigate } from "react-router-dom";
 import MainLogoButton from "components/atoms/MainLogoButton";
 import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
-import { useFetchCustomLogin } from "hooks/UsersQuery";
+import { useFetchCustomLogin } from "hooks/LoginQuery";
 import { setCookie } from "utils/Cookie";
 
 const Login = () => {
@@ -32,7 +32,6 @@ const Login = () => {
     mutate(data, {
       onSettled: (data) => {
         if (data && data.message === "SUCCESS") {
-          console.log(data.message, "메시지");
           const expires = new Date(Date.now() + data.data.expirationTime);
           setCookie("Auth_stamp", data.data.token, { path: "/", expires });
           navigate("/schedule");
