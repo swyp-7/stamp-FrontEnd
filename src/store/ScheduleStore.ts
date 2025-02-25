@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 interface ScheduleSideModeState {
   sideMode: "note" | "edit" | "add";
+  // eslint-disable-next-line no-unused-vars
   setSideMode: (mode: "note" | "edit" | "add") => void;
 }
 
