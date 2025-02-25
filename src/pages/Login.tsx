@@ -6,6 +6,8 @@ import kakaoIcon from "assets/kakao.png";
 import { useNavigate } from "react-router-dom";
 import MainLogoButton from "components/atoms/MainLogoButton";
 import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
+import { useFetchCustomLogin } from "hooks/UsersQuery";
+import { setCookie } from "utils/Cookie";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,17 +16,31 @@ const Login = () => {
     register,
     formState: { isValid }
   } = useForm();
+
+  // 카카오 로그인
   const apiKey = process.env.REACT_APP_KAKAO_KEY;
-
   const uri = process.env.NODE_ENV === "production" ? host_kakao_login_uri : local_kakao_login_uri;
-
   const handleKaKaoLogin = () => {
-    // 카카오 로그인(인가 코드 받기)
+    // 인가 코드 받기
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${apiKey}&redirect_uri=${uri}&response_type=code`;
   };
 
+  // 그냥로그인
+  const { mutate } = useFetchCustomLogin();
+
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log(data);
+    mutate(data, {
+      onSettled: (data) => {
+        if (data && data.message === "SUCCESS") {
+          console.log(data.message, "메시지");
+          const expires = new Date(Date.now() + data.data.expirationTime);
+          setCookie("Auth_stamp", data.data.token, { path: "/", expires });
+          navigate("/schedule");
+        } else {
+          alert("회원 정보를 찾을 수 없습니다.");
+        }
+      }
+    });
   };
 
   return (
@@ -34,7 +50,7 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           placeholder="이메일을 입력해 주세요."
-          {...register("id", {
+          {...register("email", {
             required: "이메일을 입력해주세요."
             // pattern: /^[a-zA-Z0-9+\-._]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
           })}

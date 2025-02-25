@@ -6,10 +6,9 @@ const apiService = new ApiService();
 
 // 로그인
 export const useFetchCustomLogin = () => {
-  return useQuery({
-    queryKey: ["customLogin"],
-    queryFn: async () => {
-      return await apiService.post<any>("/signUp", {});
+  return useMutation({
+    mutationFn: async (data: any) => {
+      return await apiService.post<any>("/auth/login", data);
     }
   });
 };

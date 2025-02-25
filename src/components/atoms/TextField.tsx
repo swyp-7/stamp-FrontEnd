@@ -63,7 +63,7 @@ interface BNoProps extends Props {
 }
 
 export const BNoTextField = forwardRef<HTMLInputElement, BNoProps>(
-  ({ isAuthed = false, handleAuthBNo, errors, isError = false, ...props }, ref) => {
+  ({ isAuthed = false, handleAuthBNo, errors, ...props }, ref) => {
     return (
       <OuterWrap>
         <Wrap>
