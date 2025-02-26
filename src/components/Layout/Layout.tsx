@@ -13,6 +13,13 @@ const Layout = () => {
         setStoreData(data?.data);
       });
     }
+  }, []);
+  useEffect(() => {
+    if (auth) {
+      fetchEmployerMypage(auth).then((data) => {
+        setStoreData(data?.data);
+      });
+    }
   }, [auth]);
   return (
     <>

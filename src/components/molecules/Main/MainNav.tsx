@@ -11,7 +11,6 @@ const MainNav = ({ activeIcon = "Home" }: Props) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { storeData } = useStoreInfoStore();
-  console.log(storeData, "가게데이터");
 
   return (
     <Wrap>
