@@ -6,6 +6,7 @@ import { TitleWrap } from "components/Layout/MainMenuLayout";
 import MyPageLayout from "components/Layout/MyPageLayout";
 import ClockDropdowns from "components/molecules/Manage/ClockDropdowns";
 import PostCodeModal from "components/molecules/SignUp/PostCodeModal";
+import { useEditMyPage } from "hooks/api/StoreQuery";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useStoreInfoStore } from "store/StoreStore";
@@ -20,7 +21,11 @@ const Mypage = () => {
     control,
     name: "scheduleList"
   });
-  const { storeData } = useStoreInfoStore();
+  const { storeData, setStoreData } = useStoreInfoStore();
+  console.log(storeData, "가게정보");
+
+  const { mutate } = useEditMyPage(storeData?.id);
+
   useEffect(() => {
     append({});
     if (storeData) {
@@ -35,7 +40,7 @@ const Mypage = () => {
     }
   }, []);
   const addWorkDay = () => {
-    if (fields.length < 7) append({});
+    if (fields.length < 5) append({});
   };
 
   const handlePostcode = () => {
@@ -53,10 +58,16 @@ const Mypage = () => {
     setIsModalActive(false);
     setValue("addressCommon", data.address);
   };
-  // TODO: 내정보 전역상태 불러와서 폼에 반영하기, 반영 후 전역상태 업데이트 하기(나브에 반영되는지 확인)
 
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log(data);
+    mutate(data, {
+      onSuccess: (data) => {
+        // TODO: 전역상태 반영 형식 수정할것
+        setStoreData(data.data.data);
+        alert("편집 완료");
+      },
+      onError: (err) => console.log(err)
+    });
   };
 
   return (
@@ -65,7 +76,7 @@ const Mypage = () => {
         <TitleWrap>
           <div className="text">
             <h1>마이페이지</h1>
-            <p>메뉴 설명이 들어오는 곳</p>
+            <p>{storeData?.store?.name || ""}의 기본 정보 페이지입니다.</p>
           </div>
           <Button
             text="편집하기"
