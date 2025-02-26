@@ -19,7 +19,7 @@ const Mypage = () => {
     control,
     name: "scheduleList"
   });
-  const { storeData, setStoreData } = useStoreInfoStore();
+  const { storeData } = useStoreInfoStore();
   console.log(storeData);
   useEffect(() => {
     append({});
