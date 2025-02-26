@@ -1,10 +1,18 @@
 import styled from "@emotion/styled";
 import Button from "components/atoms/Button";
 import MainLogoButton from "components/atoms/MainLogoButton";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "utils/Cookie";
 
 const Home = () => {
   const navigate = useNavigate();
+  const auth = getCookie("Authorization");
+  useEffect(() => {
+    if (auth) {
+      navigate("/schedule");
+    }
+  }, [auth]);
 
   return (
     <Layout>

@@ -18,7 +18,7 @@ const SignStep3 = ({ name, storeName }: Props) => {
       <Button
         text="스탬프 시작하기"
         onClick={() => {
-          navigate("/management/register");
+          navigate("/schedule");
         }}
       />
     </>
