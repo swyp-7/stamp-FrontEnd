@@ -90,7 +90,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
   };
   const handlePostComplete = (data: any) => {
     setIsPostModalActive(false);
-    setValue("address1", data.address);
+    setValue("addressCommon", data.address);
   };
 
   // 제출 함수
