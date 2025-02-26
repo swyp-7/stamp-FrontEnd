@@ -1,21 +1,24 @@
 import Button from "components/atoms/Button";
+import { getDayShort } from "hooks/Manage";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
+  setModalType: Dispatch<SetStateAction<"ask" | "add">>;
+  setEmploId: Dispatch<SetStateAction<number>>;
   employerData: any;
 }
 
 const tHeads = ["이름", "근무일", "근무시간", "근무시작일", "근무종료일", ""];
 
-const Table = ({ setIsModalActive, employerData }: Props) => {
-  const handleClickEdit = (event: any) => {
+const Table = ({ setModalType, setIsModalActive, setEmploId, employerData }: Props) => {
+  const handleClickEdit = (event: any, id: number) => {
     event.stopPropagation();
+    setModalType("add");
     setIsModalActive(true);
+    setEmploId(id);
   };
-
-  console.log(employerData);
 
   return (
     <StyledTable>
@@ -27,24 +30,39 @@ const Table = ({ setIsModalActive, employerData }: Props) => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <Profile>
-              <div className="txt">
-                <span className="name">이모모</span>
-                <span className="category">매니저</span>
-              </div>
-            </Profile>
-          </td>
-          <td>월, 화, 수, 금</td>
-          <td>12:00~18:00</td>
-          <td>2024.11.01</td>
-          <td>현재 근무중</td>
-          <td>
-            <Button text="편집하기" area={2} isOutline={true} onClick={handleClickEdit} />
-          </td>
-        </tr>
-        <tr></tr>
+        {employerData ? (
+          employerData?.map((data: any, idx: string) => (
+            <tr key={idx}>
+              <td>
+                <Profile>
+                  <div className="txt">
+                    <span className="name">{data.name}</span>
+                    <span className="category">{data.contact}</span>
+                  </div>
+                </Profile>
+              </td>
+              <td>{getDayShort(data.scheduleList)}</td>
+              <td>
+                {data.scheduleList.find((item: any) => !item.isAdditional).startTime.slice(0, 5) +
+                  "~" +
+                  data.scheduleList.find((item: any) => !item.isAdditional).endTime.slice(0, 5)}
+              </td>
+              <td>{data.startDate}</td>
+              <td>현재 근무 중</td>
+              <td>
+                <Button
+                  text="편집하기"
+                  area={2}
+                  isOutline={true}
+                  onClick={(e) => handleClickEdit(e, data.id)}
+                />
+              </td>
+            </tr>
+          ))
+        ) : (
+          <></>
+        )}
+        <td></td>
       </tbody>
     </StyledTable>
   );

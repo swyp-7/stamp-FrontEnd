@@ -20,17 +20,20 @@ import { DatePickerInForm } from "components/atoms/DatePicker";
 import DropdownTextField from "../DropdownTextField";
 import ClockDropdowns from "./ClockDropdowns";
 import PostCodeModal from "../SignUp/PostCodeModal";
-import { useAddEmployee } from "hooks/api/ManageQuery";
-import { useStoreInfoStore } from "store/StoreStore";
+import { useAddEmployee, useEmployeeDetail } from "hooks/api/ManageQuery";
+import { engToKorDays } from "hooks/Manage";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
+  setEmploId: Dispatch<SetStateAction<number>>;
+  emploId: number;
+  storeId: string;
 }
 
 const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 const bankList = ["국민", "신한", "농협", "우리", "하나"];
 
-const AddModal = ({ setIsModalActive }: Props) => {
+const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => {
   const {
     register,
     handleSubmit,
@@ -58,14 +61,41 @@ const AddModal = ({ setIsModalActive }: Props) => {
     control,
     name: "addWorkDays"
   });
+  const { mutate } = useAddEmployee(storeId);
+  const { data } = useEmployeeDetail(storeId, `${emploId}`);
   useEffect(() => {
     reset();
     appendWorkDay({});
     appendAddWorkDay({});
   }, []);
-  const { storeData } = useStoreInfoStore();
-  const storeId = storeData?.store.id || 0;
-  const { mutate } = useAddEmployee(storeId);
+  useEffect(() => {
+    if (emploId && data) {
+      reset({
+        name: data?.data.name,
+        birthDate: data?.data.birthDate,
+        contact: data?.data.contact,
+        addressCommon: data?.data.addressCommon,
+        addressDetail: data?.data.addressDetail,
+        startDate: data?.data.startDate,
+        bank: data?.data.bank,
+        bankAccountNumber: data?.data.bankAccountNumber,
+        wage: data?.data.wage
+      });
+      data?.data?.scheduleList?.map((item: any) => {
+        if (item.isAdditional) {
+          appendAddWorkDay({
+            weekDay: engToKorDays[item.weekDay]
+          });
+        } else {
+          appendWorkDay({
+            weekDay: engToKorDays[item.weekDay],
+            startTime: item.startTime,
+            endTime: item.endTime
+          });
+        }
+      });
+    }
+  }, [emploId, data]);
 
   // 근무일 삭제 함수들
   const remove1 = (idx: number) => {
@@ -100,6 +130,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
       onSuccess: (data) => {
         console.log(data);
         setIsModalActive(false);
+        setEmploId(0);
       },
       onError: (err) => {
         console.log(err);
@@ -130,7 +161,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
             />
           </div>
           <div className="short">
-            <SignLabel>생년월일</SignLabel>
+            <SignLabel $req={true}>생년월일</SignLabel>
             <TextField
               placeholder="0000.00.00"
               style={{ width: "313px" }}
@@ -150,7 +181,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
         </InputWrap>
         <InputWrap>
           <div>
-            <SignLabel>주소</SignLabel>
+            <SignLabel $req={true}>주소</SignLabel>
             <TextField
               style={{ marginBottom: "16px" }}
               placeholder="클릭해서 도로명, 지번 주소를 검색해주세요"
@@ -190,7 +221,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <TextField
               style={{ width: "313px" }}
               placeholder="시간당 급여액을 적어주세요"
-              {...register("pay", { required: true })}
+              {...register("wage", { required: true })}
             />
           </div>
         </InputWrap>

@@ -11,6 +11,7 @@ const Manage = () => {
   const [isModalActive, setIsModalActive] = useState(false);
   const [ModalType, setModalType] = useState<"ask" | "add">("ask");
   const [employerData, setEmployerData] = useState();
+  const [emploId, setEmploId] = useState(0);
   const { storeData } = useStoreInfoStore();
   const storeId = storeData?.store.id || 0;
   const { data, isLoading } = useEmployeeList(`${storeId}`);
@@ -42,12 +43,21 @@ const Manage = () => {
         <Table
           key={isModalActive ? "ModalOpen" : "ModalClose"}
           setIsModalActive={setIsModalActive}
+          setModalType={setModalType}
+          setEmploId={setEmploId}
           employerData={employerData}
         />
         {isModalActive && (
           <ModalBase onClick={(e) => e.stopPropagation()}>
             {ModalType === "ask" && <AskAddModal setModalType={setModalType} />}
-            {ModalType === "add" && <AddModal setIsModalActive={setIsModalActive} />}
+            {ModalType === "add" && (
+              <AddModal
+                setIsModalActive={setIsModalActive}
+                emploId={emploId}
+                storeId={storeId}
+                setEmploId={setEmploId}
+              />
+            )}
           </ModalBase>
         )}
       </Wrap>
