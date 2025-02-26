@@ -7,12 +7,13 @@ import MyPageLayout from "components/Layout/MyPageLayout";
 import ClockDropdowns from "components/molecules/Manage/ClockDropdowns";
 import PostCodeModal from "components/molecules/SignUp/PostCodeModal";
 import { useEditMyPage } from "hooks/api/StoreQuery";
+import { engToKorDays } from "hooks/Manage";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useStoreInfoStore } from "store/StoreStore";
 import styled from "styled-components";
 
-const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+const dayList = ["휴무", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 
 const Mypage = () => {
   const [isModalActive, setIsModalActive] = useState(false);
@@ -21,13 +22,12 @@ const Mypage = () => {
     control,
     name: "scheduleList"
   });
-  const { storeData, setStoreData } = useStoreInfoStore();
-  console.log(storeData, "가게정보");
+  const { storeData, updateStore } = useStoreInfoStore();
 
   const { mutate } = useEditMyPage(storeData?.id);
 
   useEffect(() => {
-    append({});
+    console.log(storeData, "가게정보");
     if (storeData) {
       reset({
         name: storeData.name,
@@ -37,6 +37,17 @@ const Mypage = () => {
         addressCommon: storeData.store.addressCommon,
         addressDetail: storeData.store.addressDetail
       });
+      if (storeData.store.storeScheduleList?.length === 0) return append({});
+      storeData?.store.storeScheduleList?.map((item: any) => {
+        append({
+          id: item.id,
+          weekDay: engToKorDays[item.weekDay],
+          startTime: item.isClosed ? "휴무" : item.startTime.slice(0, 5),
+          endTime: item.isClosed ? "휴무" : item.endTime.slice(0, 5)
+        });
+      });
+    } else {
+      append({});
     }
   }, []);
   const addWorkDay = () => {
@@ -62,11 +73,14 @@ const Mypage = () => {
   const onSubmit: SubmitHandler<any> = (data) => {
     mutate(data, {
       onSuccess: (data) => {
-        // TODO: 전역상태 반영 형식 수정할것
-        setStoreData(data.data.data);
+        console.log(data.data.data, "편집완료");
+        updateStore(data.data.data);
         alert("편집 완료");
       },
-      onError: (err) => console.log(err)
+      onError: (err) => {
+        console.log(err);
+        // console.log(err.response);
+      }
     });
   };
 

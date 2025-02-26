@@ -60,10 +60,10 @@ const transformSchedule = (data: Record<string, any>[]) => {
     .map((item) => {
       const isClosed = item.startTime === "휴무" || item.endTime === "휴무";
       return {
-        id: null,
+        id: item.id || null,
         weekDay: weekDays[item.weekDay ?? ""] ?? item.weekDay,
-        startTime: "00:00",
-        endTime: "00:00",
+        startTime: isClosed ? "00:00" : item.startTime,
+        endTime: isClosed ? "00:00" : item.endTime,
         isClosed
       };
     });
