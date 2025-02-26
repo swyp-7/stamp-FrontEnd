@@ -1,23 +1,21 @@
 import Button from "components/atoms/Button";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
-  isModalActive: boolean;
+  employerData: any;
 }
 
 const tHeads = ["이름", "근무일", "근무시간", "근무시작일", "근무종료일", ""];
 
-const Table = ({ setIsModalActive, isModalActive }: Props) => {
+const Table = ({ setIsModalActive, employerData }: Props) => {
   const handleClickEdit = (event: any) => {
     event.stopPropagation();
     setIsModalActive(true);
   };
 
-  useEffect(() => {
-    console.log(isModalActive);
-  }, [isModalActive]);
+  console.log(employerData);
 
   return (
     <StyledTable>

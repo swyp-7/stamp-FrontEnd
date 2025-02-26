@@ -20,12 +20,15 @@ import { DatePickerInForm } from "components/atoms/DatePicker";
 import DropdownTextField from "../DropdownTextField";
 import ClockDropdowns from "./ClockDropdowns";
 import PostCodeModal from "../SignUp/PostCodeModal";
+import { useAddEmployee } from "hooks/api/ManageQuery";
+import { useStoreInfoStore } from "store/StoreStore";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
 
 const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+const bankList = ["국민", "신한", "농협", "우리", "하나"];
 
 const AddModal = ({ setIsModalActive }: Props) => {
   const {
@@ -36,8 +39,8 @@ const AddModal = ({ setIsModalActive }: Props) => {
     // clearErrors,
     setValue,
     reset,
-    control
-    // formState: { errors }
+    control,
+    formState: { isValid }
   } = useForm();
   const {
     fields: workDays,
@@ -55,12 +58,14 @@ const AddModal = ({ setIsModalActive }: Props) => {
     control,
     name: "addWorkDays"
   });
-
   useEffect(() => {
     reset();
     appendWorkDay({});
     appendAddWorkDay({});
   }, []);
+  const { storeData } = useStoreInfoStore();
+  const storeId = storeData?.store.id || 0;
+  const { mutate } = useAddEmployee(storeId);
 
   // 근무일 삭제 함수들
   const remove1 = (idx: number) => {
@@ -90,8 +95,16 @@ const AddModal = ({ setIsModalActive }: Props) => {
 
   // 제출 함수
   const onSubmit: SubmitHandler<any> = (data) => {
-    console.log("제출");
-    console.log(data);
+    // console.log(data);
+    mutate(data, {
+      onSuccess: (data) => {
+        console.log(data);
+        setIsModalActive(false);
+      },
+      onError: (err) => {
+        console.log(err);
+      }
+    });
   };
 
   return (
@@ -113,12 +126,16 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <TextField
               placeholder="이름을 입력해주세요"
               style={{ width: "313px" }}
-              {...register("name")}
+              {...register("name", { required: true })}
             />
           </div>
           <div className="short">
             <SignLabel>생년월일</SignLabel>
-            <TextField placeholder="0000.00.00" style={{ width: "313px" }} {...register("birth")} />
+            <TextField
+              placeholder="0000.00.00"
+              style={{ width: "313px" }}
+              {...register("birthDate")}
+            />
           </div>
         </InputWrap>
         <InputWrap>
@@ -127,7 +144,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <TextField
               placeholder="010-0000-000"
               style={{ width: "313px" }}
-              {...register("contact")}
+              {...register("contact", { required: true })}
             />
           </div>
         </InputWrap>
@@ -138,15 +155,15 @@ const AddModal = ({ setIsModalActive }: Props) => {
               style={{ marginBottom: "16px" }}
               placeholder="클릭해서 도로명, 지번 주소를 검색해주세요"
               onFocus={handlePostcode}
-              {...register("address1")}
+              {...register("addressCommon")}
             />
-            <TextField placeholder="상세 주소지를 입력해주세요" {...register("address2")} />
+            <TextField placeholder="상세 주소지를 입력해주세요" {...register("addressDetail")} />
           </div>
         </InputWrap>
         <InputWrap>
           <div className="short">
             <SignLabel $req={true}>근무 시작일</SignLabel>
-            <DatePickerInForm name="startDay" control={control} />
+            <DatePickerInForm name="startDate" control={control} />
           </div>
           <div className="short">
             <SignLabel>근무 종료일</SignLabel>
@@ -158,9 +175,10 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <SignLabel $req={true}>급여 계좌</SignLabel>
             <DropdownTextField
               width="195px"
+              options={bankList}
               control={control}
               dropdownName="bank"
-              textFieldName="bankNumber"
+              textFieldName="bankAccountNumber"
               txtPlaceholder="계좌번호"
               placeholder="은행"
             />
@@ -172,7 +190,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
             <TextField
               style={{ width: "313px" }}
               placeholder="시간당 급여액을 적어주세요"
-              {...register("pay")}
+              {...register("pay", { required: true })}
             />
           </div>
         </InputWrap>
@@ -195,7 +213,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
                   className="dropDown"
                   width="160px"
                   isRadioList={true}
-                  name={`workDays.${idx}.dayOfWeek`}
+                  name={`workDays.${idx}.weekDay`}
                   control={control}
                   placeholder="요일 선택"
                   options={dayList}
@@ -230,7 +248,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
                   className="dropDown"
                   width="160px"
                   isRadioList={true}
-                  name={`addWorkDays.${idx}.dayOfWeek`}
+                  name={`addWorkDays.${idx}.weekDay`}
                   control={control}
                   placeholder="요일 선택"
                   options={dayList}
@@ -243,7 +261,7 @@ const AddModal = ({ setIsModalActive }: Props) => {
           </div>
         </InputWrap>
         <ButtonWrap>
-          <Button type="submit" text="저장하기" />
+          <Button type="submit" text="저장하기" disabled={!isValid} />
         </ButtonWrap>
       </form>
       {isPostModalActive && (

@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import ApiService from "../utils/ApiService";
+import ApiService from "utils/ApiService";
 import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
 
 const apiService = new ApiService();

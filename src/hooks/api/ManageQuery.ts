@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { getCookie } from "utils/Cookie";
+import { transformEmployeeData } from "hooks/Manage.ts";
 
 const auth = getCookie("Authorization");
 
@@ -19,12 +20,14 @@ export const useEmployeeList = (storeId: string) => {
   });
 };
 
-export const useAddEmployee = (data: any, storeId: string) => {
+export const useAddEmployee = (storeId: string) => {
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async (data: any) => {
+      const transformedData = transformEmployeeData(data);
+
       return await axios.post(
         `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/enroll`,
-        data,
+        transformedData,
         {
           headers: {
             Authorization: `Bearer ${auth}`,
@@ -34,14 +37,4 @@ export const useAddEmployee = (data: any, storeId: string) => {
       );
     }
   });
-};
-
-const weekDayMap: Record<string, string> = {
-  월요일: "Monday",
-  화요일: "Tuesday",
-  수요일: "Wednesday",
-  목요일: "Thursday",
-  금요일: "Friday",
-  토요일: "Saturday",
-  일요일: "Sunday"
 };

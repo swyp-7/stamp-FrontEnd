@@ -2,16 +2,28 @@ import Layout from "components/Layout/MainMenuLayout";
 import AddModal from "components/molecules/Manage/AddModal";
 import AskAddModal from "components/molecules/Manage/AskAddModal";
 import Table from "components/molecules/Manage/Table";
+import { useEmployeeList } from "hooks/api/ManageQuery";
 import { useEffect, useState } from "react";
+import { useStoreInfoStore } from "store/StoreStore";
 import styled from "styled-components";
 
 const Manage = () => {
-  const [isModalActive, setIsModalActive] = useState(true);
+  const [isModalActive, setIsModalActive] = useState(false);
   const [ModalType, setModalType] = useState<"ask" | "add">("ask");
+  const [employerData, setEmployerData] = useState();
+  const { storeData } = useStoreInfoStore();
+  const storeId = storeData?.store.id || 0;
+  const { data, isLoading } = useEmployeeList(`${storeId}`);
 
   useEffect(() => {
-    console.log(isModalActive, ModalType);
-  }, [isModalActive]);
+    if (!isLoading && data?.data.length > 0) {
+      setEmployerData(data?.data);
+    }
+    if (data?.data.length === 0) {
+      setIsModalActive(true);
+      setModalType("ask");
+    }
+  }, [isLoading]);
 
   const handleClickNew = () => {
     setIsModalActive(true);
@@ -29,8 +41,8 @@ const Manage = () => {
       <Wrap onClick={() => setIsModalActive(false)}>
         <Table
           key={isModalActive ? "ModalOpen" : "ModalClose"}
-          isModalActive={isModalActive}
           setIsModalActive={setIsModalActive}
+          employerData={employerData}
         />
         {isModalActive && (
           <ModalBase onClick={(e) => e.stopPropagation()}>
