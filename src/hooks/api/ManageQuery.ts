@@ -6,9 +6,9 @@ import { transformEmployeeData } from "hooks/Manage.ts";
 const auth = getCookie("Authorization");
 
 // 직원 목록 조회
-export const useEmployeeList = (storeId: string) => {
+export const useEmployeeList = (storeId: string, isModalActive: boolean) => {
   return useQuery({
-    queryKey: ["employees", storeId, auth],
+    queryKey: ["employees", storeId, auth, isModalActive],
     queryFn: async () => {
       const res = await axios.get(
         `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/total`,
@@ -22,7 +22,7 @@ export const useEmployeeList = (storeId: string) => {
 };
 
 // 직원 상세 조회
-export const useEmployeeDetail = (storeId: string, emploId: string) => {
+export const useEmployeeDetail = (storeId: string, emploId: number) => {
   return useQuery({
     queryKey: ["employeeDetail", storeId, auth, emploId],
     queryFn: async () => {

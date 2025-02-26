@@ -22,6 +22,7 @@ import ClockDropdowns from "./ClockDropdowns";
 import PostCodeModal from "../SignUp/PostCodeModal";
 import { useAddEmployee, useEmployeeDetail } from "hooks/api/ManageQuery";
 import { engToKorDays } from "hooks/Manage";
+import { QueryClient } from "@tanstack/react-query";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
@@ -34,6 +35,7 @@ const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일"
 const bankList = ["국민", "신한", "농협", "우리", "하나"];
 
 const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => {
+  const queryClient = new QueryClient();
   const {
     register,
     handleSubmit,
@@ -62,7 +64,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
     name: "addWorkDays"
   });
   const { mutate } = useAddEmployee(storeId);
-  const { data } = useEmployeeDetail(storeId, `${emploId}`);
+  const { data } = useEmployeeDetail(storeId, emploId);
   useEffect(() => {
     reset();
     appendWorkDay({});
@@ -94,6 +96,10 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
           });
         }
       });
+    } else {
+      reset();
+      appendWorkDay({});
+      appendAddWorkDay({});
     }
   }, [emploId, data]);
 
@@ -127,8 +133,8 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
   const onSubmit: SubmitHandler<any> = (data) => {
     // console.log(data);
     mutate(data, {
-      onSuccess: (data) => {
-        console.log(data);
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["employees"] });
         setIsModalActive(false);
         setEmploId(0);
       },
@@ -146,7 +152,13 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
         </h3>
       </TitleWrap>
 
-      <CloseButton className="close" onClick={() => setIsModalActive(false)}>
+      <CloseButton
+        className="close"
+        onClick={() => {
+          setIsModalActive(false);
+          setEmploId(0);
+        }}
+      >
         <CloseIcon />
       </CloseButton>
       <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -264,7 +276,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
         <InputWrap>
           <div style={{ width: "100%" }}>
             <LabelWrap>
-              <SignLabel>가능한 추가 근무일</SignLabel>
+              <SignLabel $req={true}>가능한 추가 근무일</SignLabel>
               <Button
                 text="추가하기"
                 isOutline={true}

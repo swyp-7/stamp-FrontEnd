@@ -14,7 +14,7 @@ const Manage = () => {
   const [emploId, setEmploId] = useState(0);
   const { storeData } = useStoreInfoStore();
   const storeId = storeData?.store.id || 0;
-  const { data, isLoading } = useEmployeeList(`${storeId}`);
+  const { data, isLoading } = useEmployeeList(`${storeId}`, isModalActive);
 
   useEffect(() => {
     if (!isLoading && data?.data.length > 0) {
@@ -24,7 +24,7 @@ const Manage = () => {
       setIsModalActive(true);
       setModalType("ask");
     }
-  }, [isLoading]);
+  }, [isLoading, data]);
 
   const handleClickNew = () => {
     setIsModalActive(true);
@@ -41,7 +41,7 @@ const Manage = () => {
     >
       <Wrap onClick={() => setIsModalActive(false)}>
         <Table
-          key={isModalActive ? "ModalOpen" : "ModalClose"}
+          key={data ? "ModalOpen" : "ModalClose"}
           setIsModalActive={setIsModalActive}
           setModalType={setModalType}
           setEmploId={setEmploId}
