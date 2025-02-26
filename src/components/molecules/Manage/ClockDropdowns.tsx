@@ -8,6 +8,7 @@ interface Props {
 }
 
 const times = [
+  "휴무",
   "00:00",
   "01:00",
   "02:00",
