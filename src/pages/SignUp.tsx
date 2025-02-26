@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import Button from "components/atoms/Button";
 import StepTitle from "components/atoms/SignUp/StepTitle";
 import SignStep1 from "components/molecules/SignUp/SignStep1";
@@ -7,7 +8,7 @@ import SignStep4 from "components/molecules/SignUp/SignStep4";
 import SignUpNav from "components/molecules/SignUp/SignUpNav";
 import { SignUpTitleText } from "constants/MenuText";
 import { useFetchSignUp } from "hooks/LoginQuery";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 
@@ -25,7 +26,7 @@ const SignUp = () => {
     formState: { errors }
   } = useForm({ mode: "onChange" });
   const formData = getValues();
-  const { mutate, data: signUpResult } = useFetchSignUp();
+  const { mutate } = useFetchSignUp();
   const name = watch("name");
   const businessName = watch("businessName");
 
@@ -65,17 +66,16 @@ const SignUp = () => {
     if (!data.businessName) {
       return setError("businessName", {});
     }
-    mutate(data);
+    mutate(data, {
+      onError: (err) => {
+        const axiosError = err as AxiosError<{ message?: string }>;
+        console.log(axiosError.response?.data?.message);
+      },
+      onSuccess: () => {
+        setStep((prev) => prev + 1);
+      }
+    });
   });
-
-  useEffect(() => {
-    if (signUpResult?.message === "SUCCESS") {
-      setStep((prev) => prev + 1);
-    } else {
-      alert(signUpResult?.message);
-    }
-  }, [signUpResult]);
-
   return (
     <Layout>
       <SignUpNav activeNum={step} />
