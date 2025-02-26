@@ -33,7 +33,7 @@ const Login = () => {
       onSettled: (data) => {
         if (data && data.message === "SUCCESS") {
           const expires = new Date(Date.now() + data.data.expirationTime);
-          setCookie("Authentication", data.data.token, { path: "/", expires });
+          setCookie("Authorization", data.data.token, { path: "/", expires });
           navigate("/schedule");
         } else {
           alert("회원 정보를 찾을 수 없습니다.");

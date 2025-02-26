@@ -5,7 +5,7 @@ import { useStoreInfoStore } from "store/StoreStore";
 import { getCookie } from "utils/Cookie";
 
 const Layout = () => {
-  const auth = getCookie("Authentication");
+  const auth = getCookie("Authorization");
   const { setStoreData } = useStoreInfoStore();
   useEffect(() => {
     if (auth) {
