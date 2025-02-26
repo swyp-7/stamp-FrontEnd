@@ -69,7 +69,7 @@ const SignUp = () => {
     mutate(data, {
       onError: (err) => {
         const axiosError = err as AxiosError<{ message?: string }>;
-        console.log(axiosError.response?.data?.message);
+        alert(axiosError.response?.data?.message);
       },
       onSuccess: () => {
         setStep((prev) => prev + 1);
