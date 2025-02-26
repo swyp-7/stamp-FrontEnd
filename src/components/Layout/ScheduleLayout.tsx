@@ -39,6 +39,6 @@ const EditLayout = styled(StyledLayout)`
     display: grid;
     grid-template-columns: 1120px 356px;
     gap: 28px;
-    justify-content: space-between;
+    /* justify-content: space-between; */
   }
 `;

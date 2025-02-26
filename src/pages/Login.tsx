@@ -6,7 +6,7 @@ import kakaoIcon from "assets/kakao.png";
 import { useNavigate } from "react-router-dom";
 import MainLogoButton from "components/atoms/MainLogoButton";
 import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
-import { useFetchCustomLogin } from "hooks/LoginQuery";
+import { useFetchCustomLogin } from "hooks/api/LoginQuery";
 import { setCookie } from "utils/Cookie";
 
 const Login = () => {

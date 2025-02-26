@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useFetchKakaoLogin, useFetchKakaoLogin_token } from "../hooks/LoginQuery";
+import { useFetchKakaoLogin, useFetchKakaoLogin_token } from "../hooks/api/LoginQuery";
 import { useEffect } from "react";
 import styled from "styled-components";
 import { ClipLoader } from "react-spinners";

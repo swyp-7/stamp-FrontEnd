@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { SignLabel } from "components/atoms/SignUp/SignUpAtoms";
 import TextField, { BNoTextField } from "components/atoms/TextField";
-import { useFetchBuisInfo } from "hooks/BuisnessQuery";
+import { useFetchBuisInfo } from "hooks/api/BuisnessQuery";
 import { useEffect, useState } from "react";
 import { FieldValues, UseFormRegister, UseFormWatch } from "react-hook-form";
 import PostCodeModal from "./PostCodeModal";

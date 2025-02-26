@@ -1,4 +1,4 @@
-import { fetchEmployerMypage } from "hooks/StoreQuery";
+import { fetchEmployerMypage } from "hooks/api/StoreQuery";
 import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useStoreInfoStore } from "store/StoreStore";
