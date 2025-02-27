@@ -1,7 +1,12 @@
 import styled from "styled-components";
 import { ReactComponent as RightArrow } from "assets/RightArrow.svg";
+import { useState } from "react";
+import Button from "components/atoms/Button";
+import { useNavigate } from "react-router-dom";
 
 const MobileMain = () => {
+  const [openBtn, setOpenBtn] = useState(false);
+  const navi = useNavigate();
   return (
     <Wrap>
       <InnerWrap>
@@ -9,18 +14,43 @@ const MobileMain = () => {
           <span>김모모</span>
           <p>직원</p>
         </ProfileWrap>
-        <MainButton>
-          <MainButtonTxt>
-            QR 코드로 <span>출퇴근 체크</span>하기
-          </MainButtonTxt>
+        <MainButton
+          onClick={() => setOpenBtn(!openBtn)}
+          $isOpen={openBtn}
+          style={{ flexDirection: "column" }}
+        >
+          <BtnInnerWrap>
+            <div>
+              QR 코드로
+              <br /> <span>출퇴근 체크</span>하기
+            </div>
+            {openBtn || (
+              <ArrowWrap>
+                <RightArrow />
+              </ArrowWrap>
+            )}
+          </BtnInnerWrap>
+          {openBtn && (
+            <SmallButtonWrap>
+              <Button text="퇴근하기" isOutline={true} area={2} />
+              <Button text="출근하기" area={2} />
+            </SmallButtonWrap>
+          )}
+        </MainButton>
+        <MainButton $disabled={true}>
+          <div>
+            <span>추가 스케줄</span> <br /> 요청
+          </div>
           <ArrowWrap>
             <RightArrow />
           </ArrowWrap>
         </MainButton>
-        <MainButton>
-          <MainButtonTxt>
-            <span>추가 스케줄</span> 확인하기
-          </MainButtonTxt>
+        <MainButton onClick={() => navi("/m/schedule")}>
+          <div>
+            나의 이번주
+            <br />
+            근무 <span>스케줄 보기</span>
+          </div>
           <ArrowWrap>
             <RightArrow />
           </ArrowWrap>
@@ -32,7 +62,7 @@ const MobileMain = () => {
 
 export default MobileMain;
 
-const Wrap = styled.div`
+export const Wrap = styled.div`
   width: 100%;
   height: 100vh;
   background: #f7f6ff;
@@ -40,7 +70,7 @@ const Wrap = styled.div`
   justify-content: center;
 `;
 
-const InnerWrap = styled.main`
+export const InnerWrap = styled.main`
   width: 100%;
   max-width: 375px;
   margin-top: 80px;
@@ -49,7 +79,7 @@ const InnerWrap = styled.main`
   gap: 24px;
 `;
 
-const ProfileWrap = styled.div`
+export const ProfileWrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -69,9 +99,9 @@ const ProfileWrap = styled.div`
   }
 `;
 
-const MainButton = styled.div`
+const MainButton = styled.div<{ $disabled?: boolean; $isOpen?: boolean }>`
   width: 311px;
-  height: 146px;
+  height: ${({ $isOpen }) => ($isOpen ? "232px" : "146px")};
   border-radius: 24px;
   padding-top: 37px;
   padding-right: 24px;
@@ -82,17 +112,23 @@ const MainButton = styled.div`
   justify-content: space-between;
   box-shadow: 0px 2px 6px 0px rgba(20, 20, 43, 0.06);
   cursor: pointer;
-  background-color: #fff;
+  background-color: ${({ $disabled }) => ($disabled ? "#ddd" : "white")};
+
+  div {
+    font-weight: 600;
+    font-size: 26px;
+    color: ${({ $disabled }) => ($disabled ? "#676767" : "#363636")};
+    span {
+      color: ${({ $disabled }) => ($disabled ? "#676767" : "var(--main-1)")};
+    }
+  }
 `;
 
-const MainButtonTxt = styled.div`
-  font-weight: 600;
-  font-size: 26px;
-  color: #363636;
-
-  span {
-    color: var(--main-1);
-  }
+const BtnInnerWrap = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const ArrowWrap = styled.div`
@@ -104,4 +140,10 @@ const ArrowWrap = styled.div`
     width: 24px;
     height: 24px;
   }
+`;
+
+const SmallButtonWrap = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 100%;
 `;

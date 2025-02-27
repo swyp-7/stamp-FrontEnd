@@ -19,6 +19,7 @@ import MobileLayout from "components/Layout/MobileLayout";
 import MobileHome from "pages/Mobile/MobileHome";
 import MobileMain from "pages/Mobile/MobileMain";
 import MobileLogin from "pages/Mobile/MobileLogin";
+import MobileSchedule from "pages/Mobile/MobileSchedule";
 
 const queryClient = new QueryClient();
 
@@ -47,7 +48,8 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <MobileHome /> },
       { path: "main", element: <MobileMain /> },
-      { path: "login", element: <MobileLogin /> }
+      { path: "login", element: <MobileLogin /> },
+      { path: "schedule", element: <MobileSchedule /> }
     ]
   }
 ]);
