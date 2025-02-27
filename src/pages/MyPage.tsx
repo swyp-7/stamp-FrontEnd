@@ -5,6 +5,7 @@ import TextField from "components/atoms/TextField";
 import { TitleWrap } from "components/Layout/MainMenuLayout";
 import MyPageLayout from "components/Layout/MyPageLayout";
 import ClockDropdowns from "components/molecules/Manage/ClockDropdowns";
+import QrButton from "components/molecules/MyPage/QrButton";
 import PostCodeModal from "components/molecules/SignUp/PostCodeModal";
 import { useEditMyPage } from "hooks/api/StoreQuery";
 import { engToKorDays } from "hooks/Manage";
@@ -17,6 +18,7 @@ const dayList = ["휴무", "월요일", "화요일", "수요일", "목요일", "
 
 const Mypage = () => {
   const [isModalActive, setIsModalActive] = useState(false);
+  const [modalType, setModalType] = useState<"post" | "qr">("post");
   const { register, setValue, control, reset, handleSubmit } = useForm();
   const { fields, append } = useFieldArray({
     control,
@@ -27,7 +29,7 @@ const Mypage = () => {
   const { mutate } = useEditMyPage(storeData?.id);
 
   useEffect(() => {
-    console.log(storeData, "가게정보");
+    // console.log(storeData, "가게정보");
     if (storeData) {
       reset({
         name: storeData.name,
@@ -54,8 +56,10 @@ const Mypage = () => {
     if (fields.length < 5) append({});
   };
 
+  // 주소팝업
   const handlePostcode = () => {
     setIsModalActive(true);
+    setModalType("post");
   };
   const handleOutsideClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
@@ -70,10 +74,16 @@ const Mypage = () => {
     setValue("addressCommon", data.address);
   };
 
+  // QR코드
+  const handleQr = () => {
+    setModalType("qr");
+    console.log("큐알코드");
+  };
+
   const onSubmit: SubmitHandler<any> = (data) => {
     mutate(data, {
       onSuccess: (data) => {
-        console.log(data.data.data, "편집완료");
+        // console.log(data.data.data, "편집완료");
         updateStore(data.data.data);
         alert("편집 완료");
       },
@@ -106,7 +116,10 @@ const Mypage = () => {
           <LeftForm>
             <div>
               <SignLabel>사업자등록번호</SignLabel>
-              <TextField placeholder="000-00-000" {...register("businessNumber")} />
+              <div style={{ display: "flex", gap: "12px" }}>
+                <TextField placeholder="000-00-000" {...register("businessNumber")} />
+                <QrButton onClick={handleQr} />
+              </div>
             </div>
             <div className="double">
               <div>
@@ -167,7 +180,7 @@ const Mypage = () => {
               </DaysWrap>
             ))}
           </RightForm>
-          {isModalActive && (
+          {isModalActive && modalType === "post" && (
             <PostCodeModal
               isModalActive={isModalActive}
               handleOutsideClick={handleOutsideClick}
