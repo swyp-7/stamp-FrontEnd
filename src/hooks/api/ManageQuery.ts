@@ -62,6 +62,29 @@ export const useAddEmployee = (storeId: string) => {
   });
 };
 
+// 직원 수정
+export const useUpdateEmployee = () => {
+  const { cookieData, storeData } = useStoreInfoStore();
+  const storeId = storeData?.store.id || 0;
+
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const transformedData = transformEmployeeData(data);
+
+      return await axios.put(
+        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/${data.id}`,
+        transformedData,
+        {
+          headers: {
+            Authorization: `Bearer ${cookieData}`,
+            withCredentials: true
+          }
+        }
+      );
+    }
+  });
+};
+
 // 특정날짜에 근무하는 직원 조회
 export const useFetchEmploByDays = (start: string, end: string) => {
   const { cookieData, storeData } = useStoreInfoStore();
@@ -72,6 +95,27 @@ export const useFetchEmploByDays = (start: string, end: string) => {
     queryFn: async () => {
       const res = await axios.get(
         `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/period?startDate=${start}&endDate=${end}`,
+        {
+          headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
+        }
+      );
+
+      return res.data;
+    },
+    retry: false
+  });
+};
+
+// 특정날짜 특정시간 근무 가능한 직원 조회
+export const useFetchEmploByDayAndTime = (date: string, start: string, end: string) => {
+  const { cookieData, storeData } = useStoreInfoStore();
+  const storeId = storeData?.store.id || 0;
+
+  return useQuery({
+    queryKey: ["employees", storeId, start, end],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/available?date=${date}&startTime=${start}&endTime=${end}`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }

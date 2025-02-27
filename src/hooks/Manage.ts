@@ -29,6 +29,7 @@ export const transformEmployeeData = (data: any) => {
     addressCommon: data.addressCommon,
     addressDetail: data.addressDetail,
     startDate: data.startDate ? formatDate(data.startDate) : null,
+    endDate: data.endDate ? formatDate(data.startDate) : null,
     bank: data.bank,
     bankAccountNumber: data.bankAccountNumber,
     wage: data.wage,

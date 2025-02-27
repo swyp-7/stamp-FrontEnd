@@ -20,7 +20,7 @@ import { DatePickerInForm } from "components/atoms/DatePicker";
 import DropdownTextField from "../DropdownTextField";
 import ClockDropdowns from "./ClockDropdowns";
 import PostCodeModal from "../SignUp/PostCodeModal";
-import { useAddEmployee, useEmployeeDetail } from "hooks/api/ManageQuery";
+import { useAddEmployee, useEmployeeDetail, useUpdateEmployee } from "hooks/api/ManageQuery";
 import { engToKorDays } from "hooks/Manage";
 import { QueryClient } from "@tanstack/react-query";
 
@@ -63,7 +63,8 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
     control,
     name: "addWorkDays"
   });
-  const { mutate } = useAddEmployee(storeId);
+  const { mutate: createMutate } = useAddEmployee(storeId);
+  const { mutate: updateMutate } = useUpdateEmployee();
   const { data } = useEmployeeDetail(storeId, emploId);
   useEffect(() => {
     reset();
@@ -73,12 +74,14 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
   useEffect(() => {
     if (emploId && data) {
       reset({
+        id: data?.data.id,
         name: data?.data.name,
         birthDate: data?.data.birthDate,
         contact: data?.data.contact,
         addressCommon: data?.data.addressCommon,
         addressDetail: data?.data.addressDetail,
         startDate: data?.data.startDate,
+        endDate: data?.data.endDate,
         bank: data?.data.bank,
         bankAccountNumber: data?.data.bankAccountNumber,
         wage: data?.data.wage
@@ -131,8 +134,20 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
 
   // 제출 함수
   const onSubmit: SubmitHandler<any> = (data) => {
-    // console.log(data);
-    mutate(data, {
+    if (data.id) {
+      return updateMutate(data, {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["employees"] });
+          setIsModalActive(false);
+          setEmploId(0);
+        },
+        onError: (err) => {
+          console.log(err);
+        }
+      });
+    }
+
+    createMutate(data, {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["employees"] });
         setIsModalActive(false);
@@ -140,6 +155,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
       },
       onError: (err) => {
         console.log(err);
+        alert("오류 발생");
       }
     });
   };
@@ -210,7 +226,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
           </div>
           <div className="short">
             <SignLabel>근무 종료일</SignLabel>
-            <DatePickerInForm name="endDay" control={control} />
+            <DatePickerInForm name="endDate" control={control} />
           </div>
         </InputWrap>
         <InputWrap>
