@@ -17,10 +17,15 @@ import {
 import ScheduleTable from "components/molecules/Schedule/ScheduleTable";
 import { renderContent } from "hooks/Schedule";
 import { useScheduleSideModeStore } from "store/ScheduleStore";
+import { useFetchEmploByDays } from "hooks/api/ManageQuery";
 
 const Schedule = () => {
   const [date, setDate] = useState(dayjs());
   const { sideMode, setSideMode } = useScheduleSideModeStore();
+  const { data, isLoading } = useFetchEmploByDays(
+    dayjs(date).format("YYYY-MM-DD"),
+    dayjs(date).format("YYYY-MM-DD")
+  );
 
   const handlePrevDay = () => setDate(date.subtract(1, "day"));
   const handleNextDay = () => setDate(date.add(1, "day"));
@@ -52,7 +57,7 @@ const Schedule = () => {
           </TopRight>
         </div>
         <div className="bottom" style={{ width: "1120px", height: "616px" }}>
-          <ScheduleTable />
+          <ScheduleTable data={data} isLoading={isLoading} date={date} />
         </div>
       </MainWrap>
       <MainWrap>

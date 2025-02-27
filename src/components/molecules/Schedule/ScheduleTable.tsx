@@ -2,23 +2,35 @@ import { TimeList } from "constants/MenuText";
 import styled from "styled-components";
 import TaskBar from "./TaskBar";
 import { useScheduleSideModeStore } from "store/ScheduleStore";
+import { useEffect, useState } from "react";
+import { filterScheduleByDate } from "utils/Schedule";
+import { ClipLoader } from "react-spinners";
 
-const ScheduleTable = () => {
+interface Props {
+  data: Record<any, any>;
+  isLoading: boolean;
+  date: any;
+}
+
+const ScheduleTable = ({ data, isLoading, date }: Props) => {
   const { setSideMode } = useScheduleSideModeStore();
-
-  // 샘플 작업 데이터
-  const tasks = [
-    { id: 1, row: 0, start: 2, duration: 3 }, // 02:00 - 05:00
-    { id: 2, row: 1, start: 5, duration: 6 }, // 05:00 - 07:00
-    { id: 3, row: 2, start: 8, duration: 4 }, // 08:00 - 12:00
-    { id: 4, row: 3, start: 14, duration: 3 } // 14:00 - 17:00
-  ];
+  const [listData, setListData] = useState<any>();
+  useEffect(() => {
+    if (data) {
+      setListData(filterScheduleByDate(data?.data, date));
+    }
+    console.log(listData);
+  }, [data, isLoading]);
 
   const handleClickBar = () => {
     setSideMode("edit");
   };
 
-  return (
+  return !listData ? (
+    <LoadingWrap>
+      <ClipLoader color="#4A3AFF" size={60} />
+    </LoadingWrap>
+  ) : (
     <Container>
       <TimeLine>
         {TimeList.map((time, idx) => (
@@ -33,13 +45,18 @@ const ScheduleTable = () => {
             {[...Array(25)].map((_, colIdx) => (
               <Cell key={colIdx} />
             ))}
-            {tasks
-              .filter((task) => task.row === rowIdx)
-              .map((task, idx) => (
+            {listData
+              .filter((_: any, idx: number) => idx === rowIdx)
+              .map((item: any, idx: number) => (
                 <TaskBar
                   key={idx}
-                  start={task.start}
-                  duration={task.duration}
+                  name={item.name}
+                  start={parseInt(item.scheduleList.startTime.slice(0, 2), 10)}
+                  duration={
+                    parseInt(item.scheduleList.endTime.slice(0, 2), 10) -
+                    parseInt(item.scheduleList.startTime.slice(0, 2), 10)
+                  }
+                  end={item.scheduleList.endTime}
                   onClick={handleClickBar}
                 />
               ))}
@@ -111,3 +128,14 @@ const Cell = styled.div`
   border-left: 1px solid #f9f9f9;
   border-bottom: 1px solid #f9f9f9;
 `;
+
+const LoadingWrap = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+function setLeftTimes(arg0: any) {
+  throw new Error("Function not implemented.");
+}

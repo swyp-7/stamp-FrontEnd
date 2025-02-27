@@ -1,3 +1,5 @@
+import { korToEngDays } from "hooks/Manage";
+
 export const transformSchedule = (data: Record<string, any>[]) => {
   const weekDays: { [key: string]: string } = {
     월요일: "MONDAY",
@@ -21,4 +23,15 @@ export const transformSchedule = (data: Record<string, any>[]) => {
         isClosed
       };
     });
+};
+
+export const filterScheduleByDate = (data: any[], date: any) => {
+  const targetWeekDay = korToEngDays[date.format("dddd")];
+
+  return data.map((employee) => ({
+    ...employee,
+    scheduleList: employee.scheduleList.filter(
+      (schedule: any) => schedule.weekDay === targetWeekDay
+    )[0]
+  }));
 };

@@ -1,29 +1,42 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 interface Props {
   start: number;
   duration: number;
   name?: string;
-  cate?: string;
-  leftTime?: string;
   onClick: any;
+  end: string;
 }
 
-const TaskBar = ({
-  start,
-  duration,
-  name = "김모모",
-  cate = "직원",
-  leftTime = "3시간 15분",
-  onClick
-}: Props) => {
+const TaskBar = ({ start, end, duration, name = "김모모", onClick }: Props) => {
+  const [leftTime, setLeftTime] = useState("");
+
+  useEffect(() => {
+    const updateLeftTime = () => {
+      const now = new Date();
+      const [h, m] = end.split(":").map(Number);
+      const endTime = new Date(now);
+      endTime.setHours(h, m, 0, 0);
+      const diff = endTime.getTime() - now.getTime();
+      if (diff > 0) {
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        setLeftTime(`${hours}시간 ${minutes}분`);
+      } else {
+        setLeftTime("0시간 0분");
+      }
+    };
+
+    updateLeftTime();
+    const interval = setInterval(updateLeftTime, 60000);
+    return () => clearInterval(interval);
+  }, [end]);
+
   return (
     <StyledTaskBar $start={start} $duration={duration} onClick={onClick}>
       <TaskBarInfo>
-        <NameInfo>
-          <span>{name}</span>
-          <p>{cate}</p>
-        </NameInfo>
+        <NameInfo>{name}</NameInfo>
         <TimeInfo>
           근무 <span>{leftTime}</span> 남음
         </TimeInfo>
@@ -69,18 +82,9 @@ const TaskBarInfo = styled.div`
 const NameInfo = styled.div`
   display: flex;
   flex-direction: column;
-
-  span {
-    font-weight: 500;
-    font-size: 18px;
-    color: #202020;
-  }
-
-  p {
-    font-weight: 400;
-    font-size: 14px;
-    color: #757575;
-  }
+  font-weight: 500;
+  font-size: 18px;
+  color: #202020;
 `;
 
 const TimeInfo = styled.div`
