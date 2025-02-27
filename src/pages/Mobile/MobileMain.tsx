@@ -3,10 +3,35 @@ import { ReactComponent as RightArrow } from "assets/RightArrow.svg";
 import { useState } from "react";
 import Button from "components/atoms/Button";
 import { useNavigate } from "react-router-dom";
+import QRScanner from "./QrScanner";
 
 const MobileMain = () => {
   const [openBtn, setOpenBtn] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+  const [scanning, setScanning] = useState(false);
+
   const navi = useNavigate();
+
+  const handleClickGoWork = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setScanning(true);
+  };
+
+  const handleClickLeave = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setScanning(true);
+  };
+
+  const handleScanSuccess = (data: any) => {
+    console.log(data, "스캔완료");
+    // 여기서 읽은값 구분하고 api 요청할것. 실패시 스캔창 안닫음
+    setScanning(false);
+  };
+
+  if (scanning) {
+    return <QRScanner onScan={(data) => handleScanSuccess(data)} setScanning={setScanning} />;
+  }
+
   return (
     <Wrap>
       <InnerWrap>
@@ -32,8 +57,8 @@ const MobileMain = () => {
           </BtnInnerWrap>
           {openBtn && (
             <SmallButtonWrap>
-              <Button text="퇴근하기" isOutline={true} area={2} />
-              <Button text="출근하기" area={2} />
+              <Button text="퇴근하기" isOutline={true} area={2} onClick={handleClickLeave} />
+              <Button text="출근하기" area={2} onClick={handleClickGoWork} />
             </SmallButtonWrap>
           )}
         </MainButton>
@@ -72,10 +97,11 @@ export const Wrap = styled.div`
 
 export const InnerWrap = styled.main`
   width: 100%;
-  max-width: 375px;
+  max-width: 311px;
   margin-top: 80px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 24px;
 `;
 
@@ -85,6 +111,7 @@ export const ProfileWrap = styled.div`
   gap: 8px;
   padding: 0 10px;
   margin-bottom: 8px;
+  width: 100%;
 
   span {
     font-weight: 600;

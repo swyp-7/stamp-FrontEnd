@@ -30,4 +30,5 @@ const Title = styled.h1`
   font-size: 22px;
   color: #363636;
   margin: 28px 0 16px 0;
+  width: 100%;
 `;
