@@ -25,6 +25,7 @@ export const transformSchedule = (data: Record<string, any>[]) => {
     });
 };
 
+//요일별 스케줄 거르기
 export const filterScheduleByDate = (data: any[], date: any) => {
   const targetWeekDay = korToEngDays[date.format("dddd")];
 
@@ -34,4 +35,25 @@ export const filterScheduleByDate = (data: any[], date: any) => {
       (schedule: any) => schedule.weekDay === targetWeekDay
     )[0]
   }));
+};
+
+//현재 근무중인 인원 수 계산
+export const getCurrentWorkingEmployees = (data: any) => {
+  if (!data || !Array.isArray(data)) return 0;
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinutes = now.getMinutes();
+
+  return data?.filter(({ scheduleList }: any) => {
+    if (!scheduleList) return false;
+
+    const [startHour, startMinutes] = scheduleList.startTime.split(":").map(Number);
+    const [endHour, endMinutes] = scheduleList.endTime.split(":").map(Number);
+
+    const startTotalMinutes = startHour * 60 + startMinutes;
+    const endTotalMinutes = endHour * 60 + endMinutes;
+    const nowTotalMinutes = currentHour * 60 + currentMinutes;
+
+    return nowTotalMinutes >= startTotalMinutes && nowTotalMinutes < endTotalMinutes;
+  }).length;
 };

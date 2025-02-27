@@ -15,6 +15,7 @@ interface Props {
 const ScheduleTable = ({ data, isLoading, date }: Props) => {
   const { setSideMode } = useScheduleSideModeStore();
   const [listData, setListData] = useState<any>();
+
   useEffect(() => {
     if (data) {
       setListData(filterScheduleByDate(data?.data, date));
@@ -51,10 +52,10 @@ const ScheduleTable = ({ data, isLoading, date }: Props) => {
                 <TaskBar
                   key={idx}
                   name={item.name}
-                  start={parseInt(item.scheduleList.startTime.slice(0, 2), 10)}
+                  start={parseInt(item.scheduleList.startTime?.slice(0, 2), 10)}
                   duration={
-                    parseInt(item.scheduleList.endTime.slice(0, 2), 10) -
-                    parseInt(item.scheduleList.startTime.slice(0, 2), 10)
+                    parseInt(item.scheduleList.endTime?.slice(0, 2), 10) -
+                    parseInt(item.scheduleList.startTime?.slice(0, 2), 10)
                   }
                   end={item.scheduleList.endTime}
                   onClick={handleClickBar}
@@ -136,6 +137,3 @@ const LoadingWrap = styled.div`
   justify-content: center;
   align-items: center;
 `;
-function setLeftTimes(arg0: any) {
-  throw new Error("Function not implemented.");
-}

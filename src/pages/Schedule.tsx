@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import styled from "styled-components";
 import Button from "components/atoms/Button";
 import Layout from "components/Layout/ScheduleLayout";
@@ -18,14 +18,21 @@ import ScheduleTable from "components/molecules/Schedule/ScheduleTable";
 import { renderContent } from "hooks/Schedule";
 import { useScheduleSideModeStore } from "store/ScheduleStore";
 import { useFetchEmploByDays } from "hooks/api/ManageQuery";
+import { getCurrentWorkingEmployees } from "utils/Schedule";
 
 const Schedule = () => {
   const [date, setDate] = useState(dayjs());
+  const [workingCount, setWorkingCount] = useState(0);
   const { sideMode, setSideMode } = useScheduleSideModeStore();
   const { data, isLoading } = useFetchEmploByDays(
     dayjs(date).format("YYYY-MM-DD"),
     dayjs(date).format("YYYY-MM-DD")
   );
+  useEffect(() => {
+    if (data && Array.isArray(data)) {
+      setWorkingCount(getCurrentWorkingEmployees(data));
+    }
+  }, [data, isLoading]);
 
   const handlePrevDay = () => setDate(date.subtract(1, "day"));
   const handleNextDay = () => setDate(date.add(1, "day"));
@@ -39,7 +46,7 @@ const Schedule = () => {
           <TopLeft>
             <TitleWrap>
               <span>오늘의 근무 일정</span>
-              <p>지금 4명의 직원들이 열심히 일하고 있어요</p>
+              <p>지금 {workingCount}명의 직원들이 열심히 일하고 있어요</p>
             </TitleWrap>
             <Button text="스케줄 추가" area={2} onClick={() => setSideMode("add")} />
           </TopLeft>

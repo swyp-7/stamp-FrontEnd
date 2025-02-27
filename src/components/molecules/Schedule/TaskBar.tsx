@@ -13,24 +13,26 @@ const TaskBar = ({ start, end, duration, name = "김모모", onClick }: Props) =
   const [leftTime, setLeftTime] = useState("");
 
   useEffect(() => {
-    const updateLeftTime = () => {
-      const now = new Date();
-      const [h, m] = end.split(":").map(Number);
-      const endTime = new Date(now);
-      endTime.setHours(h, m, 0, 0);
-      const diff = endTime.getTime() - now.getTime();
-      if (diff > 0) {
-        const hours = Math.floor(diff / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        setLeftTime(`${hours}시간 ${minutes}분`);
-      } else {
-        setLeftTime("0시간 0분");
-      }
-    };
+    if (end && typeof end === "string") {
+      const updateLeftTime = () => {
+        const now = new Date();
+        const [h, m] = (end as string).split(":").map(Number);
+        const endTime = new Date(now);
+        endTime.setHours(h, m, 0, 0);
+        const diff = endTime.getTime() - now.getTime();
+        if (diff > 0) {
+          const hours = Math.floor(diff / (1000 * 60 * 60));
+          const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+          setLeftTime(`${hours}시간 ${minutes}분`);
+        } else {
+          setLeftTime("0시간 0분");
+        }
+      };
 
-    updateLeftTime();
-    const interval = setInterval(updateLeftTime, 60000);
-    return () => clearInterval(interval);
+      updateLeftTime();
+      const interval = setInterval(updateLeftTime, 60000);
+      return () => clearInterval(interval);
+    }
   }, [end]);
 
   return (
