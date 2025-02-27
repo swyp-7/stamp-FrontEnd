@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { korToEngDays } from "hooks/Manage";
 
 export const transformSchedule = (data: Record<string, any>[]) => {
@@ -57,3 +58,19 @@ export const getCurrentWorkingEmployees = (data: any) => {
     return nowTotalMinutes >= startTotalMinutes && nowTotalMinutes < endTotalMinutes;
   }).length;
 };
+
+// 추가근무 가능한 인원 필터링
+const filterScheduleByToday = (data: any) => {
+  const today = korToEngDays[dayjs().format("dddd")];
+
+  return data
+    .map((person: any) => ({
+      ...person,
+      scheduleList: person.scheduleList.filter(
+        (schedule: any) => schedule.isAdditional && schedule.weekDay === today
+      )
+    }))
+    .filter((person: any) => person.scheduleList.length > 0);
+};
+
+export default filterScheduleByToday;

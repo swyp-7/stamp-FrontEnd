@@ -17,8 +17,8 @@ import {
 import ScheduleTable from "components/molecules/Schedule/ScheduleTable";
 import { renderContent } from "hooks/Schedule";
 import { useScheduleSideModeStore } from "store/ScheduleStore";
-import { useFetchEmploByDays } from "hooks/api/ManageQuery";
-import { getCurrentWorkingEmployees } from "utils/Schedule";
+import { useFetchEmploByDayAndTime, useFetchEmploByDays } from "hooks/api/ManageQuery";
+import filterScheduleByToday, { getCurrentWorkingEmployees } from "utils/Schedule";
 
 const Schedule = () => {
   const [date, setDate] = useState(dayjs());
@@ -27,6 +27,11 @@ const Schedule = () => {
   const { data, isLoading } = useFetchEmploByDays(
     dayjs(date).format("YYYY-MM-DD"),
     dayjs(date).format("YYYY-MM-DD")
+  );
+  const { data: addList } = useFetchEmploByDayAndTime(
+    dayjs().format("YYYY-MM-DD"),
+    "01:00",
+    "23:59"
   );
   useEffect(() => {
     if (data && Array.isArray(data)) {
@@ -37,6 +42,12 @@ const Schedule = () => {
   const handlePrevDay = () => setDate(date.subtract(1, "day"));
   const handleNextDay = () => setDate(date.add(1, "day"));
 
+  const handleClickAddSchedule = () => {
+    setSideMode("add");
+  };
+  console.log(filterScheduleByToday(addList.data));
+
+  //TODO : https://chatgpt.com/c/67c0707b-a078-8001-bc12-837d318a97eb
   const { txt, txt2, content } = renderContent(sideMode);
 
   return (
@@ -48,7 +59,7 @@ const Schedule = () => {
               <span>오늘의 근무 일정</span>
               <p>지금 {workingCount}명의 직원들이 열심히 일하고 있어요</p>
             </TitleWrap>
-            <Button text="스케줄 추가" area={2} onClick={() => setSideMode("add")} />
+            <Button text="스케줄 추가" area={2} onClick={handleClickAddSchedule} />
           </TopLeft>
           <TopRight>
             <Today>Today</Today>

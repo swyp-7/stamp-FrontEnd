@@ -20,7 +20,7 @@ const ScheduleTable = ({ data, isLoading, date }: Props) => {
     if (data) {
       setListData(filterScheduleByDate(data?.data, date));
     }
-    console.log(listData);
+    // console.log(listData);
   }, [data, isLoading]);
 
   const handleClickBar = () => {
@@ -47,7 +47,7 @@ const ScheduleTable = ({ data, isLoading, date }: Props) => {
               <Cell key={colIdx} />
             ))}
             {listData
-              .filter((_: any, idx: number) => idx === rowIdx)
+              .filter((item: any, idx: number) => idx === rowIdx && !item.scheduleList.isAdditional)
               .map((item: any, idx: number) => (
                 <TaskBar
                   key={idx}

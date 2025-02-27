@@ -2,7 +2,9 @@ import { BlankNotiCard } from "components/molecules/Notification/NotiCard";
 import ScheduleAddCard from "components/molecules/Schedule/ScheduleAddCard";
 import WorkDetail from "components/molecules/WorkDetail";
 
-export const renderContent = (sideMode: "note" | "edit" | "add") => {
+// TODO: https://chatgpt.com/c/67c0707b-a078-8001-bc12-837d318a97eb
+
+export const renderContent = (sideMode: "note" | "edit" | "add", props?: any) => {
   switch (sideMode) {
     case "edit":
       return { txt: "스케줄 수정", txt2: "님", content: <WorkDetail height="616px" /> };
