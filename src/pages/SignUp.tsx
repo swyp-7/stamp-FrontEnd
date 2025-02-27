@@ -30,6 +30,12 @@ const SignUp = () => {
   const name = watch("name");
   const businessName = watch("businessName");
 
+  const handleClickPrev = () => {
+    if (step > 1) {
+      setStep((prev) => prev - 1);
+    }
+  };
+
   const handleClickNext = () => {
     setAgree([true, true]);
     setStep((prev) => prev + 1);
@@ -99,9 +105,7 @@ const SignUp = () => {
           {step === 4 && <SignStep4 name={name} storeName={businessName} />}
         </SignContentWrap>
         <SignNextBtnWrap>
-          {step !== 4 && (
-            <Button text="←" onClick={() => setStep((prev) => prev - 1)} isOutline={true} />
-          )}
+          {step !== 4 && <Button text="←" onClick={handleClickPrev} isOutline={true} />}
           {step === 1 && <Button text="모두 동의하고 다음으로" onClick={handleClickNext} />}
           {step === 2 && <Button text="다음으로" onClick={handleClickNext2} />}
           {step === 3 && <Button text="다음으로" onClick={handleClickNext3} />}
