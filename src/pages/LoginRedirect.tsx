@@ -1,8 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useFetchKakaoLogin, useFetchKakaoLogin_token } from "../hooks/api/LoginQuery";
 import { useEffect } from "react";
-import styled from "styled-components";
-import { ClipLoader } from "react-spinners";
+import LoadingSpinner from "components/molecules/LoadingSpinner";
 
 const LoginRedirect = () => {
   const navigate = useNavigate();
@@ -32,19 +31,7 @@ const LoginRedirect = () => {
     }
   }, [errorDesc]);
 
-  return (
-    <SpinnerWarp>
-      <ClipLoader color="#4A3AFF" size={60} />
-    </SpinnerWarp>
-  );
+  return <LoadingSpinner />;
 };
 
 export default LoginRedirect;
-
-const SpinnerWarp = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
