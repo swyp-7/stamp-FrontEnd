@@ -8,7 +8,7 @@ import ClockDropdowns from "components/molecules/Manage/ClockDropdowns";
 import QrButton from "components/molecules/MyPage/QrButton";
 import QrModal from "components/molecules/MyPage/QrModal";
 import PostCodeModal from "components/molecules/SignUp/PostCodeModal";
-import { useEditMyPage, useQrCreate } from "hooks/api/StoreQuery";
+import { useEditMyPage } from "hooks/api/StoreQuery";
 import { engToKorDays } from "hooks/Manage";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";

@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { ReactComponent as Left } from "assets/LeftArrow.svg";
 
 interface Props {
+  // eslint-disable-next-line no-unused-vars
   onScan: (data: string) => void;
   setScanning: Dispatch<SetStateAction<boolean>>;
 }

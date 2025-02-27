@@ -8,7 +8,7 @@ import { getCookie } from "utils/Cookie";
 const Layout = () => {
   const auth = getCookie("Authorization");
   const navigate = useNavigate();
-  const { setStoreData } = useStoreInfoStore();
+  const { setStoreData, updateCookie } = useStoreInfoStore();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,6 +17,7 @@ const Layout = () => {
       const auth = getCookie("Authorization");
 
       if (auth) {
+        updateCookie(auth);
         fetchEmployerMypage(auth).then((data) => {
           setStoreData(data?.data);
         });
