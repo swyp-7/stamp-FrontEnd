@@ -1,7 +1,9 @@
 import Button from "components/atoms/Button";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const MobileHome = () => {
+  const navi = useNavigate();
   return (
     <Wrap>
       <InnerWrap>
@@ -12,7 +14,12 @@ const MobileHome = () => {
           <p>스케줄 관리</p>
           서비스
         </Title>
-        <Button area={2} text="먼저 로그인하기" style={{ width: "155px" }} />
+        <Button
+          area={2}
+          text="먼저 로그인하기"
+          style={{ width: "155px" }}
+          onClick={() => navi("/m/login")}
+        />
       </InnerWrap>
       <SignUp>회원가입</SignUp>
     </Wrap>
@@ -52,6 +59,7 @@ const Title = styled.h1`
 `;
 
 const SignUp = styled.div`
+  display: none;
   position: absolute;
   bottom: 63px;
   width: 100%;
