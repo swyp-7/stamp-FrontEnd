@@ -1,19 +1,19 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { getCookie } from "utils/Cookie";
 import { transformEmployeeData } from "hooks/Manage.ts";
-
-const auth = getCookie("Authorization");
+import { useStoreInfoStore } from "store/StoreStore";
 
 // 직원 목록 조회
 export const useEmployeeList = (storeId: string, isModalActive: boolean) => {
+  const { cookieData } = useStoreInfoStore();
+
   return useQuery({
-    queryKey: ["employees", storeId, auth, isModalActive],
+    queryKey: ["employees", storeId, cookieData, isModalActive],
     queryFn: async () => {
       const res = await axios.get(
         `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/total`,
         {
-          headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
+          headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }
       );
       return res.data;
@@ -23,6 +23,8 @@ export const useEmployeeList = (storeId: string, isModalActive: boolean) => {
 
 // 직원 상세 조회
 export const useEmployeeDetail = (storeId: string, emploId: number) => {
+  const { cookieData: auth } = useStoreInfoStore();
+
   return useQuery({
     queryKey: ["employeeDetail", storeId, auth, emploId],
     queryFn: async () => {
@@ -40,6 +42,8 @@ export const useEmployeeDetail = (storeId: string, emploId: number) => {
 
 // 직원 저장
 export const useAddEmployee = (storeId: string) => {
+  const { cookieData: auth } = useStoreInfoStore();
+
   return useMutation({
     mutationFn: async (data: any) => {
       const transformedData = transformEmployeeData(data);
