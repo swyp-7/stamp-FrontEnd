@@ -18,8 +18,14 @@ const Manage = () => {
 
   useEffect(() => {
     if (!isLoading && data?.data.length > 0) {
-      setEmployerData(data?.data);
       setIsModalActive(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && data?.data.length > 0) {
+      setEmployerData(data?.data);
+      // setIsModalActive(false);
     }
     if (data?.data.length === 0) {
       setIsModalActive(true);
