@@ -1,7 +1,23 @@
 import styled from "styled-components";
+import { ReactComponent as Close } from "assets/Close.svg";
+import { Dispatch, SetStateAction } from "react";
 
-const QrModal = () => {
-  return <ModalBase></ModalBase>;
+interface Props {
+  setIsModalActive: Dispatch<SetStateAction<boolean>>;
+}
+
+const QrModal = ({ setIsModalActive }: Props) => {
+  return (
+    <ModalBase>
+      <div className="modal">
+        <CloseWrap onClick={() => setIsModalActive(false)}>
+          <Close />
+        </CloseWrap>
+        <Title>QR 코드</Title>
+        <QrWrap></QrWrap>
+      </div>
+    </ModalBase>
+  );
 };
 
 export default QrModal;
@@ -22,5 +38,39 @@ const ModalBase = styled.div`
     width: 991px;
     height: 751px;
     border-radius: 36px;
+    background-color: #fff;
+    padding: 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 64px;
+    position: relative;
   }
+`;
+
+const CloseWrap = styled.div`
+  position: absolute;
+  top: 64px;
+  left: 64px;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+`;
+
+const Title = styled.div`
+  font-weight: 700;
+  font-size: 44px;
+  color: #363636;
+`;
+
+const QrWrap = styled.div`
+  width: 331px;
+  height: 331px;
+  background-color: gray;
 `;

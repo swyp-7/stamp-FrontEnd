@@ -1,8 +1,10 @@
 // import { useMutation, useQuery } from "@tanstack/react-query";
 // import ApiService from "../utils/ApiService";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useStoreInfoStore } from "store/StoreStore";
 import { getCookie } from "utils/Cookie";
+import { transformSchedule } from "utils/Schedule";
 const auth = getCookie("Authorization");
 
 // const apiService = new ApiService();
@@ -44,27 +46,21 @@ export const useEditMyPage = (storeId: string) => {
   });
 };
 
-const transformSchedule = (data: Record<string, any>[]) => {
-  const weekDays: { [key: string]: string } = {
-    월요일: "MONDAY",
-    화요일: "TUESDAY",
-    수요일: "WEDNESDAY",
-    목요일: "THURSDAY",
-    금요일: "FRIDAY",
-    토요일: "SATURDAY",
-    일요일: "SUNDAY"
-  };
+// QR 생성
+export const useQrCreate = (storeId: string) => {
+  const { cookieData } = useStoreInfoStore();
 
-  return data
-    .filter((item) => item.weekDay && Object.keys(item).length > 0)
-    .map((item) => {
-      const isClosed = item.startTime === "휴무" || item.endTime === "휴무";
-      return {
-        id: item.id || null,
-        weekDay: weekDays[item.weekDay ?? ""] ?? item.weekDay,
-        startTime: isClosed ? "00:00" : item.startTime,
-        endTime: isClosed ? "00:00" : item.endTime,
-        isClosed
-      };
-    });
+  return useQuery({
+    queryKey: ["QRCreate", cookieData],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/createQR`,
+        {
+          headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
+        }
+      );
+      return res.data;
+    },
+    enabled: !!storeId
+  });
 };

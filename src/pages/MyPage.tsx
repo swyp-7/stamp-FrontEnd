@@ -6,8 +6,9 @@ import { TitleWrap } from "components/Layout/MainMenuLayout";
 import MyPageLayout from "components/Layout/MyPageLayout";
 import ClockDropdowns from "components/molecules/Manage/ClockDropdowns";
 import QrButton from "components/molecules/MyPage/QrButton";
+import QrModal from "components/molecules/MyPage/QrModal";
 import PostCodeModal from "components/molecules/SignUp/PostCodeModal";
-import { useEditMyPage } from "hooks/api/StoreQuery";
+import { useEditMyPage, useQrCreate } from "hooks/api/StoreQuery";
 import { engToKorDays } from "hooks/Manage";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -25,7 +26,7 @@ const Mypage = () => {
     name: "scheduleList"
   });
   const { storeData, updateStore } = useStoreInfoStore();
-
+  // const { data } = useQrCreate(storeData?.id);
   const { mutate } = useEditMyPage(storeData?.id);
 
   useEffect(() => {
@@ -76,6 +77,7 @@ const Mypage = () => {
 
   // QR코드
   const handleQr = () => {
+    setIsModalActive(true);
     setModalType("qr");
     console.log("큐알코드");
   };
@@ -188,6 +190,7 @@ const Mypage = () => {
               handlePostComplete={handlePostComplete}
             />
           )}
+          {isModalActive && modalType === "qr" && <QrModal setIsModalActive={setIsModalActive} />}
         </Wrap>
       </div>
     </MyPageLayout>
