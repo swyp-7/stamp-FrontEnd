@@ -3,9 +3,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useStoreInfoStore } from "store/StoreStore";
-import { getCookie } from "utils/Cookie";
 import { transformSchedule } from "utils/Schedule";
-const auth = getCookie("Authorization");
 
 // const apiService = new ApiService();
 
@@ -26,6 +24,7 @@ export const fetchEmployerMypage = async (token: string) => {
 
 // 가게 정보 수정하기
 export const useEditMyPage = (storeId: string) => {
+  const { cookieData: auth } = useStoreInfoStore();
   return useMutation({
     mutationFn: async (data: any) => {
       const formData = {
