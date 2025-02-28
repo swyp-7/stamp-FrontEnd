@@ -40,7 +40,7 @@ export const useFetchSignUp = () => {
 
 // 인가코드로 카카오 로그인 토큰 받기
 export const useFetchKakaoLogin = (code: string) => {
-  const KEY = process.env.REACT_APP_KAKAO_KEY;
+  const KEY = process.env.REACT_APP_KAKAO_KEY?.trim();
   const URI = process.env.NODE_ENV === "production" ? host_kakao_login_uri : local_kakao_login_uri;
 
   return useQuery({
