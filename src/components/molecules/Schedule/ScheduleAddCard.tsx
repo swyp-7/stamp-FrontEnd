@@ -1,25 +1,24 @@
 import styled from "styled-components";
 import Button from "components/atoms/Button";
 
-// interface Props {
-//   name: string;
-//   cate: string;
-//   day: string;
-//   time: string;
-// }
+interface Props {
+  name?: string;
+  contact?: string;
+  day?: string;
+}
 
-const ScheduleAddCard = () => {
+const ScheduleAddCard = ({ name = "김모모", contact = "010-000-0000", day = "수, 목" }: Props) => {
   return (
     <Wrap>
       <NameTxt>
-        <span>김모모</span>
-        <p>직원</p>
+        <span>{name}</span>
+        <p>{contact}</p>
       </NameTxt>
       <TimeTxt>
-        <span>수, 목</span>
-        <span>근무 가능 10:00 ~ 16:00</span>
+        <span>{day}</span>
+        <span>근무 가능</span>
       </TimeTxt>
-      <Button text="추가근무 요청하기" area={1} />
+      <Button text="추가근무 요청하기" area={1} onClick={() => alert("기능 준비중")} />
     </Wrap>
   );
 };
