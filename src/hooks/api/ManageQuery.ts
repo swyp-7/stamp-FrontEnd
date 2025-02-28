@@ -94,7 +94,7 @@ export const useFetchEmploByDays = (start: string, end: string) => {
     queryKey: ["employees", storeId, start, end],
     queryFn: async () => {
       const res = await axios.get(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/period?startDate=${start}&endDate=${end}`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/period?startDate=${start}&endDate=${end}`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }

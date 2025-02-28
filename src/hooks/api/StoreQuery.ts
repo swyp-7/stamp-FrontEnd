@@ -12,7 +12,7 @@ const auth = getCookie("Authorization");
 // 내정보 불러오기
 export const fetchEmployerMypage = async (token: string) => {
   try {
-    const response = await axios.get("http://3.35.211.97:8080/api/v1/employer/mypage", {
+    const response = await axios.get("https://temp.api-stamp.p-e.kr/api/v1/employer/mypage", {
       headers: {
         Authorization: `Bearer ${token}`,
         withCredentials: true
