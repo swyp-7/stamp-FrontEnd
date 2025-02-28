@@ -89,16 +89,29 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
       data?.data?.scheduleList?.map((item: any) => {
         if (item.isAdditional) {
           appendAddWorkDay({
+            id: item.id,
             weekDay: engToKorDays[item.weekDay]
           });
-        } else {
-          appendWorkDay({
-            weekDay: engToKorDays[item.weekDay],
-            startTime: item.startTime,
-            endTime: item.endTime
-          });
         }
+        // else {
+        //   appendWorkDay({
+        //     id: item.id,
+        //     weekDay: engToKorDays[item.weekDay],
+        //     startTime: item.startTime,
+        //     endTime: item.endTime
+        //   });
+        // }
       });
+      const elseItems = data?.data?.scheduleList
+        ?.filter((item: any) => !item.isAdditional)
+        ?.map((item: any) => ({
+          id: item.id,
+          weekDay: engToKorDays[item.weekDay],
+          startTime: item.startTime,
+          endTime: item.endTime
+        }));
+
+      appendWorkDay(elseItems);
     } else {
       reset();
       appendWorkDay({});

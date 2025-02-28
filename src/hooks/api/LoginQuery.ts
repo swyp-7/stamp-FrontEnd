@@ -1,14 +1,22 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import ApiService from "utils/ApiService";
 import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable";
+import axios from "axios";
 
 const apiService = new ApiService();
 
 // 로그인
+// export const useFetchCustomLogin = () => {
+//   return useMutation({
+//     mutationFn: async (data: any) => {
+//       return await apiService.post<any>("/auth/login", data);
+//     }
+//   });
+// };
 export const useFetchCustomLogin = () => {
   return useMutation({
     mutationFn: async (data: any) => {
-      return await apiService.post<any>("/auth/login", data);
+      return await axios.post<any>("https://temp.api-stamp.p-e.kr/api/v1/auth/login", data);
     }
   });
 };

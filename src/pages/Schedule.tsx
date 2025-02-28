@@ -17,8 +17,8 @@ import {
 import ScheduleTable from "components/molecules/Schedule/ScheduleTable";
 import { renderContent } from "hooks/Schedule";
 import { useScheduleSideModeStore } from "store/ScheduleStore";
-import { useFetchEmploByDayAndTime, useFetchEmploByDays } from "hooks/api/ManageQuery";
-import filterScheduleByToday, { getCurrentWorkingEmployees } from "utils/Schedule";
+import { useFetchEmploByDays } from "hooks/api/ManageQuery";
+import { getCurrentWorkingEmployees } from "utils/Schedule";
 
 const Schedule = () => {
   const [date, setDate] = useState(dayjs());
@@ -28,14 +28,12 @@ const Schedule = () => {
     dayjs(date).format("YYYY-MM-DD"),
     dayjs(date).format("YYYY-MM-DD")
   );
-  const { data: addList } = useFetchEmploByDayAndTime(
-    dayjs().format("YYYY-MM-DD"),
-    "01:00",
-    "23:59"
-  );
+
   useEffect(() => {
-    if (data && Array.isArray(data)) {
-      setWorkingCount(getCurrentWorkingEmployees(data));
+    if (data) {
+      if (Array.isArray(data)) {
+        setWorkingCount(getCurrentWorkingEmployees(data));
+      }
     }
   }, [data, isLoading]);
 
@@ -45,9 +43,7 @@ const Schedule = () => {
   const handleClickAddSchedule = () => {
     setSideMode("add");
   };
-  console.log(filterScheduleByToday(addList.data));
 
-  //TODO : https://chatgpt.com/c/67c0707b-a078-8001-bc12-837d318a97eb
   const { txt, txt2, content } = renderContent(sideMode);
 
   return (

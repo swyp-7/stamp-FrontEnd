@@ -11,7 +11,7 @@ export const useEmployeeList = (storeId: string, isModalActive: boolean) => {
     queryKey: ["employees", storeId, cookieData, isModalActive],
     queryFn: async () => {
       const res = await axios.get(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/total`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/total`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }
@@ -29,7 +29,7 @@ export const useEmployeeDetail = (storeId: string, emploId: number) => {
     queryKey: ["employeeDetail", storeId, auth, emploId],
     queryFn: async () => {
       const res = await axios.get(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/${emploId}`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/${emploId}`,
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
         }
@@ -49,7 +49,7 @@ export const useAddEmployee = (storeId: string) => {
       const transformedData = transformEmployeeData(data);
 
       return await axios.post(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/enroll`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/enroll`,
         transformedData,
         {
           headers: {
@@ -72,7 +72,7 @@ export const useUpdateEmployee = () => {
       const transformedData = transformEmployeeData(data);
 
       return await axios.put(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/${data.id}`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/${data.id}`,
         transformedData,
         {
           headers: {
@@ -94,7 +94,7 @@ export const useFetchEmploByDays = (start: string, end: string) => {
     queryKey: ["employees", storeId, start, end],
     queryFn: async () => {
       const res = await axios.get(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/period?startDate=${start}&endDate=${end}`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/period?startDate=${start}&endDate=${end}`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }
@@ -115,7 +115,7 @@ export const useFetchEmploByDayAndTime = (date: string, start: string, end: stri
     queryKey: ["employees", storeId, start, end],
     queryFn: async () => {
       const res = await axios.get(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/available?date=${date}&startTime=${start}&endTime=${end}`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/available?date=${date}&startTime=${start}&endTime=${end}`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }

@@ -33,14 +33,16 @@ const Login = () => {
   const onSubmit: SubmitHandler<any> = (data) => {
     mutate(data, {
       onSettled: (data) => {
-        if (data && data.message === "SUCCESS") {
-          const expires = new Date(Date.now() + data.data.expirationTime);
-          setCookie("Authorization", data.data.token, { path: "/", expires });
-          updateCookie(data.data.token);
+        if (data && !data.data.data.isNewUse) {
+          const expires = new Date(Date.now() + data.data.data.expirationTime);
+          setCookie("Authorization", data.data.data.token, { path: "/", expires });
+          updateCookie(data.data.data.token);
           navigate("/schedule");
-        } else {
-          alert("회원 정보를 찾을 수 없습니다.");
         }
+      },
+      onError: (err) => {
+        console.log(err);
+        alert("오류 발생");
       }
     });
   };

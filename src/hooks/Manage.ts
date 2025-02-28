@@ -6,6 +6,7 @@ const formatDate = (dateString: string) => {
 export const transformEmployeeData = (data: any) => {
   const scheduleList = [
     ...data.workDays.map((day: any) => ({
+      id: day.id,
       weekDay: korToEngDays[day.weekDay] || day.weekDay,
       startTime: day.startTime,
       endTime: day.endTime,
@@ -14,6 +15,7 @@ export const transformEmployeeData = (data: any) => {
     ...data.addWorkDays.map((day: any) => {
       if (!day.weekDay) return;
       return {
+        id: day.id,
         weekDay: korToEngDays[day.weekDay] || day.weekDay,
         startTime: null,
         endTime: null,

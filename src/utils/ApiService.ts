@@ -10,7 +10,7 @@ export default class ApiService {
 
   constructor() {
     const config: AxiosRequestConfig = {
-      baseURL: "http://3.35.211.97:8080/api/v1"
+      baseURL: "https://temp.api-stamp.p-e.kr/api/v1"
     };
 
     this.axiosInstance = axios.create(config);

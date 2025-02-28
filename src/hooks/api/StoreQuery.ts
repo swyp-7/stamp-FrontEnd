@@ -3,16 +3,14 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useStoreInfoStore } from "store/StoreStore";
-import { getCookie } from "utils/Cookie";
 import { transformSchedule } from "utils/Schedule";
-const auth = getCookie("Authorization");
 
 // const apiService = new ApiService();
 
 // 내정보 불러오기
 export const fetchEmployerMypage = async (token: string) => {
   try {
-    const response = await axios.get("http://3.35.211.97:8080/api/v1/employer/mypage", {
+    const response = await axios.get("https://temp.api-stamp.p-e.kr/api/v1/employer/mypage", {
       headers: {
         Authorization: `Bearer ${token}`,
         withCredentials: true
@@ -26,6 +24,7 @@ export const fetchEmployerMypage = async (token: string) => {
 
 // 가게 정보 수정하기
 export const useEditMyPage = (storeId: string) => {
+  const { cookieData: auth } = useStoreInfoStore();
   return useMutation({
     mutationFn: async (data: any) => {
       const formData = {
@@ -36,7 +35,7 @@ export const useEditMyPage = (storeId: string) => {
         businessType: data.businessType,
         storeScheduleList: data.scheduleList ? transformSchedule(data.scheduleList) : []
       };
-      return await axios.put(`http://3.35.211.97:8080/api/v1/store/${storeId}`, formData, {
+      return await axios.put(`https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}`, formData, {
         headers: {
           Authorization: `Bearer ${auth}`,
           withCredentials: true
@@ -54,7 +53,7 @@ export const useQrCreate = (storeId: string) => {
     queryKey: ["QRCreate", cookieData],
     queryFn: async () => {
       const res = await axios.get(
-        `http://3.35.211.97:8080/api/v1/store/${storeId}/employees/createQR`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/createQR`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }
