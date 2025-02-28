@@ -60,7 +60,7 @@ export const getCurrentWorkingEmployees = (data: any) => {
 };
 
 // 추가근무 가능한 인원 필터링
-const filterScheduleByToday = (data: any) => {
+export const filterScheduleByToday = (data: any) => {
   const today = korToEngDays[dayjs().format("dddd")];
 
   return data
@@ -72,5 +72,3 @@ const filterScheduleByToday = (data: any) => {
     }))
     .filter((person: any) => person.scheduleList.length > 0);
 };
-
-export default filterScheduleByToday;
