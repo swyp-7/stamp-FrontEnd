@@ -11,6 +11,7 @@ interface StoreInfoState {
   updateStore: (store: Record<string, any>) => void;
   // eslint-disable-next-line no-unused-vars
   updateCookie: (cookie: string) => void;
+  // eslint-disable-next-line no-unused-vars
   updateMobileCookie: (cookie: string) => void;
 }
 
