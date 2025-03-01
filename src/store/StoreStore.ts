@@ -18,7 +18,7 @@ interface StoreInfoState {
 }
 
 export const useStoreInfoStore = create<StoreInfoState>((set) => ({
-  storeData: undefined,
+  storeData: {},
   mobileData: undefined,
   cookieData: undefined,
   mobileCookieData: undefined,

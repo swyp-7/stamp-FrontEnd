@@ -6,6 +6,8 @@ import weekOfYear from "dayjs/plugin/weekOfYear";
 import { ReactComponent as CloseIcon } from "assets/Close.svg";
 import { useEffect, useState } from "react";
 import "dayjs/locale/ko";
+import { fetchAllMonthAttend } from "hooks/api/ManageAttend";
+import { useStoreInfoStore } from "store/StoreStore";
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
 dayjs.locale("ko");
@@ -21,6 +23,8 @@ const ManageAttend = () => {
   const endMonth = currentDate.endOf("month");
   const startDate = startMonth.startOf("week");
   const endDate = endMonth.endOf("week");
+  const { storeData } = useStoreInfoStore();
+  const { data } = fetchAllMonthAttend(storeData?.id, currentDate.format("YYYY-MM") + "-01");
 
   useEffect(() => {
     setCurrentDate(dayjs());
@@ -36,10 +40,8 @@ const ManageAttend = () => {
   const handleClickDay = (event: React.MouseEvent<HTMLDivElement>, date: Date) => {
     document.querySelectorAll(".clicked").forEach((el) => el.classList.remove("clicked"));
     event.currentTarget.classList.add("clicked");
-
     const parentElement = event.currentTarget.closest(".second-left") as HTMLElement;
     const parentRect = parentElement.getBoundingClientRect();
-
     const rect = event.currentTarget.getBoundingClientRect();
     const rightSpace = parentRect.right - (rect.right + 5);
     const showOnRight = rightSpace >= 293;
@@ -205,9 +207,9 @@ const DayCell = styled.div`
   &:nth-child(7n) {
     border-right: none;
   }
-  &:nth-child(n + 29):nth-child(-n + 35) {
+  /* &:nth-child(n + 29):nth-child(-n + 35) {
     border-bottom: none;
-  }
+  } */
 `;
 
 const DayNumber = styled.span<{ $isOtherMonth: boolean; $isClicked?: boolean }>`
