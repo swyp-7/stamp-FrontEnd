@@ -48,12 +48,13 @@ export const useEditMyPage = (storeId: string) => {
 // QR 생성
 export const useQrCreate = (storeId: string) => {
   const { cookieData } = useStoreInfoStore();
+  const endUrl = process.env.NODE_ENV === "production" ? "createQR" : "createQR/local";
 
   return useQuery({
     queryKey: ["QRCreate", cookieData],
     queryFn: async () => {
       const res = await axios.get(
-        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/createQR`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/${endUrl}`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }
@@ -61,5 +62,22 @@ export const useQrCreate = (storeId: string) => {
       return res.data;
     },
     enabled: !!storeId
+  });
+};
+
+// QR 조회
+export const FetchQrCode = (storeId: string) => {
+  const { cookieData } = useStoreInfoStore();
+  const endUrl = process.env.NODE_ENV === "production" ? "getQR" : "getQR/local";
+
+  return useMutation({
+    mutationFn: async () => {
+      return await axios.get(
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/${endUrl}`,
+        {
+          headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
+        }
+      );
+    }
   });
 };

@@ -8,7 +8,7 @@ import ClockDropdowns from "components/molecules/Manage/ClockDropdowns";
 import QrButton from "components/molecules/MyPage/QrButton";
 import QrModal from "components/molecules/MyPage/QrModal";
 import PostCodeModal from "components/molecules/SignUp/PostCodeModal";
-import { useEditMyPage } from "hooks/api/StoreQuery";
+import { FetchQrCode, useEditMyPage, useQrCreate } from "hooks/api/StoreQuery";
 import { engToKorDays } from "hooks/Manage";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -26,7 +26,8 @@ const Mypage = () => {
     name: "scheduleList"
   });
   const { storeData, updateStore } = useStoreInfoStore();
-  // const { data } = useQrCreate(storeData?.id);
+  const { data } = useQrCreate(storeData?.id);
+  const { mutate: getQRMutate } = FetchQrCode(storeData?.id);
   const { mutate } = useEditMyPage(storeData?.id);
 
   useEffect(() => {
@@ -79,6 +80,7 @@ const Mypage = () => {
   const handleQr = () => {
     setIsModalActive(true);
     setModalType("qr");
+    getQRMutate();
     console.log("큐알코드");
   };
 
