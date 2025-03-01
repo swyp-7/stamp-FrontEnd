@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { korToEngDays } from "hooks/Manage";
+import { engToKorDays, korToEngDays } from "hooks/Manage";
 
 export const transformSchedule = (data: Record<string, any>[]) => {
   const weekDays: { [key: string]: string } = {
@@ -71,4 +71,12 @@ export const filterScheduleByToday = (data: any) => {
       )
     }))
     .filter((person: any) => person.scheduleList.length > 0);
+};
+
+// 요일로 이번주 날짜 구하기
+export const getDateForWeekday = (weekDay: string) => {
+  const today = dayjs();
+  const weekStart = today.startOf("week");
+  const targetDayIndex = Object.keys(engToKorDays).indexOf(weekDay);
+  return weekStart.add(targetDayIndex, "day").format("YYYY.MM.DD");
 };

@@ -1,18 +1,40 @@
 import styled from "styled-components";
 import { InnerWrap, ProfileWrap, Wrap } from "./MobileMain";
 import { ScheduleCard } from "components/molecules/Mobile/Mobile";
+import { useStoreInfoStore } from "store/StoreStore";
+import { useEffect, useState } from "react";
+import { getDateForWeekday } from "utils/Schedule";
+import { engToKorDays } from "hooks/Manage";
 
 const MobileSchedule = () => {
+  const { mobileData } = useStoreInfoStore();
+  const [dateList, setDateList] = useState<any[]>([]);
+  useEffect(() => {
+    if (mobileData?.scheduleList) {
+      const filteredData = mobileData?.scheduleList
+        .filter(({ isAdditional }: any) => !isAdditional)
+        .map(({ weekDay, startTime, endTime }: any) => ({
+          date: `${getDateForWeekday(weekDay)}(${engToKorDays[weekDay]})`,
+          time: `${startTime?.slice(0, 5)}~${endTime?.slice(0, 5)}`
+        }));
+      setDateList(filteredData || []);
+    }
+    console.log(dateList);
+  }, [mobileData]);
+
   return (
     <ScheduleWrap>
       <InnerWrap>
         <ProfileWrap>
-          <span>김모모</span>
-          <p>직원</p>
+          <span>{mobileData?.name || "직원 정보 불러오기 오류"}</span>
+          <p>{mobileData?.contact || " "}</p>
         </ProfileWrap>
         <Title>이번주 근무표</Title>
-        <ScheduleCard />
-        <ScheduleCard disabled={true} />
+        {dateList.length ? (
+          dateList.map((item, idx) => <ScheduleCard key={idx} date={item.date} time={item.time} />)
+        ) : (
+          <div>근무표 불러오기 오류</div>
+        )}
       </InnerWrap>
     </ScheduleWrap>
   );

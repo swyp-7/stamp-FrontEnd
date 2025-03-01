@@ -4,8 +4,10 @@ import { useState } from "react";
 import Button from "components/atoms/Button";
 import { useNavigate } from "react-router-dom";
 import QRScanner from "./QrScanner";
+import { useStoreInfoStore } from "store/StoreStore";
 
 const MobileMain = () => {
+  const { mobileData } = useStoreInfoStore();
   const [openBtn, setOpenBtn] = useState(false);
   // const [showModal, setShowModal] = useState(false);
   const [scanning, setScanning] = useState(false);
@@ -36,8 +38,8 @@ const MobileMain = () => {
     <Wrap>
       <InnerWrap>
         <ProfileWrap>
-          <span>김모모</span>
-          <p>직원</p>
+          <span>{mobileData?.name || "직원 정보 불러오기 오류"}</span>
+          <p>{mobileData?.contact || " "}</p>
         </ProfileWrap>
         <MainButton
           onClick={() => setOpenBtn(!openBtn)}
