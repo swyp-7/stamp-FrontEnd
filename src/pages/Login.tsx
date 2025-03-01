@@ -28,7 +28,7 @@ const Login = () => {
   };
 
   // 그냥로그인
-  const { mutate } = useFetchCustomLogin();
+  const { mutate, isPending } = useFetchCustomLogin();
 
   const onSubmit: SubmitHandler<any> = (data) => {
     mutate(data, {
@@ -66,7 +66,13 @@ const Login = () => {
             required: "비밀번호를 입력해 주세요."
           })}
         />
-        <Button type="submit" text="스탬프 시작하기" variant="contained" disabled={!isValid} />
+        <Button
+          type="submit"
+          text={isPending ? "로그인 중" : "스탬프 시작하기"}
+          variant="contained"
+          disabled={!isValid}
+          style={{ width: "247px" }}
+        />
       </form>
       <SocialTitle>
         <span></span>
