@@ -65,12 +65,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
   });
   const { mutate: createMutate } = useAddEmployee(storeId);
   const { mutate: updateMutate } = useUpdateEmployee();
-  const { data } = useEmployeeDetail(storeId, emploId);
-  useEffect(() => {
-    reset();
-    appendWorkDay({});
-    appendAddWorkDay({});
-  }, []);
+  const { data, isLoading } = useEmployeeDetail(storeId, emploId);
   useEffect(() => {
     if (emploId && data) {
       reset({
@@ -93,14 +88,6 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
             weekDay: engToKorDays[item.weekDay]
           });
         }
-        // else {
-        //   appendWorkDay({
-        //     id: item.id,
-        //     weekDay: engToKorDays[item.weekDay],
-        //     startTime: item.startTime,
-        //     endTime: item.endTime
-        //   });
-        // }
       });
       const elseItems = data?.data?.scheduleList
         ?.filter((item: any) => !item.isAdditional)
@@ -112,7 +99,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
         }));
 
       appendWorkDay(elseItems);
-    } else {
+    } else if (!isLoading && !data) {
       reset();
       appendWorkDay({});
       appendAddWorkDay({});
@@ -151,6 +138,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
       return updateMutate(data, {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ["employees"] });
+          alert("수정 완료");
           setIsModalActive(false);
           setEmploId(0);
         },
