@@ -10,7 +10,7 @@ export const fetchAllMonthAttend = (storeId: string, firstDate: string) => {
     queryKey: ["monthOfAttend", storeId, auth, firstDate],
     queryFn: async () => {
       const res = await axios.get(
-        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/attendance/month/all/?firstDate=${firstDate}`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/attendance/month/all?firstDate=${firstDate}`,
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
         }
