@@ -26,7 +26,6 @@ const Mypage = () => {
     name: "scheduleList"
   });
   const { storeData, updateStore } = useStoreInfoStore();
-  const { mutate: getQRMutate } = FetchQrCode(storeData?.id);
   const { mutate } = useEditMyPage(storeData?.id);
 
   useEffect(() => {
@@ -79,9 +78,6 @@ const Mypage = () => {
   const handleQr = () => {
     setIsModalActive(true);
     setModalType("qr");
-    getQRMutate();
-    // TODO: qr 불러온거 화면에 표시할것
-    console.log("큐알코드");
   };
 
   const onSubmit: SubmitHandler<any> = (data) => {

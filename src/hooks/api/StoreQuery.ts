@@ -70,14 +70,16 @@ export const FetchQrCode = (storeId: string) => {
   const { cookieData } = useStoreInfoStore();
   const endUrl = process.env.NODE_ENV === "production" ? "getQR" : "getQR/local";
 
-  return useMutation({
-    mutationFn: async () => {
-      return await axios.get(
+  return useQuery({
+    queryKey: ["qrCode", storeId, cookieData],
+    queryFn: async () => {
+      const response = await axios.get(
         `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/${endUrl}`,
         {
           headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
         }
       );
+      return response.data;
     }
   });
 };

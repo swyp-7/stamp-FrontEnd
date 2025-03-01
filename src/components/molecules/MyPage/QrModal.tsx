@@ -1,12 +1,27 @@
 import styled from "styled-components";
 import { ReactComponent as Close } from "assets/Close.svg";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useStoreInfoStore } from "store/StoreStore";
+import { FetchQrCode } from "hooks/api/StoreQuery";
+import { byteToImageUrl } from "utils/QRUtil";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
 }
 
 const QrModal = ({ setIsModalActive }: Props) => {
+  const [qrUrl, setQrUrl] = useState<string | null>(null);
+  const { storeData } = useStoreInfoStore();
+  const { data, isLoading } = FetchQrCode(storeData?.id);
+  useEffect(() => {
+    if (!isLoading && data) {
+      if (data.data.byteArr) {
+        const url = byteToImageUrl(data.data.byteArr);
+        setQrUrl(url);
+      }
+    }
+  }, [data, isLoading]);
+
   return (
     <ModalBase>
       <div className="modal">
@@ -14,7 +29,9 @@ const QrModal = ({ setIsModalActive }: Props) => {
           <Close />
         </CloseWrap>
         <Title>QR 코드</Title>
-        <QrWrap></QrWrap>
+        <QrWrap>
+          {qrUrl ? <img src={qrUrl} alt={"QR코드 이미지"} /> : <div>QR 로딩 오류</div>}
+        </QrWrap>
       </div>
     </ModalBase>
   );
@@ -35,8 +52,8 @@ const ModalBase = styled.div`
   align-items: center;
 
   .modal {
-    width: 991px;
-    height: 751px;
+    width: 750px;
+    height: 600px;
     border-radius: 36px;
     background-color: #fff;
     padding: 64px;
@@ -44,7 +61,7 @@ const ModalBase = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 64px;
+    gap: 34px;
     position: relative;
   }
 `;
@@ -73,4 +90,12 @@ const QrWrap = styled.div`
   width: 331px;
   height: 331px;
   background-color: gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
 `;
