@@ -31,7 +31,11 @@ const MobileLogin = () => {
       onSuccess: (data) => {
         const expires = new Date(Date.now() + data.data.data.expirationTime);
         getEmploData(
-          { storeId: data.data.data.storeId, emploId: data.data.data.employeeId },
+          {
+            storeId: data.data.data.storeId,
+            emploId: data.data.data.employeeId,
+            auth: data.data.data.token
+          },
           { onSuccess: (data) => setMobileData(data.data.data) }
         );
         setCookie("Authorization_mobile", data.data.data.token, { path: "/m/", expires });

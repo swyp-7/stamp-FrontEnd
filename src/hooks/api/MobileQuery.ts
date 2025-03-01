@@ -1,7 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import { useStoreInfoStore } from "store/StoreStore";
-// import { useStoreInfoStore } from "store/StoreStore";
 
 // 모바일 로그인
 export const useFetchMobileLogin = () => {
@@ -17,10 +15,8 @@ export const useFetchMobileLogin = () => {
 
 // 직원 상세 조회(수정 필요?)
 export const useEmployeeDetailMobile = () => {
-  const { mobileCookieData: auth } = useStoreInfoStore();
-
   return useMutation({
-    mutationFn: async ({ storeId, emploId }: any) => {
+    mutationFn: async ({ storeId, emploId, auth }: any) => {
       return await axios.get(
         `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/${emploId}`,
         {
