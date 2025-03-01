@@ -4,7 +4,7 @@ import { ReactComponent as LeftIcon } from "assets/LeftArrow.svg";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useFetchMobileLogin } from "hooks/api/MobileQuery";
+import { useEmployeeDetailMobile, useFetchMobileLogin } from "hooks/api/MobileQuery";
 import { useStoreInfoStore } from "store/StoreStore";
 import { setCookie } from "utils/Cookie";
 
@@ -16,8 +16,9 @@ const MobileLogin = () => {
     formState: { isValid }
   } = useForm();
   const [showLabel, setShowLabel] = useState(false);
-  const { updateMobileCookie } = useStoreInfoStore();
+  const { updateMobileCookie, setMobileData } = useStoreInfoStore();
   const { mutate } = useFetchMobileLogin();
+  const { mutate: getEmploData } = useEmployeeDetailMobile();
 
   const onSubmit: SubmitHandler<any> = (data) => {
     mutate(data, {
@@ -29,6 +30,10 @@ const MobileLogin = () => {
       },
       onSuccess: (data) => {
         const expires = new Date(Date.now() + data.data.data.expirationTime);
+        getEmploData(
+          { storeId: data.data.data.storeId, emploId: data.data.data.employeeId },
+          { onSuccess: (data) => setMobileData(data.data.data) }
+        );
         setCookie("Authorization_mobile", data.data.data.token, { path: "/m/", expires });
         updateMobileCookie(data.data.data.token);
         navi("/m/main");

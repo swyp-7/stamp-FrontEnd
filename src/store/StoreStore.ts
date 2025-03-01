@@ -10,6 +10,8 @@ interface StoreInfoState {
   // eslint-disable-next-line no-unused-vars
   updateStore: (store: Record<string, any>) => void;
   // eslint-disable-next-line no-unused-vars
+  setMobileData: (data: Record<string, any>) => void;
+  // eslint-disable-next-line no-unused-vars
   updateCookie: (cookie: string) => void;
   // eslint-disable-next-line no-unused-vars
   updateMobileCookie: (cookie: string) => void;
@@ -25,6 +27,7 @@ export const useStoreInfoStore = create<StoreInfoState>((set) => ({
     set((state) => ({
       storeData: state.storeData ? { ...state.storeData, store } : { store }
     })),
+  setMobileData: (data: Record<string, any>) => set({ mobileData: data }),
   updateCookie: (cookie: string) => set({ cookieData: cookie }),
   updateMobileCookie: (cookie: string) => set({ mobileCookieData: cookie })
 }));
