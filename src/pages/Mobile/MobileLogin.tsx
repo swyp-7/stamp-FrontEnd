@@ -30,17 +30,21 @@ const MobileLogin = () => {
       },
       onSuccess: (data) => {
         const expires = new Date(Date.now() + data.data.data.expirationTime);
+        setCookie("Authorization_mobile", data.data.data.token, { path: "/m/", expires });
+        updateMobileCookie(data.data.data.token);
         getEmploData(
           {
             storeId: data.data.data.storeId,
             emploId: data.data.data.employeeId,
             auth: data.data.data.token
           },
-          { onSuccess: (data) => setMobileData(data.data.data) }
+          {
+            onSuccess: (data) => {
+              setMobileData(data.data.data);
+              navi("/m/main");
+            }
+          }
         );
-        setCookie("Authorization_mobile", data.data.data.token, { path: "/m/", expires });
-        updateMobileCookie(data.data.data.token);
-        navi("/m/main");
       }
     });
   };
