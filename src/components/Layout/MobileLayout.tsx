@@ -1,17 +1,21 @@
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useStoreInfoStore } from "store/StoreStore";
 import styled from "styled-components";
 
 const MobileLayout = () => {
+  const { pathname } = useLocation();
   const { mobileCookieData } = useStoreInfoStore();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!mobileCookieData) {
+    if (!mobileCookieData && pathname === "/m/main") {
       navigate("/m/login");
     }
-  }, [mobileCookieData]);
+    if (!mobileCookieData && pathname === "/m/schedule") {
+      navigate("/m/login");
+    }
+  }, [mobileCookieData, pathname]);
   return (
     <LayoutBox>
       <Outlet />
