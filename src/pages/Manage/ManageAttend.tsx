@@ -21,6 +21,7 @@ import {
   WorkerList
 } from "components/atoms/Manage/AttendAtoms";
 import AttendNameList from "components/molecules/Manage/AttendNameList";
+import { useSideInfoStore } from "store/ScheduleStore";
 dayjs.extend(weekday);
 dayjs.extend(weekOfYear);
 dayjs.locale("ko");
@@ -38,6 +39,7 @@ const ManageAttend = () => {
   const startDate = startMonth.startOf("week");
   const endDate = endMonth.endOf("week");
   const { storeData } = useStoreInfoStore();
+  const { setSideInfo } = useSideInfoStore();
   const { data } = fetchAllMonthAttend(storeData?.id, currentDate.format("YYYY-MM") + "-01");
 
   useEffect(() => {
@@ -107,6 +109,11 @@ const ManageAttend = () => {
     setClickedDate(undefined);
   };
 
+  const handleClickEmplo = (match: any) => {
+    setIsDetailView(true);
+    setSideInfo({ ...match, date: currentDate.format("YYYY-MM") + "-01" });
+  };
+
   return (
     <Layout
       activeIcon="Test"
@@ -165,10 +172,10 @@ const ManageAttend = () => {
                       </div>
                     </ModalTitleWrap>
                     <ModalContentWrap>
-                      <div>근무 인원</div>
+                      {matchedList.length ? <div>근무 인원</div> : <div>근무 인원 없음</div>}
                       <WorkerList>
                         {matchedList.map((match: any, i: number) => (
-                          <div key={i} onClick={() => setIsDetailView(true)}>
+                          <div key={i} onClick={() => handleClickEmplo(match)}>
                             <span>{match.name.slice(0, 5)}</span>
                             <span>{match.time}</span>
                           </div>

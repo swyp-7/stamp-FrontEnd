@@ -1,96 +1,73 @@
 import styled from "styled-components";
 import { ReactComponent as MegaphoneIcon } from "assets/Megaphone.svg";
 import Button from "components/atoms/Button";
+import { useSideInfoStore } from "store/ScheduleStore";
+import { useStoreInfoStore } from "store/StoreStore";
+import { fetchMonthAttend } from "hooks/api/ManageAttend";
+import { useEmployeeDetail } from "hooks/api/ManageQuery";
+import { useEffect, useState } from "react";
+import { processAttendanceData } from "utils/WorkDetailUtil";
 
 interface Props {
   height?: string;
 }
 
 const WorkDetail = ({ height }: Props) => {
+  const [formattedData, setFormattedData] = useState<any[]>([]);
+  const { sideInfo } = useSideInfoStore();
+  const { storeData } = useStoreInfoStore();
+  const { data: attendData } = fetchMonthAttend(
+    storeData?.id,
+    sideInfo?.employeeId,
+    sideInfo?.date
+  );
+  const { data } = useEmployeeDetail(storeData?.id, sideInfo?.employeeId);
+  useEffect(() => {
+    if (attendData && data) {
+      setFormattedData(processAttendanceData(attendData?.data, data?.data?.scheduleList));
+    }
+  }, [attendData, data]);
+
   return (
     <WorkDetailWrap $height={height}>
       {!height && (
         <DetailTitle>
-          <span>이모모님</span>
+          <span>{sideInfo?.name} 님</span>
           <br />
           <span>근무정보</span>
         </DetailTitle>
       )}
-      <DetailContentWrap $height={height}>
-        <DetailContent>
-          <div className="date">
-            <div className="left">11월 17일 근무</div>
-            <div className="today">오늘</div>
-          </div>
-          <div className="time">
-            <div>근무시간</div>
-            <div>18:00~22:00</div>
-          </div>
-          <StartAndEnd>
-            <MegaphoneIcon />
-            <div className="right">
-              <div className="time">17:48</div>
-              <p>에 출근,</p>
-              <div className="time">22:00</div>
-              <p>에 퇴근했습니다.</p>
-            </div>
-          </StartAndEnd>
-        </DetailContent>
-        <DetailContent>
-          <div className="date">
-            <div className="left">11월 17일 근무</div>
-          </div>
-          <div className="time">
-            <div>근무시간</div>
-            <div>18:00~22:00</div>
-          </div>
-          <StartAndEnd>
-            <MegaphoneIcon />
-            <div className="right">
-              <div className="time">17:48</div>
-              <p>에 출근,</p>
-              <div className="time">22:00</div>
-              <p>에 퇴근했습니다.</p>
-            </div>
-          </StartAndEnd>
-        </DetailContent>
-        <DetailContent>
-          <div className="date">
-            <div className="left">11월 17일 근무</div>
-          </div>
-          <div className="time">
-            <div>근무시간</div>
-            <div>18:00~22:00</div>
-          </div>
-          <StartAndEnd>
-            <MegaphoneIcon />
-            <div className="right">
-              <div className="time">17:48</div>
-              <p>에 출근,</p>
-              <div className="time">22:00</div>
-              <p>에 퇴근했습니다.</p>
-            </div>
-          </StartAndEnd>
-        </DetailContent>
-        <DetailContent>
-          <div className="date">
-            <div className="left">11월 17일 근무</div>
-          </div>
-          <div className="time">
-            <div>근무시간</div>
-            <div>18:00~22:00</div>
-          </div>
-          <StartAndEnd>
-            <MegaphoneIcon />
-            <div className="right">
-              <div className="time">17:48</div>
-              <p>에 출근,</p>
-              <div className="time">22:00</div>
-              <p>에 퇴근했습니다.</p>
-            </div>
-          </StartAndEnd>
-        </DetailContent>
-      </DetailContentWrap>
+      {formattedData.length ? (
+        <DetailContentWrap $height={height}>
+          {formattedData.map((item) => (
+            <DetailContent key={item.date}>
+              <div className="date">
+                <div className="left">{item.formattedDate} 근무</div>
+                {item.isToday && <div className="today">오늘</div>}
+              </div>
+              <div className="time">
+                <div>근무시간</div>
+                <div>
+                  {item.scheduleStart === "-" || !item.scheduleStart
+                    ? "추가 근무"
+                    : `${item.scheduleStart}~${item.scheduleEnd}`}
+                </div>
+              </div>
+              <StartAndEnd>
+                <MegaphoneIcon />
+                <div className="right">
+                  <div className="time">{item.punchInTime}</div>
+                  <p>에 출근,</p>
+                  <div className="time">{item.punchOutTime}</div>
+                  <p>에 퇴근했습니다.</p>
+                </div>
+              </StartAndEnd>
+            </DetailContent>
+          ))}
+        </DetailContentWrap>
+      ) : (
+        <div>로딩중</div>
+      )}
       <DetailButtonWrap>
         <Button text="취소하기" isOutline={true} area={1} disabled />
         <Button text="저장하기" area={1} disabled />

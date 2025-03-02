@@ -23,7 +23,7 @@ export const fetchAllMonthAttend = (storeId: string, firstDate: string) => {
 
 // 특정 직원 한달 출/퇴근 조회
 export const fetchMonthAttend = (storeId: string, emploId: string, firstDate: string) => {
-  const { mobileCookieData: auth } = useStoreInfoStore();
+  const { cookieData: auth } = useStoreInfoStore();
 
   return useQuery({
     queryKey: ["monthOfAttend", storeId, auth, firstDate],
