@@ -35,8 +35,19 @@ const MobileMain = () => {
       setScanning(false);
 
       if (auth) {
-        if (scanningType === "go") goWorkMutate(auth);
-        else if (scanningType === "leave") leaveWorkMutate(auth);
+        if (scanningType === "go")
+          goWorkMutate(auth, {
+            onSuccess: () => alert("출근 처리 완료"),
+            onError: (err) => {
+              console.log(err);
+              alert("오류 발생");
+            }
+          });
+        else if (scanningType === "leave")
+          leaveWorkMutate(auth, {
+            onSuccess: () => alert("퇴근 처리 완료"),
+            onError: () => alert("오류 발생")
+          });
       }
     }
   };

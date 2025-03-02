@@ -47,8 +47,8 @@ export const fetchGoToWork = (storeId: string) => {
   return useMutation({
     mutationFn: async (authCode: string) => {
       return await axios.post(
-        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/punchin`,
-        authCode,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/punchIn`,
+        { authCode: authCode },
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
         }
@@ -63,7 +63,7 @@ export const fetchLeaveToWork = (storeId: string) => {
   return useMutation({
     mutationFn: async (authCode: string) => {
       return await axios.post(
-        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/punchout`,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/punchOut`,
         { authCode: authCode },
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
