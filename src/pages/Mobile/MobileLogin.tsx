@@ -16,7 +16,7 @@ const MobileLogin = () => {
     formState: { isValid }
   } = useForm();
   const [showLabel, setShowLabel] = useState(false);
-  const { updateMobileCookie, setMobileData } = useStoreInfoStore();
+  const { updateMobileCookie, setMobileData, updateMobileData } = useStoreInfoStore();
   const { mutate } = useFetchMobileLogin();
   const { mutate: getEmploData } = useEmployeeDetailMobile();
 
@@ -32,6 +32,7 @@ const MobileLogin = () => {
         const expires = new Date(Date.now() + data.data.data.expirationTime);
         setCookie("Authorization_mobile", data.data.data.token, { path: "/m/", expires });
         updateMobileCookie(data.data.data.token);
+        setMobileData({ storeId: data.data.data.storeId });
         getEmploData(
           {
             storeId: data.data.data.storeId,
@@ -40,7 +41,7 @@ const MobileLogin = () => {
           },
           {
             onSuccess: (data) => {
-              setMobileData(data.data.data);
+              updateMobileData(data.data.data);
               navi("/m/main");
             }
           }
