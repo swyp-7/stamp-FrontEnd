@@ -62,7 +62,7 @@ const Table = ({ setModalType, setIsModalActive, setEmploId, employerData }: Pro
         ) : (
           <></>
         )}
-        <td></td>
+        <tr></tr>
       </tbody>
     </StyledTable>
   );
