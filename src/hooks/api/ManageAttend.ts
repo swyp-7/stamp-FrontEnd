@@ -64,7 +64,7 @@ export const fetchLeaveToWork = (storeId: string) => {
     mutationFn: async (authCode: string) => {
       return await axios.post(
         `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/punchout`,
-        authCode,
+        { authCode: authCode },
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
         }
