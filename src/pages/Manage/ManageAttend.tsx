@@ -134,53 +134,52 @@ const ManageAttend = () => {
           ))}
         </CalendarGrid>
         <CalendarBody>
-          {days.map((day, index) => (
-            <DayCell key={index} onClick={(e) => handleClickDay(e, day.toDate())}>
-              <DayNumber
-                $isOtherMonth={day.month() !== currentDate.month()}
-                $isClicked={clickedDate && dayjs(clickedDate).isSame(day, "day")}
-              >
-                <p>{day.format("D")}</p>
-                <p>일</p>
-              </DayNumber>
-              <AttendNameList
-                list={
-                  attendList?.find((attend) => attend.date === day.format("YYYY-MM-DD"))?.list || []
-                }
-              />
-              {clickedDate && isModalActive && dayjs(clickedDate).isSame(day, "day") && (
-                <Modal
-                  style={{
-                    top: `${modalPosition.top}px`,
-                    left: `${modalPosition.left}px`
-                  }}
+          {days.map((day, index) => {
+            const matchedList =
+              attendList?.find((attend) => attend.date === day.format("YYYY-MM-DD"))?.list || [];
+
+            return (
+              <DayCell key={index} onClick={(e) => handleClickDay(e, day.toDate())}>
+                <DayNumber
+                  $isOtherMonth={day.month() !== currentDate.month()}
+                  $isClicked={clickedDate && dayjs(clickedDate).isSame(day, "day")}
                 >
-                  <ModalTitleWrap>
-                    <span>
-                      <p>{day.year()}</p>
-                      <p>{day.format("M월 D일 dddd")}</p>
-                    </span>
-                    <div onClick={(e) => handleModalClose(e)}>
-                      <CloseIcon />
-                    </div>
-                  </ModalTitleWrap>
-                  <ModalContentWrap>
-                    <div>근무 인원</div>
-                    <WorkerList>
-                      <div onClick={() => setIsDetailView(true)}>
-                        <span>김모모</span>
-                        <span>18:00~22:00</span>
+                  <p>{day.format("D")}</p>
+                  <p>일</p>
+                </DayNumber>
+                <AttendNameList list={matchedList || []} />
+                {clickedDate && isModalActive && dayjs(clickedDate).isSame(day, "day") && (
+                  <Modal
+                    style={{
+                      top: `${modalPosition.top}px`,
+                      left: `${modalPosition.left}px`
+                    }}
+                  >
+                    <ModalTitleWrap>
+                      <span>
+                        <p>{day.year()}</p>
+                        <p>{day.format("M월 D일 dddd")}</p>
+                      </span>
+                      <div onClick={(e) => handleModalClose(e)}>
+                        <CloseIcon />
                       </div>
-                      <div>
-                        <span>이모모</span>
-                        <span>18:00~22:00</span>
-                      </div>
-                    </WorkerList>
-                  </ModalContentWrap>
-                </Modal>
-              )}
-            </DayCell>
-          ))}
+                    </ModalTitleWrap>
+                    <ModalContentWrap>
+                      <div>근무 인원</div>
+                      <WorkerList>
+                        {matchedList.map((match: any, i: number) => (
+                          <div key={i} onClick={() => setIsDetailView(true)}>
+                            <span>{match.name.slice(0, 5)}</span>
+                            <span>{match.time}</span>
+                          </div>
+                        ))}
+                      </WorkerList>
+                    </ModalContentWrap>
+                  </Modal>
+                )}
+              </DayCell>
+            );
+          })}
         </CalendarBody>
       </CalendarWrapper>
     </Layout>

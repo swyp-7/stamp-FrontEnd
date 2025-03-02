@@ -172,7 +172,9 @@ export const WorkerList = styled.div`
       align-items: center;
       font-size: 18px;
       font-weight: 400;
-      width: 59px;
+      min-width: 59px;
+      max-width: 80px;
+      padding: 0 2px;
       height: 29px;
       border-radius: 8px;
       color: white;
