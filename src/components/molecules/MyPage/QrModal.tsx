@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useStoreInfoStore } from "store/StoreStore";
 import { FetchQrCode } from "hooks/api/StoreQuery";
 import { byteToImageUrl } from "utils/QRUtil";
+import { ClipLoader } from "react-spinners";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
@@ -30,7 +31,11 @@ const QrModal = ({ setIsModalActive }: Props) => {
         </CloseWrap>
         <Title>QR 코드</Title>
         <QrWrap>
-          {qrUrl ? <img src={qrUrl} alt={"QR코드 이미지"} /> : <div>QR 로딩 오류</div>}
+          {qrUrl ? (
+            <img src={qrUrl} alt={"QR코드 이미지"} />
+          ) : (
+            <ClipLoader color="#4A3AFF" size={60} />
+          )}
         </QrWrap>
       </div>
     </ModalBase>
@@ -89,7 +94,7 @@ const Title = styled.div`
 const QrWrap = styled.div`
   width: 331px;
   height: 331px;
-  background-color: gray;
+  /* background-color: gray; */
   display: flex;
   justify-content: center;
   align-items: center;

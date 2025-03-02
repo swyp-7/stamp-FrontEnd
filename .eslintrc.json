@@ -10,6 +10,7 @@
     "no-unused-vars": "warn",
     "react/react-in-jsx-scope": "off",
     "prefer-const": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+    "no-constant-condition": "off"
   }
 }

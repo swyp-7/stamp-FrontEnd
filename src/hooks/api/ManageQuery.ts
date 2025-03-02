@@ -88,7 +88,7 @@ export const useUpdateEmployee = () => {
 // 특정날짜에 근무하는 직원 조회
 export const useFetchEmploByDays = (start: string, end: string) => {
   const { cookieData, storeData } = useStoreInfoStore();
-  const storeId = storeData?.store.id || 0;
+  const storeId = storeData?.store?.id || 0;
 
   return useQuery({
     queryKey: ["employees", storeId, start, end],
