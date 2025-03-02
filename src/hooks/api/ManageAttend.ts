@@ -137,6 +137,7 @@ export const fetchReqExtraOk = (storeId: string) => {
     mutationFn: async (extraShiftId: string) => {
       return await axios.put(
         `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/extraShifts/${extraShiftId}/acceptRequest`,
+        {},
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
         }
@@ -153,6 +154,7 @@ export const fetchReqExtraNo = (storeId: string) => {
     mutationFn: async (extraShiftId: string) => {
       return await axios.put(
         `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/extraShifts/${extraShiftId}/rejectRequest`,
+        {},
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
         }

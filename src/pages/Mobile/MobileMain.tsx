@@ -1,21 +1,30 @@
 import styled from "styled-components";
 import { ReactComponent as RightArrow } from "assets/RightArrow.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "components/atoms/Button";
 import { useNavigate } from "react-router-dom";
 import QRScanner from "./QrScanner";
 import { useStoreInfoStore } from "store/StoreStore";
-import { fetchGoToWork, fetchLeaveToWork } from "hooks/api/ManageAttend";
+import { fetchGoToWork, fetchLeaveToWork, getReqExtra } from "hooks/api/ManageAttend";
+import ReqModal from "components/molecules/Mobile/MainModal";
 
 const MobileMain = () => {
   const navi = useNavigate();
   const { mobileData } = useStoreInfoStore();
   const [openBtn, setOpenBtn] = useState(false);
-  // const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [scanning, setScanning] = useState(false);
   const [scanningType, setScanningType] = useState<"go" | "leave" | null>(null);
+  const [isExtraReq, setIsExtraReq] = useState(false);
+  const { data: extraReqData } = getReqExtra(mobileData?.storeId);
   const { mutate: goWorkMutate } = fetchGoToWork(mobileData?.storeId);
   const { mutate: leaveWorkMutate } = fetchLeaveToWork(mobileData?.storeId);
+  useEffect(() => {
+    if (extraReqData?.data) {
+      setIsExtraReq(true);
+    }
+  }, [extraReqData]);
+  //TODO: 추가근무 조회 api에 시간 추가요청. isAccepted 기본값이 false라서 사용자가 거절한 요청을 구분할 수 없음
 
   const handleClickGoWork = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -87,9 +96,10 @@ const MobileMain = () => {
             </SmallButtonWrap>
           )}
         </MainButton>
-        <MainButton $disabled={true}>
+        <MainButton $disabled={!isExtraReq} onClick={() => setShowModal(true)}>
+          {isExtraReq && <p className="redDot"></p>}
           <div>
-            <span>추가 스케줄</span> <br /> 요청
+            <span>추가 스케줄</span> <br /> 요청이 {isExtraReq ? "있어요" : "없어요"}
           </div>
           <ArrowWrap>
             <RightArrow />
@@ -106,6 +116,15 @@ const MobileMain = () => {
           </ArrowWrap>
         </MainButton>
       </InnerWrap>
+      {showModal && (
+        <ReqModal
+          setIsModalActive={setShowModal}
+          name={mobileData?.name}
+          date={extraReqData?.data?.[0]?.requestDate || "2000-00-00"}
+          storeId={mobileData?.storeId}
+          reqId={extraReqData?.data?.[0]?.id}
+        />
+      )}
     </Wrap>
   );
 };
@@ -162,6 +181,7 @@ const MainButton = styled.div<{ $disabled?: boolean; $isOpen?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   box-shadow: 0px 2px 6px 0px rgba(20, 20, 43, 0.06);
   cursor: pointer;
   background-color: ${({ $disabled }) => ($disabled ? "#ddd" : "white")};
@@ -173,6 +193,16 @@ const MainButton = styled.div<{ $disabled?: boolean; $isOpen?: boolean }>`
     span {
       color: ${({ $disabled }) => ($disabled ? "#676767" : "var(--main-1)")};
     }
+  }
+
+  .redDot {
+    position: absolute;
+    top: 38px;
+    left: 155px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--red-1);
   }
 `;
 
