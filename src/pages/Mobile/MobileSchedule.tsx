@@ -5,9 +5,16 @@ import { useStoreInfoStore } from "store/StoreStore";
 import { useEffect, useState } from "react";
 import { getDateForWeekday } from "utils/Schedule";
 import { engToKorDays } from "hooks/Manage";
+import { fetchMonthAttend } from "hooks/api/ManageAttend";
+import dayjs from "dayjs";
 
 const MobileSchedule = () => {
   const { mobileData } = useStoreInfoStore();
+  const { data } = fetchMonthAttend(
+    mobileData?.storeId,
+    mobileData?.id,
+    dayjs().format("YYYY-MM") + "-01"
+  );
   const [dateList, setDateList] = useState<any[]>([]);
   useEffect(() => {
     if (mobileData?.scheduleList) {
@@ -19,7 +26,7 @@ const MobileSchedule = () => {
         }));
       setDateList(filteredData || []);
     }
-    console.log(dateList);
+    console.log(mobileData);
   }, [mobileData]);
 
   return (
