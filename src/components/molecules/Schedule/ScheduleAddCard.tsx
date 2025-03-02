@@ -1,13 +1,33 @@
 import styled from "styled-components";
 import Button from "components/atoms/Button";
+import { fetchReqExtra } from "hooks/api/ManageAttend";
+import dayjs from "dayjs";
+import { useState } from "react";
 
 interface Props {
+  id: number;
   name?: string;
   contact?: string;
   day?: string;
 }
 
-const ScheduleAddCard = ({ name = "김모모", contact = "010-000-0000", day = "수, 목" }: Props) => {
+const ScheduleAddCard = ({
+  id,
+  name = "김모모",
+  contact = "010-000-0000",
+  day = "수, 목"
+}: Props) => {
+  const [buttonTxt, setButtonTxt] = useState("추가근무 요청하기");
+  const { mutate } = fetchReqExtra(`${id}`);
+  const handleClickAdd = () => {
+    if (buttonTxt === "요청 완료") alert("이미 요청되었습니다.");
+    mutate(dayjs().format("YYYY-MM-DD"), {
+      onSuccess: () => setButtonTxt("요청 완료"),
+      onError: (err) => {
+        console.log(err);
+      }
+    });
+  };
   return (
     <Wrap>
       <NameTxt>
@@ -18,7 +38,7 @@ const ScheduleAddCard = ({ name = "김모모", contact = "010-000-0000", day = "
         <span>{day}</span>
         <span>근무 가능</span>
       </TimeTxt>
-      <Button text="추가근무 요청하기" area={1} onClick={() => alert("기능 준비중")} />
+      <Button text={buttonTxt} area={1} onClick={handleClickAdd} />
     </Wrap>
   );
 };

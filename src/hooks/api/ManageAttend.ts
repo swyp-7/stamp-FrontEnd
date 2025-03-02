@@ -91,3 +91,72 @@ export const fetchLeaveToWork = (storeId: string) => {
     }
   });
 };
+
+// 추가근무요청
+export const fetchReqExtra = (employeeId: string) => {
+  const { cookieData: auth, storeData } = useStoreInfoStore();
+  const storeId = storeData?.store?.id || 0;
+
+  return useMutation({
+    mutationFn: async (date: string) => {
+      return await axios.post(
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/extraShifts/createRequest/${employeeId}`,
+        { requestDate: date },
+        {
+          headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
+        }
+      );
+    }
+  });
+};
+
+// 요청받은 추가근무 조회
+export const getReqExtra = (storeId: string) => {
+  const { mobileCookieData: auth } = useStoreInfoStore();
+
+  return useQuery({
+    queryKey: ["resExtra"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/extraShifts/getRequests`,
+        {
+          headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
+        }
+      );
+
+      return res.data;
+    }
+  });
+};
+
+// 추가근무 수락
+export const fetchReqExtraOk = (storeId: string) => {
+  const { mobileCookieData: auth } = useStoreInfoStore();
+
+  return useMutation({
+    mutationFn: async (extraShiftId: string) => {
+      return await axios.put(
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/extraShifts/${extraShiftId}/acceptRequest`,
+        {
+          headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
+        }
+      );
+    }
+  });
+};
+
+// 추가근무 거절
+export const fetchReqExtraNo = (storeId: string) => {
+  const { mobileCookieData: auth } = useStoreInfoStore();
+
+  return useMutation({
+    mutationFn: async (extraShiftId: string) => {
+      return await axios.put(
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/extraShifts/${extraShiftId}/rejectRequest`,
+        {
+          headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
+        }
+      );
+    }
+  });
+};

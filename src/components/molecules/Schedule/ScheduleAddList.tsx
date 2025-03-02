@@ -28,6 +28,7 @@ const ScheduleAddList = () => {
         listData?.map((item: any, idx: number) => (
           <ScheduleAddCard
             key={idx}
+            id={item.id}
             name={item.name}
             contact={item.contact}
             day={engToKorDays[item.scheduleList[0].weekDay]}
