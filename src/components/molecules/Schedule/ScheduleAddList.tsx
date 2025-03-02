@@ -12,7 +12,7 @@ const ScheduleAddList = () => {
     "01:00",
     "23:59"
   );
-  const [listData, setListData] = useState<any[]>();
+  const [listData, setListData] = useState<any[]>([]);
 
   useEffect(() => {
     if (data?.data) {
@@ -24,7 +24,7 @@ const ScheduleAddList = () => {
 
   return (
     <Wrap>
-      {!isLoading && listData ? (
+      {!isLoading && listData.length ? (
         listData?.map((item: any, idx: number) => (
           <ScheduleAddCard
             key={idx}
@@ -34,7 +34,11 @@ const ScheduleAddList = () => {
           />
         ))
       ) : (
-        <div>추가 근무 가능한 직원이 없습니다.</div>
+        <div className="notAvail">
+          <br />
+          <br />
+          추가 근무 가능한 직원이 없습니다.
+        </div>
       )}
     </Wrap>
   );
@@ -48,4 +52,9 @@ const Wrap = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  .notAvail {
+    text-align: center;
+    font-size: 20px;
+  }
 `;
