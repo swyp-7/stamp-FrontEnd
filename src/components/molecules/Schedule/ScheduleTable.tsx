@@ -1,7 +1,7 @@
 import { TimeList } from "constants/MenuText";
 import styled from "styled-components";
 import TaskBar from "./TaskBar";
-import { useScheduleSideModeStore } from "store/ScheduleStore";
+import { useScheduleSideModeStore, useSideInfoStore } from "store/ScheduleStore";
 import { useEffect, useState } from "react";
 import { filterScheduleByDate } from "utils/Schedule";
 import { ClipLoader } from "react-spinners";
@@ -14,17 +14,18 @@ interface Props {
 
 const ScheduleTable = ({ data, isLoading, date }: Props) => {
   const { setSideMode } = useScheduleSideModeStore();
+  const { setSideInfo } = useSideInfoStore();
   const [listData, setListData] = useState<any>();
 
   useEffect(() => {
     if (data) {
       setListData(filterScheduleByDate(data?.data, date));
     }
-    // console.log(listData);
   }, [data, isLoading]);
 
-  const handleClickBar = () => {
+  const handleClickBar = (id: number, name: string) => {
     setSideMode("edit");
+    setSideInfo({ name, employeeId: id, date: date.format("YYYY-MM") + "-01" });
   };
 
   return !listData ? (
@@ -58,7 +59,7 @@ const ScheduleTable = ({ data, isLoading, date }: Props) => {
                     parseInt(item.scheduleList.startTime?.slice(0, 2), 10)
                   }
                   end={item.scheduleList.endTime}
-                  onClick={handleClickBar}
+                  onClick={() => handleClickBar(item.id, item.name)}
                 />
               ))}
           </TableRow>

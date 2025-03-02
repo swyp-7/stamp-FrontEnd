@@ -2,6 +2,7 @@ import MainNav from "components/molecules/Main/MainNav";
 import { ReactNode } from "react";
 import { StyledLayout, TitleWrap } from "./MainMenuLayout";
 import styled from "styled-components";
+import { useStoreInfoStore } from "store/StoreStore";
 
 interface Props {
   children: ReactNode;
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const Layout = ({ children, activeIcon }: Props) => {
+  const { storeData } = useStoreInfoStore();
+
   return (
     <EditLayout>
       <MainNav activeIcon={activeIcon} />
@@ -17,7 +20,7 @@ const Layout = ({ children, activeIcon }: Props) => {
           <TitleWrap>
             <div className="text">
               <h1>스케줄 관리</h1>
-              <p>Stamp Coffee의 직원 스케줄입니다</p>
+              {storeData ? <p>{storeData?.store?.name}의 직원 스케줄입니다</p> : <p>_</p>}
             </div>
           </TitleWrap>
         </div>

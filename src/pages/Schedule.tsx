@@ -16,7 +16,7 @@ import {
 } from "components/atoms/ScheduleAtoms";
 import ScheduleTable from "components/molecules/Schedule/ScheduleTable";
 import { renderContent } from "hooks/Schedule";
-import { useScheduleSideModeStore } from "store/ScheduleStore";
+import { useScheduleSideModeStore, useSideInfoStore } from "store/ScheduleStore";
 import { useFetchEmploByDays } from "hooks/api/ManageQuery";
 import { getCurrentWorkingEmployees } from "utils/Schedule";
 
@@ -24,10 +24,14 @@ const Schedule = () => {
   const [date, setDate] = useState(dayjs());
   const [workingCount, setWorkingCount] = useState(0);
   const { sideMode, setSideMode } = useScheduleSideModeStore();
+  const { sideInfo } = useSideInfoStore();
   const { data, isLoading } = useFetchEmploByDays(
     dayjs(date).format("YYYY-MM-DD"),
     dayjs(date).format("YYYY-MM-DD")
   );
+  useEffect(() => {
+    setSideMode("note");
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -77,7 +81,7 @@ const Schedule = () => {
       <MainWrap>
         <TitleWrap>
           <span>{txt}</span>
-          <p>{txt2}</p>
+          <p>{sideMode === "edit" ? sideInfo?.name + txt2 : txt2}</p>
         </TitleWrap>
         <div>{content}</div>
       </MainWrap>
