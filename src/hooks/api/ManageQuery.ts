@@ -102,6 +102,7 @@ export const useFetchEmploByDays = (start: string, end: string) => {
 
       return res.data;
     },
+    enabled: !!storeId,
     retry: false
   });
 };
