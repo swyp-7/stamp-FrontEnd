@@ -73,6 +73,7 @@ export default Table;
 export const StyledTable = styled.table`
   width: 100%;
   height: 100%;
+  max-height: 746px;
   font-size: 18px;
   table-layout: fixed;
 
@@ -125,7 +126,7 @@ export const StyledTable = styled.table`
 
   th:nth-child(6),
   td:nth-child(6) {
-    width: 184px;
+    width: 160px;
   }
 `;
 

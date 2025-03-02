@@ -78,6 +78,28 @@ const Wrap = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  max-height: 730px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    width: 5px;
+    padding-right: 5px;
+    margin: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 3px;
+    height: 36px;
+    background: #9389ff;
+    border-radius: 10px;
+    border-right: 2px solid white;
+    border-left: 2px solid #9389ff;
+  }
 `;
 
 const ModalBase = styled.div`
