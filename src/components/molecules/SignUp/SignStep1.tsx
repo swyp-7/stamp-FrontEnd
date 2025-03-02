@@ -22,7 +22,7 @@ const SignStep1 = ({ agree, setAgree }: Props) => {
   return (
     <>
       <SignLabelWrap>
-        <SignLabel>개인정보보호법의 이름</SignLabel>
+        <SignLabel>스위프 서비스 이용약관 및 개인정보 처리방침</SignLabel>
         <SignAgreeWrap>
           <label htmlFor="agree1">동의하기</label>
           <input
@@ -42,7 +42,7 @@ const SignStep1 = ({ agree, setAgree }: Props) => {
         ))}
       </SignPersonal>
       <SignLabelWrap>
-        <SignLabel>개인정보보호법의 이름</SignLabel>
+        <SignLabel>스위프 서비스 이용약관 및 개인정보 처리방침</SignLabel>
         <SignAgreeWrap>
           <label htmlFor="agree2">동의하기</label>
           <input
