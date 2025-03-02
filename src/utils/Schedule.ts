@@ -80,3 +80,26 @@ export const getDateForWeekday = (weekDay: string) => {
   const targetDayIndex = Object.keys(engToKorDays).indexOf(weekDay);
   return weekStart.add(targetDayIndex, "day").format("YYYY.MM.DD");
 };
+
+// 한달간 근태 데이터 가공하기
+export const processAttendanceData = (data: any[]) => {
+  const grouped = data.reduce<Record<string, { name: string; time: string }[]>>((acc, cur) => {
+    // eslint-disable-next-line no-unused-vars
+    const { date, name, time, attendanceEnum, employeeId } = cur;
+
+    if (!acc[date]) acc[date] = [];
+
+    const existing = acc[date].find((entry) => entry.name === name);
+    if (attendanceEnum === "PUNCH_IN") {
+      if (!existing) {
+        acc[date].push({ name, time: `${time.slice(0, 5)} ~ ` });
+      }
+    } else if (attendanceEnum === "PUNCH_OUT" && existing) {
+      existing.time += time.slice(0, 5);
+    }
+
+    return acc;
+  }, {});
+
+  return Object.entries(grouped).map(([date, list]) => ({ date, list }));
+};
