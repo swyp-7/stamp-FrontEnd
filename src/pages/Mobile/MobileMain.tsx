@@ -5,29 +5,39 @@ import Button from "components/atoms/Button";
 import { useNavigate } from "react-router-dom";
 import QRScanner from "./QrScanner";
 import { useStoreInfoStore } from "store/StoreStore";
+import { fetchGoToWork, fetchLeaveToWork } from "hooks/api/ManageAttend";
 
 const MobileMain = () => {
+  const navi = useNavigate();
   const { mobileData } = useStoreInfoStore();
   const [openBtn, setOpenBtn] = useState(false);
   // const [showModal, setShowModal] = useState(false);
   const [scanning, setScanning] = useState(false);
-
-  const navi = useNavigate();
+  const [scanningType, setScanningType] = useState<"go" | "leave" | null>(null);
+  const { mutate: goWorkMutate } = fetchGoToWork(mobileData?.storeId);
+  const { mutate: leaveWorkMutate } = fetchLeaveToWork(mobileData?.storeId);
 
   const handleClickGoWork = (e: React.MouseEvent) => {
     e.stopPropagation();
     setScanning(true);
+    setScanningType("go");
   };
 
   const handleClickLeave = (e: React.MouseEvent) => {
     e.stopPropagation();
     setScanning(true);
+    setScanningType("leave");
   };
 
   const handleScanSuccess = (data: any) => {
     if (data.includes("/m/attendance")) {
-      console.log(data, "스캔완료");
+      let auth = data.split("/")[3];
       setScanning(false);
+
+      if (auth) {
+        if (scanningType === "go") goWorkMutate(auth);
+        else if (scanningType === "leave") leaveWorkMutate(auth);
+      }
     }
   };
 
