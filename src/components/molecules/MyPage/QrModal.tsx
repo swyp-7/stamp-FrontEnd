@@ -74,7 +74,7 @@ const ModalBase = styled.div`
 const CloseWrap = styled.div`
   position: absolute;
   top: 64px;
-  left: 64px;
+  right: 64px;
   cursor: pointer;
   width: 24px;
   height: 24px;
