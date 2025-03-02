@@ -25,9 +25,10 @@ const MobileMain = () => {
   };
 
   const handleScanSuccess = (data: any) => {
-    console.log(data, "스캔완료");
-    // 여기서 읽은값 구분하고 api 요청할것. 실패시 스캔창 안닫음
-    setScanning(false);
+    if (data.includes("/m/attendance")) {
+      console.log(data, "스캔완료");
+      setScanning(false);
+    }
   };
 
   if (scanning) {
