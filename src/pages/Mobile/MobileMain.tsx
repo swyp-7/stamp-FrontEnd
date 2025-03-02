@@ -39,13 +39,15 @@ const MobileMain = () => {
           goWorkMutate(auth, {
             onSuccess: () => alert("출근 처리 완료"),
             onError: (err) => {
-              alert(err.response.data.message);
+              alert((err as any).response?.data?.message);
             }
           });
         else if (scanningType === "leave")
           leaveWorkMutate(auth, {
             onSuccess: () => alert("퇴근 처리 완료"),
-            onError: () => alert("오류 발생")
+            onError: (err) => {
+              alert((err as any).response?.data?.message);
+            }
           });
       }
     }
