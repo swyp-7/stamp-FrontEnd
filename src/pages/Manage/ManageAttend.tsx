@@ -207,9 +207,9 @@ const DayCell = styled.div`
   &:nth-child(7n) {
     border-right: none;
   }
-  /* &:nth-child(n + 29):nth-child(-n + 35) {
+  &:nth-child(n + 36):nth-child(-n + 42) {
     border-bottom: none;
-  } */
+  }
 `;
 
 const DayNumber = styled.span<{ $isOtherMonth: boolean; $isClicked?: boolean }>`

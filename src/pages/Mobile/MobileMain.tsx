@@ -100,7 +100,7 @@ export const Wrap = styled.div`
 export const InnerWrap = styled.main`
   width: 100%;
   max-width: 311px;
-  margin-top: 80px;
+  margin: 80px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
