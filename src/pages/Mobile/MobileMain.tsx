@@ -39,8 +39,7 @@ const MobileMain = () => {
           goWorkMutate(auth, {
             onSuccess: () => alert("출근 처리 완료"),
             onError: (err) => {
-              console.log(err);
-              alert("오류 발생");
+              alert(err.response.data.message);
             }
           });
         else if (scanningType === "leave")
