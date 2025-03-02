@@ -29,6 +29,8 @@ const MobileSchedule = () => {
     console.log(mobileData);
   }, [mobileData]);
 
+  console.log(data, "스케줄데이터");
+
   return (
     <ScheduleWrap>
       <InnerWrap>
