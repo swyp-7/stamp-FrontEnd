@@ -188,7 +188,9 @@ const Mypage = () => {
               handlePostComplete={handlePostComplete}
             />
           )}
-          {isModalActive && modalType === "qr" && <QrModal setIsModalActive={setIsModalActive} />}
+          {isModalActive && modalType === "qr" && (
+            <QrModal setIsModalActive={setIsModalActive} name={storeData?.store?.name} />
+          )}
         </Wrap>
       </div>
     </MyPageLayout>

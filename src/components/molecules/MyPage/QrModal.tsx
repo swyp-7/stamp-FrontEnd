@@ -1,16 +1,20 @@
 import styled from "styled-components";
 import { ReactComponent as Close } from "assets/Close.svg";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { useStoreInfoStore } from "store/StoreStore";
 import { FetchQrCode } from "hooks/api/StoreQuery";
 import { byteToImageUrl } from "utils/QRUtil";
 import { ClipLoader } from "react-spinners";
+import Button from "components/atoms/Button";
+import html2canvas from "html2canvas";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<boolean>>;
+  name: string;
 }
 
-const QrModal = ({ setIsModalActive }: Props) => {
+const QrModal = ({ setIsModalActive, name }: Props) => {
+  const modalRef = useRef<HTMLDivElement>(null);
   const [qrUrl, setQrUrl] = useState<string | null>(null);
   const { storeData } = useStoreInfoStore();
   const { data, isLoading } = FetchQrCode(storeData?.id);
@@ -23,13 +27,27 @@ const QrModal = ({ setIsModalActive }: Props) => {
     }
   }, [data, isLoading]);
 
+  const handleDownload = () => {
+    if (modalRef.current) {
+      html2canvas(modalRef.current, {
+        ignoreElements: (element) =>
+          element.classList.contains("close") || element.classList.contains("download")
+      }).then((canvas) => {
+        const link = document.createElement("a");
+        link.href = canvas.toDataURL(); // 생성된 이미지를 data URL로 변환
+        link.download = `${name}_QR_code.png`; // 다운로드 파일 이름 설정
+        link.click();
+      });
+    }
+  };
+
   return (
     <ModalBase>
-      <div className="modal">
-        <CloseWrap onClick={() => setIsModalActive(false)}>
+      <div className="modal" ref={modalRef}>
+        <CloseWrap onClick={() => setIsModalActive(false)} className="close">
           <Close />
         </CloseWrap>
-        <Title>QR 코드</Title>
+        <Title>{name}의 QR 코드</Title>
         <QrWrap>
           {qrUrl ? (
             <img src={qrUrl} alt={"QR코드 이미지"} />
@@ -37,6 +55,16 @@ const QrModal = ({ setIsModalActive }: Props) => {
             <ClipLoader color="#4A3AFF" size={60} />
           )}
         </QrWrap>
+        <a className="link" href="https://stamp.swygbro.com/m" target="blank">
+          https://stamp.swygbro.com/m
+        </a>
+        <Button
+          className="download"
+          isOutline={true}
+          text="다운로드"
+          area={2}
+          onClick={handleDownload}
+        />
       </div>
     </ModalBase>
   );
@@ -57,8 +85,8 @@ const ModalBase = styled.div`
   align-items: center;
 
   .modal {
-    width: 750px;
-    height: 600px;
+    width: 880px;
+    height: 670px;
     border-radius: 36px;
     background-color: #fff;
     padding: 64px;
@@ -66,8 +94,18 @@ const ModalBase = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 34px;
     position: relative;
+
+    .link {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .download {
+      position: absolute;
+      bottom: 34px;
+      right: 34px;
+    }
   }
 `;
 

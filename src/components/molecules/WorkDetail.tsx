@@ -7,6 +7,7 @@ import { fetchMonthAttend } from "hooks/api/ManageAttend";
 import { useEmployeeDetail } from "hooks/api/ManageQuery";
 import { useEffect, useState } from "react";
 import { processAttendanceData } from "utils/WorkDetailUtil";
+import { ClipLoader } from "react-spinners";
 
 interface Props {
   height?: string;
@@ -66,7 +67,7 @@ const WorkDetail = ({ height }: Props) => {
           ))}
         </DetailContentWrap>
       ) : (
-        <div>로딩중</div>
+        <ClipLoader className="loading" color="#4A3AFF" size={60} />
       )}
       <DetailButtonWrap>
         <Button text="취소하기" isOutline={true} area={1} disabled />
@@ -85,6 +86,11 @@ const WorkDetailWrap = styled.div<{ $height?: string }>`
   min-height: 0;
   background-color: #fff;
   border-radius: 24px;
+
+  .loading {
+    justify-self: center;
+    align-self: center;
+  }
 `;
 
 const DetailTitle = styled.div`
