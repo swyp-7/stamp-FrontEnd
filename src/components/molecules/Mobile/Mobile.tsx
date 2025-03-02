@@ -19,7 +19,7 @@ export const ScheduleCard = ({
         <div className="date">{date}</div>
         <div className="time">{time}</div>
       </CardTxt>
-      <Status status={disabled ? "미처리" : status} />
+      {status && <Status status={disabled ? "미처리" : status} />}
     </Card>
   );
 };

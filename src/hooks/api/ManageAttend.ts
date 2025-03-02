@@ -40,6 +40,25 @@ export const fetchMonthAttend = (storeId: string, emploId: string, firstDate: st
   });
 };
 
+// 직원 전용 한달 출/퇴근 조회
+export const fetchMyMonthAttend = (firstDate: string) => {
+  const { mobileCookieData: auth } = useStoreInfoStore();
+
+  return useQuery({
+    queryKey: ["myMonthOfAttend", auth, firstDate],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://temp.api-stamp.p-e.kr/api/v1/employee/attendance/month?firstDate=${firstDate}`,
+        {
+          headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
+        }
+      );
+      return res.data;
+    },
+    retry: false
+  });
+};
+
 // 출근 처리
 export const fetchGoToWork = (storeId: string) => {
   const { mobileCookieData: auth } = useStoreInfoStore();
