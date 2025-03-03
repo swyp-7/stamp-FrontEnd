@@ -41,21 +41,25 @@ export const filterScheduleByDate = (data: any[], date: any) => {
 //현재 근무중인 인원 수 계산
 export const getCurrentWorkingEmployees = (data: any) => {
   if (!data || !Array.isArray(data)) return 0;
+
   const now = new Date();
-  const currentHour = now.getHours();
-  const currentMinutes = now.getMinutes();
+  const currentTime = now.getHours() * 60 + now.getMinutes(); // 현재 시간을 분 단위로 변환
 
-  return data?.filter(({ scheduleList }: any) => {
-    if (!scheduleList) return false;
+  return data.filter(({ scheduleList }: any) => {
+    if (!Array.isArray(scheduleList)) return false;
 
-    const [startHour, startMinutes] = scheduleList.startTime.split(":").map(Number);
-    const [endHour, endMinutes] = scheduleList.endTime.split(":").map(Number);
+    return scheduleList.some(({ startTime, endTime, isAdditional }: any) => {
+      if (isAdditional) return false; // 추가 근무는 제외
+      if (!startTime || !endTime) return false; // 유효한 시간이 없으면 제외
 
-    const startTotalMinutes = startHour * 60 + startMinutes;
-    const endTotalMinutes = endHour * 60 + endMinutes;
-    const nowTotalMinutes = currentHour * 60 + currentMinutes;
+      const [startHour, startMin] = startTime.split(":").map(Number);
+      const [endHour, endMin] = endTime.split(":").map(Number);
 
-    return nowTotalMinutes >= startTotalMinutes && nowTotalMinutes < endTotalMinutes;
+      const startTotal = startHour * 60 + startMin;
+      const endTotal = endHour * 60 + endMin;
+
+      return currentTime >= startTotal && currentTime < endTotal; // 현재 시간이 근무 시간 범위 내에 있는지 확인
+    });
   }).length;
 };
 

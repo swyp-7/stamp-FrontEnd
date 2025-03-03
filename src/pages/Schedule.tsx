@@ -34,9 +34,9 @@ const Schedule = () => {
   }, []);
 
   useEffect(() => {
-    if (data) {
-      if (Array.isArray(data)) {
-        setWorkingCount(getCurrentWorkingEmployees(data));
+    if (data && !isLoading) {
+      if (Array.isArray(data?.data)) {
+        setWorkingCount(getCurrentWorkingEmployees(data?.data));
       }
     }
   }, [data, isLoading]);
