@@ -127,3 +127,24 @@ export const useFetchEmploByDayAndTime = (date: string, start: string, end: stri
     retry: false
   });
 };
+
+// 특정 달 급여 조회
+export const useFetchMonthOfWage = (date: string) => {
+  const { cookieData, storeData } = useStoreInfoStore();
+  const storeId = storeData?.store.id || 0;
+
+  return useQuery({
+    queryKey: ["employeesWage", storeId, date],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/wage?firstDate=${date}`,
+        {
+          headers: { Authorization: `Bearer ${cookieData}`, withCredentials: true }
+        }
+      );
+
+      return res.data;
+    },
+    retry: false
+  });
+};

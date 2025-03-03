@@ -1,9 +1,13 @@
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
 import { ClipLoader } from "react-spinners";
 
-const LoadingSpinner = () => {
+interface Props {
+  style?: CSSProperties;
+}
+
+const LoadingSpinner = ({ style }: Props) => {
   return (
-    <SpinnerWarp>
+    <SpinnerWarp style={style}>
       <ClipLoader color="#4A3AFF" size={60} />
     </SpinnerWarp>
   );

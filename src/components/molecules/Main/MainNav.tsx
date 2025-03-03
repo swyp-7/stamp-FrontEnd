@@ -30,11 +30,8 @@ const MainNav = ({ activeIcon = "Home" }: Props) => {
       />
       {pathname.includes("management") && (
         <MainNavIconSub
-          texts={["직원 정보 등록", "직원 근태 관리"]}
-          links={["/management/register", "/management/attend"]}
-          //TODO: 급여관리 메뉴 추가
-          // texts={["직원 정보 등록", "직원 근태 관리", "직원 급여 관리"]}
-          // links={["/management/register", "/management/attend", "/management/pay"]}
+          texts={["직원 정보 등록", "직원 근태 관리", "직원 급여 관리"]}
+          links={["/management/register", "/management/attend", "/management/pay"]}
         />
       )}
       <MainNavIcon

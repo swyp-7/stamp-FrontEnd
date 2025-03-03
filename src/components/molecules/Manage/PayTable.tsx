@@ -1,9 +1,13 @@
 import { PayComplete, PayGray } from "components/atoms/Manage/Paybutton";
 import { Profile, StyledTable } from "./Table";
 
+interface Props {
+  payList: any[];
+}
+
 const tHeads = ["이름", "근무시간", "시급", "지급예정금액", "급여 지급 상태"];
 
-const PayTable = () => {
+const PayTable = ({ payList }: Props) => {
   return (
     <StyledTable>
       <thead>
@@ -14,7 +18,23 @@ const PayTable = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
+        {payList.length > 0 &&
+          payList.map((item, idx) => (
+            <tr key={idx}>
+              <td>
+                <Profile>
+                  <div className="txt">
+                    <span className="name">{item.name}</span>
+                  </div>
+                </Profile>
+              </td>
+              <td>{item.worktime.split(":").slice(0, 2).join(":")}</td>
+              <td>{Number(item.pay).toLocaleString()}</td>
+              <td>{Number(item.totalWage).toLocaleString()}</td>
+              <td>{item.isPaid ? <PayComplete /> : <PayGray />}</td>
+            </tr>
+          ))}
+        {/* <tr>
           <td>
             <Profile>
               <div className="img"></div>
@@ -47,7 +67,7 @@ const PayTable = () => {
           <td>
             <PayGray />
           </td>
-        </tr>
+        </tr> */}
       </tbody>
     </StyledTable>
   );
