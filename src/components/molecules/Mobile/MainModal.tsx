@@ -7,13 +7,14 @@ import { fetchReqExtraNo, fetchReqExtraOk } from "hooks/api/ManageAttend";
 
 interface Props {
   setIsModalActive: Dispatch<SetStateAction<any>>;
+  setIsExtraReq: Dispatch<SetStateAction<any>>;
   name: string;
   date: string;
   storeId: string | number;
   reqId: number;
 }
 
-const ReqModal = ({ setIsModalActive, name, date, storeId, reqId }: Props) => {
+const ReqModal = ({ setIsModalActive, setIsExtraReq, name, date, storeId, reqId }: Props) => {
   const { mutate: okMutate } = fetchReqExtraOk(`${storeId}`);
   const { mutate: noMutate } = fetchReqExtraNo(`${storeId}`);
 
@@ -22,9 +23,11 @@ const ReqModal = ({ setIsModalActive, name, date, storeId, reqId }: Props) => {
       onSuccess: () => {
         alert("수락 완료");
         setIsModalActive(null);
+        setIsExtraReq([]);
       },
       onError: (err) => {
         alert("에러 발생");
+        setIsExtraReq([]);
         console.log(err);
       }
     });

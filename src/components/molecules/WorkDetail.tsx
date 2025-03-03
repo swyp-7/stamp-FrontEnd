@@ -57,9 +57,9 @@ const WorkDetail = ({ height }: Props) => {
               <StartAndEnd>
                 <MegaphoneIcon />
                 <div className="right">
-                  <div className="time">{item.punchInTime}</div>
+                  <div className="timeCell">{item.punchInTime}</div>
                   <p>에 출근,</p>
-                  <div className="time">{item.punchOutTime}</div>
+                  <div className="timeCell">{item.punchOutTime}</div>
                   <p>에 퇴근했습니다.</p>
                 </div>
               </StartAndEnd>
@@ -199,7 +199,7 @@ const StartAndEnd = styled.div`
     align-items: center;
   }
 
-  .time {
+  .timeCell {
     cursor: pointer;
     display: flex;
     align-items: center;

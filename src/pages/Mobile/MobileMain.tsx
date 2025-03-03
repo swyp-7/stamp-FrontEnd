@@ -16,16 +16,17 @@ const MobileMain = () => {
   const [showModal, setShowModal] = useState<"go" | "leave" | "extra" | null>(null);
   const [scanning, setScanning] = useState(false);
   const [scanningType, setScanningType] = useState<"go" | "leave" | null>(null);
-  const [isExtraReq, setIsExtraReq] = useState(false);
+  const [isExtraReq, setIsExtraReq] = useState<any[]>([]);
   const { data: extraReqData } = getReqExtra(mobileData?.storeId);
   const { mutate: goWorkMutate } = fetchGoToWork(mobileData?.storeId);
   const { mutate: leaveWorkMutate } = fetchLeaveToWork(mobileData?.storeId);
   useEffect(() => {
-    if (extraReqData?.data) {
-      setIsExtraReq(true);
+    if (extraReqData?.data.length > 0) {
+      const req = extraReqData?.data.filter((item: any) => item.status === "REQUESTED");
+      if (req.length) setIsExtraReq(req);
+      if (!req.length) setIsExtraReq([]);
     }
   }, [extraReqData]);
-  //TODO: 추가근무 조회 api에 시간 추가요청. isAccepted 기본값이 false라서 사용자가 거절한 요청을 구분할 수 없음
 
   const handleClickGoWork = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -97,10 +98,10 @@ const MobileMain = () => {
             </SmallButtonWrap>
           )}
         </MainButton>
-        <MainButton $disabled={!isExtraReq} onClick={() => setShowModal("extra")}>
-          {isExtraReq && <p className="redDot"></p>}
+        <MainButton $disabled={!isExtraReq.length} onClick={() => setShowModal("extra")}>
+          {isExtraReq.length ? <p className="redDot"></p> : <></>}
           <div>
-            <span>추가 스케줄</span> <br /> 요청이 {isExtraReq ? "있어요" : "없어요"}
+            <span>추가 스케줄</span> <br /> 요청이 {isExtraReq.length ? "있어요" : "없어요"}
           </div>
           <ArrowWrap>
             <RightArrow />
@@ -119,11 +120,12 @@ const MobileMain = () => {
       </InnerWrap>
       {showModal === "extra" && (
         <ReqModal
+          setIsExtraReq={setIsExtraReq}
           setIsModalActive={setShowModal}
           name={mobileData?.name}
-          date={extraReqData?.data?.[0]?.requestDate || "2000-00-00"}
+          date={isExtraReq?.[0]?.requestDate || "2000-00-00"}
           storeId={mobileData?.storeId}
-          reqId={extraReqData?.data?.[0]?.id}
+          reqId={isExtraReq?.[0]?.id}
         />
       )}
       {(showModal === "go" || showModal === "leave") && (
