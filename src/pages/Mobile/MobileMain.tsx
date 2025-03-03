@@ -46,7 +46,7 @@ const MobileMain = () => {
       if (auth) {
         if (scanningType === "go")
           goWorkMutate(auth, {
-            onSuccess: () => alert("출근 처리 완료"),
+            onSuccess: () => alert("출근 처리 완료"), //TODO: 출퇴근 완료모달 추가
             onError: (err) => {
               alert((err as any).response?.data?.message);
             }
@@ -142,7 +142,7 @@ export const Wrap = styled.div`
 export const InnerWrap = styled.main`
   width: 100%;
   max-width: 311px;
-  margin: 80px 0;
+  margin: auto 0;
   display: flex;
   flex-direction: column;
   align-items: center;

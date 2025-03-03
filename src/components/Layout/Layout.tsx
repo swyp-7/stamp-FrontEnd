@@ -22,7 +22,7 @@ const Layout = () => {
           setStoreData(data?.data);
         });
       } else {
-        navigate("/login");
+        navigate("/");
       }
       setIsLoading(false);
     }, 300);

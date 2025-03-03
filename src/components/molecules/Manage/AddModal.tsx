@@ -192,7 +192,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
           <div className="short">
             <SignLabel $req={true}>생년월일</SignLabel>
             <TextField
-              placeholder="0000.00.00"
+              placeholder="0000-00-00"
               style={{ width: "313px" }}
               {...register("birthDate")}
             />
