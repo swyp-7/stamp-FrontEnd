@@ -5,6 +5,7 @@ interface Props {
   name1: string;
   name2: string;
   control: any;
+  noHolyDay?: boolean;
 }
 
 const times = [
@@ -36,14 +37,14 @@ const times = [
   "24:00"
 ];
 
-const ClockDropdowns = ({ name1, name2, control }: Props) => {
+const ClockDropdowns = ({ name1, name2, control, noHolyDay = false }: Props) => {
   return (
     <Wrap>
       <Dropdown
         name={name1}
         control={control}
         clockIcon={true}
-        options={times}
+        options={noHolyDay ? times.slice(1) : times}
         placeholder="시작 시간"
         width="216px"
       />
@@ -51,7 +52,7 @@ const ClockDropdowns = ({ name1, name2, control }: Props) => {
         name={name2}
         control={control}
         clockIcon={true}
-        options={times}
+        options={noHolyDay ? times.slice(1) : times}
         placeholder="종료 시간"
         width="216px"
       />

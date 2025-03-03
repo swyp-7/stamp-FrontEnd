@@ -15,7 +15,7 @@ import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useStoreInfoStore } from "store/StoreStore";
 import styled from "styled-components";
 
-const dayList = ["휴무", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
+const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
 
 const Mypage = () => {
   const [isModalActive, setIsModalActive] = useState(false);
@@ -26,12 +26,13 @@ const Mypage = () => {
     name: "scheduleList"
   });
   const { storeData, updateStore } = useStoreInfoStore();
-  const { mutate } = useEditMyPage(storeData?.id);
+  const { mutate } = useEditMyPage(storeData?.store.id);
 
   useEffect(() => {
     // console.log(storeData, "가게정보");
     if (storeData) {
       reset({
+        employerName: storeData.employerName,
         name: storeData.name,
         businessName: storeData.store.name,
         businessNumber: storeData.store.businessNumber,
@@ -127,7 +128,7 @@ const Mypage = () => {
                 <TextField
                   style={{ width: "313px" }}
                   placeholder="사업자등록증 상 대표자 이름을 적어주세요."
-                  {...register("name")}
+                  {...register("employerName")}
                 />
               </div>
               <div>
@@ -135,7 +136,7 @@ const Mypage = () => {
                 <TextField
                   style={{ width: "313px" }}
                   placeholder="사업자등록증의 상호명으로 입력해주세요"
-                  {...register("businessName")}
+                  {...register("name")}
                 />
               </div>
             </div>

@@ -32,7 +32,7 @@ interface Props {
 }
 
 const dayList = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"];
-const bankList = ["국민", "신한", "농협", "우리", "하나"];
+const bankList = ["국민", "신한", "농협", "우리", "하나", "카카오", "케이", "부산", "대구", "기업"];
 
 const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => {
   const queryClient = new QueryClient();
@@ -249,7 +249,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
             <SignLabel $req={true}>시급</SignLabel>
             <TextField
               style={{ width: "313px" }}
-              placeholder="시간당 급여액을 적어주세요"
+              placeholder="숫자만 적어주세요"
               {...register("wage", { required: true })}
             />
           </div>
@@ -282,6 +282,7 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
                   name1={`workDays.${idx}.startTime`}
                   name2={`workDays.${idx}.endTime`}
                   control={control}
+                  noHolyDay={true}
                 />
                 <SmallCloseButton onClick={() => remove1(idx)}>
                   <CloseIcon />

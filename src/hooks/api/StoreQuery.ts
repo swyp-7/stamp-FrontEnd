@@ -28,6 +28,7 @@ export const useEditMyPage = (storeId: string) => {
   return useMutation({
     mutationFn: async (data: any) => {
       const formData = {
+        employerName: data.employerName,
         addressCommon: data.addressCommon,
         addressDetail: data.addressDetail,
         name: data.businessName,

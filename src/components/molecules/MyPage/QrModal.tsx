@@ -17,7 +17,7 @@ const QrModal = ({ setIsModalActive, name }: Props) => {
   const modalRef = useRef<HTMLDivElement>(null);
   const [qrUrl, setQrUrl] = useState<string | null>(null);
   const { storeData } = useStoreInfoStore();
-  const { data, isLoading } = FetchQrCode(storeData?.id);
+  const { data, isLoading } = FetchQrCode(storeData?.store?.id);
   useEffect(() => {
     if (!isLoading && data) {
       if (data.data.byteArr) {
