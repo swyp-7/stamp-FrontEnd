@@ -1,11 +1,12 @@
 import LoadingSpinner from "components/molecules/LoadingSpinner";
 import { fetchEmployerMypage } from "hooks/api/StoreQuery";
 import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useStoreInfoStore } from "store/StoreStore";
 import { getCookie } from "utils/Cookie";
 
 const Layout = () => {
+  const { pathname } = useLocation();
   const auth = getCookie("Authorization");
   const navigate = useNavigate();
   const { setStoreData, updateCookie } = useStoreInfoStore();
@@ -21,7 +22,13 @@ const Layout = () => {
         fetchEmployerMypage(auth).then((data) => {
           setStoreData(data?.data);
         });
-      } else {
+      } else if (
+        !auth &&
+        pathname !== "/" &&
+        pathname !== "/login" &&
+        pathname !== "/signUp" &&
+        pathname !== "/oauth/redirected/kakao"
+      ) {
         navigate("/");
       }
       setIsLoading(false);
@@ -34,7 +41,13 @@ const Layout = () => {
       fetchEmployerMypage(auth).then((data) => {
         setStoreData(data?.data);
       });
-    } else {
+    } else if (
+      !auth &&
+      pathname !== "/" &&
+      pathname !== "/login" &&
+      pathname !== "/signUp" &&
+      pathname !== "/oauth/redirected/kakao"
+    ) {
       navigate("/login");
     }
   }, [auth]);

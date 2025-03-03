@@ -7,12 +7,16 @@ import SignStep3 from "components/molecules/SignUp/SignStep3";
 import SignStep4 from "components/molecules/SignUp/SignStep4";
 import SignUpNav from "components/molecules/SignUp/SignUpNav";
 import { SignUpTitleText } from "constants/MenuText";
-import { useFetchSignUp } from "hooks/api/LoginQuery";
+import { useFetchSignUp, useFetchSignUpKakao } from "hooks/api/LoginQuery";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useSearchParams } from "react-router-dom";
+import { useStoreInfoStore } from "store/StoreStore";
 import styled from "styled-components";
+import { setCookie } from "utils/Cookie";
 
 const SignUp = () => {
+  const [searchParams] = useSearchParams();
   const [step, setStep] = useState(1);
   const [agree, setAgree] = useState([false, false]);
   const {
@@ -27,6 +31,8 @@ const SignUp = () => {
   } = useForm({ mode: "onChange" });
   const formData = getValues();
   const { mutate } = useFetchSignUp();
+  const { mutate: kakaoMutate } = useFetchSignUpKakao();
+  const { updateCookie } = useStoreInfoStore();
   const name = watch("name");
   const businessName = watch("businessName");
 
@@ -51,15 +57,15 @@ const SignUp = () => {
       setError("contact", {});
       hasError = true;
     }
-    if (!formData.email) {
+    if (!formData.email && !searchParams.get("type")) {
       setError("email", {});
       hasError = true;
     }
-    if (!formData.password) {
+    if (!formData.password && !searchParams.get("type")) {
       setError("password", {});
       hasError = true;
     }
-    if (!formData.passwordCheck) {
+    if (!formData.passwordCheck && !searchParams.get("type")) {
       setError("passwordCheck", {});
       hasError = true;
     }
@@ -72,6 +78,22 @@ const SignUp = () => {
     if (!data.businessName) {
       return setError("businessName", {});
     }
+    if (searchParams.get("type") === "kakao" && searchParams.get("token")) {
+      let formData = { ...data, accessToken: searchParams.get("token"), providerType: "KAKAO" };
+      return kakaoMutate(formData, {
+        onError: (err) => {
+          const axiosError = err as AxiosError<{ message?: string }>;
+          alert(axiosError.response?.data?.message);
+        },
+        onSuccess: (data) => {
+          setStep((prev) => prev + 1);
+          const expires = new Date(Date.now() + data.data.expirationTime);
+          setCookie("Authorization", data.data.token, { path: "/", expires });
+          updateCookie(data.data.token);
+        }
+      });
+    }
+
     mutate(data, {
       onError: (err) => {
         const axiosError = err as AxiosError<{ message?: string }>;
@@ -90,7 +112,13 @@ const SignUp = () => {
         <SignContentWrap $step={step}>
           {step === 1 && <SignStep1 agree={agree} setAgree={setAgree} />}
           {step === 2 && (
-            <SignStep2 register={register} setValue={setValue} watch={watch} errors={errors} />
+            <SignStep2
+              register={register}
+              setValue={setValue}
+              watch={watch}
+              errors={errors}
+              isSocial={searchParams.get("type") === "kakao"}
+            />
           )}
           {step === 3 && (
             <SignStep3

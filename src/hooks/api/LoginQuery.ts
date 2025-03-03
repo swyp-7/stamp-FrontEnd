@@ -46,6 +46,30 @@ export const useFetchSignUp = () => {
   });
 };
 
+// 카카오 회원가입
+export const useFetchSignUpKakao = () => {
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const formData = {
+        providerType: data.providerType,
+        accessToken: data.accessToken,
+        createSocialEmployerUserReq: {
+          name: data.name,
+          contact: data.contact
+        },
+        createStoreReq: {
+          businessNumber: data.businessNumber,
+          name: data.businessName,
+          addressCommon: data.address1,
+          addressDetail: data.address2,
+          businessType: data.businessType
+        }
+      };
+      return await apiService.post<any>("/oauth/register", formData);
+    }
+  });
+};
+
 // 인가코드로 카카오 로그인 토큰 받기
 export const useFetchKakaoLogin = (code: string) => {
   const KEY = process.env.REACT_APP_KAKAO_KEY?.trim();
@@ -54,7 +78,7 @@ export const useFetchKakaoLogin = (code: string) => {
   return useQuery({
     queryKey: ["kakaoLogin", code],
     queryFn: async () => {
-      return await apiService.post<any>(
+      return await axios.post<any>(
         "https://kauth.kakao.com/oauth/token",
         {
           grant_type: "authorization_code",
@@ -62,7 +86,7 @@ export const useFetchKakaoLogin = (code: string) => {
           redirect_uri: URI,
           code: code
         },
-        "application/x-www-form-urlencoded;charset=utf-8"
+        { headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" } }
       );
     },
     enabled: !!code,

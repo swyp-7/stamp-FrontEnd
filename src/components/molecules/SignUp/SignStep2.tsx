@@ -9,9 +9,10 @@ interface Props {
   setValue: any;
   errors: any;
   watch: UseFormWatch<FieldValues>;
+  isSocial: boolean;
 }
 
-const SignStep2 = ({ register, setValue, errors, watch }: Props) => {
+const SignStep2 = ({ register, setValue, errors, watch, isSocial }: Props) => {
   const nameErr = errors.name;
   const contactErr = errors.contact;
   const emailErr = errors.email;
@@ -39,47 +40,51 @@ const SignStep2 = ({ register, setValue, errors, watch }: Props) => {
             {...register("contact")}
           />
         </div>
-        <div>
-          <SignLabel>이메일</SignLabel>
-          <EmailTextField isError={emailErr} setValue={setValue} {...register("email")} />
-        </div>
-        <div>
-          <PasswordLabelWrap $isPassErr={!!passErr}>
-            <SignLabel>비밀번호</SignLabel>
-            <span>
-              <InfoIcon />
-              <p>조건: 10자 이상 / 영문과 숫자, 특수기호</p>
-            </span>
-          </PasswordLabelWrap>
-          <span className="passwordInput">
-            <TextField
-              placeholder="조건에 따라 비밀번호를 입력해주세요"
-              type="password"
-              isPasswordError={!!passErr}
-              {...register("password", {
-                pattern: {
-                  value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
-                  message: "비밀번호"
-                }
-              })}
-            />
-            {passCheckErr && (
-              <PassCheckErr>
-                <InfoIcon />
-                <p>입력하신 비밀번호와 다릅니다</p>
-              </PassCheckErr>
-            )}
-            <TextField
-              placeholder="비밀번호를 확인해주세요"
-              type="password"
-              isPasswordError={!!passCheckErr}
-              {...register("passwordCheck", {
-                required: "비밀번호 확인을 입력하세요.",
-                validate: (value) => value === watch("password") || "비밀번호 확인"
-              })}
-            />
-          </span>
-        </div>
+        {!isSocial && (
+          <>
+            <div>
+              <SignLabel>이메일</SignLabel>
+              <EmailTextField isError={emailErr} setValue={setValue} {...register("email")} />
+            </div>
+            <div>
+              <PasswordLabelWrap $isPassErr={!!passErr}>
+                <SignLabel>비밀번호</SignLabel>
+                <span>
+                  <InfoIcon />
+                  <p>조건: 10자 이상 / 영문과 숫자, 특수기호</p>
+                </span>
+              </PasswordLabelWrap>
+              <span className="passwordInput">
+                <TextField
+                  placeholder="조건에 따라 비밀번호를 입력해주세요"
+                  type="password"
+                  isPasswordError={!!passErr}
+                  {...register("password", {
+                    pattern: {
+                      value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/,
+                      message: "비밀번호"
+                    }
+                  })}
+                />
+                {passCheckErr && (
+                  <PassCheckErr>
+                    <InfoIcon />
+                    <p>입력하신 비밀번호와 다릅니다</p>
+                  </PassCheckErr>
+                )}
+                <TextField
+                  placeholder="비밀번호를 확인해주세요"
+                  type="password"
+                  isPasswordError={!!passCheckErr}
+                  {...register("passwordCheck", {
+                    required: "비밀번호 확인을 입력하세요.",
+                    validate: (value) => value === watch("password") || "비밀번호 확인"
+                  })}
+                />
+              </span>
+            </div>
+          </>
+        )}
       </FormWrap>
     </>
   );
