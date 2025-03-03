@@ -4,13 +4,14 @@ import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   setModalType: Dispatch<SetStateAction<"ask" | "add">>;
+  name: string;
 }
 
-const AskAddModal = ({ setModalType }: Props) => {
+const AskAddModal = ({ setModalType, name }: Props) => {
   return (
     <ModalWrap>
       <div>
-        Stamp Coffee의
+        {name || "_"}의
         <br />
         신규 직원을 등록해볼까요?
       </div>

@@ -1,6 +1,7 @@
 import { ButtonProps } from "components/atoms/Button";
 import MainNav from "components/molecules/Main/MainNav";
 import { ReactNode } from "react";
+import { useStoreInfoStore } from "store/StoreStore";
 import styled from "styled-components";
 
 interface Props extends ButtonProps {
@@ -9,6 +10,8 @@ interface Props extends ButtonProps {
 }
 
 const Layout = ({ children, activeIcon }: Props) => {
+  const { storeData } = useStoreInfoStore();
+
   return (
     <StyledLayout>
       <MainNav activeIcon={activeIcon} />
@@ -16,7 +19,7 @@ const Layout = ({ children, activeIcon }: Props) => {
         <div className="first">
           <TitleWrap>
             <h1>알림 관리</h1>
-            <p>Stamp Coffee의 직원 스케줄입니다</p>
+            <p>{storeData?.store.name}의 직원 스케줄입니다</p>
           </TitleWrap>
         </div>
         <div className="second">{children}</div>

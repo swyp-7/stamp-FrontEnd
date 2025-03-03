@@ -56,7 +56,9 @@ const Manage = () => {
         />
         {isModalActive && (
           <ModalBase onClick={(e) => e.stopPropagation()}>
-            {ModalType === "ask" && <AskAddModal setModalType={setModalType} />}
+            {ModalType === "ask" && (
+              <AskAddModal setModalType={setModalType} name={storeData?.store?.name} />
+            )}
             {ModalType === "add" && (
               <AddModal
                 setIsModalActive={setIsModalActive}
