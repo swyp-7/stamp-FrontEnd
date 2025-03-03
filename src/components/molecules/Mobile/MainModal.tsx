@@ -6,7 +6,7 @@ import dayjs from "dayjs";
 import { fetchReqExtraNo, fetchReqExtraOk } from "hooks/api/ManageAttend";
 
 interface Props {
-  setIsModalActive: Dispatch<SetStateAction<boolean>>;
+  setIsModalActive: Dispatch<SetStateAction<any>>;
   name: string;
   date: string;
   storeId: string | number;
@@ -21,7 +21,7 @@ const ReqModal = ({ setIsModalActive, name, date, storeId, reqId }: Props) => {
     okMutate(`${reqId}`, {
       onSuccess: () => {
         alert("수락 완료");
-        setIsModalActive(false);
+        setIsModalActive(null);
       },
       onError: (err) => {
         alert("에러 발생");
@@ -34,7 +34,7 @@ const ReqModal = ({ setIsModalActive, name, date, storeId, reqId }: Props) => {
     noMutate(`${reqId}`, {
       onSuccess: () => {
         alert("거절 완료");
-        setIsModalActive(false);
+        setIsModalActive(null);
       },
       onError: (err) => {
         alert("에러 발생");
@@ -44,9 +44,9 @@ const ReqModal = ({ setIsModalActive, name, date, storeId, reqId }: Props) => {
   };
 
   return (
-    <ModalBase onClick={() => setIsModalActive(false)}>
+    <ModalBase onClick={() => setIsModalActive(null)}>
       <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <CloseWrap onClick={() => setIsModalActive(false)} className="close">
+        <CloseWrap onClick={() => setIsModalActive(null)} className="close">
           <Close />
         </CloseWrap>
         <Title>

@@ -7,12 +7,13 @@ import QRScanner from "./QrScanner";
 import { useStoreInfoStore } from "store/StoreStore";
 import { fetchGoToWork, fetchLeaveToWork, getReqExtra } from "hooks/api/ManageAttend";
 import ReqModal from "components/molecules/Mobile/MainModal";
+import ConfirmModal from "components/molecules/Mobile/ConfirmModal";
 
 const MobileMain = () => {
   const navi = useNavigate();
   const { mobileData } = useStoreInfoStore();
   const [openBtn, setOpenBtn] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState<"go" | "leave" | "extra" | null>(null);
   const [scanning, setScanning] = useState(false);
   const [scanningType, setScanningType] = useState<"go" | "leave" | null>(null);
   const [isExtraReq, setIsExtraReq] = useState(false);
@@ -46,14 +47,14 @@ const MobileMain = () => {
       if (auth) {
         if (scanningType === "go")
           goWorkMutate(auth, {
-            onSuccess: () => alert("출근 처리 완료"), //TODO: 출퇴근 완료모달 추가
+            onSuccess: () => setShowModal("go"),
             onError: (err) => {
               alert((err as any).response?.data?.message);
             }
           });
         else if (scanningType === "leave")
           leaveWorkMutate(auth, {
-            onSuccess: () => alert("퇴근 처리 완료"),
+            onSuccess: () => setShowModal("leave"),
             onError: (err) => {
               alert((err as any).response?.data?.message);
             }
@@ -96,7 +97,7 @@ const MobileMain = () => {
             </SmallButtonWrap>
           )}
         </MainButton>
-        <MainButton $disabled={!isExtraReq} onClick={() => setShowModal(true)}>
+        <MainButton $disabled={!isExtraReq} onClick={() => setShowModal("extra")}>
           {isExtraReq && <p className="redDot"></p>}
           <div>
             <span>추가 스케줄</span> <br /> 요청이 {isExtraReq ? "있어요" : "없어요"}
@@ -116,7 +117,7 @@ const MobileMain = () => {
           </ArrowWrap>
         </MainButton>
       </InnerWrap>
-      {showModal && (
+      {showModal === "extra" && (
         <ReqModal
           setIsModalActive={setShowModal}
           name={mobileData?.name}
@@ -124,6 +125,9 @@ const MobileMain = () => {
           storeId={mobileData?.storeId}
           reqId={extraReqData?.data?.[0]?.id}
         />
+      )}
+      {(showModal === "go" || showModal === "leave") && (
+        <ConfirmModal setIsModalActive={setShowModal} showModal={showModal} />
       )}
     </Wrap>
   );

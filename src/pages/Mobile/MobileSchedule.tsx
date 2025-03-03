@@ -85,7 +85,7 @@ const MobileSchedule = () => {
 
   return (
     <ScheduleWrap>
-      <InnerWrap>
+      <ScheduleInnerWrap>
         <ProfileWrap>
           <span>{mobileData?.name || "직원 정보 불러오기 오류"}</span>
           <p>{mobileData?.contact || " "}</p>
@@ -104,7 +104,7 @@ const MobileSchedule = () => {
         ) : (
           <div>근무표 불러오는 중</div>
         )}
-      </InnerWrap>
+      </ScheduleInnerWrap>
     </ScheduleWrap>
   );
 };
@@ -114,6 +114,10 @@ export default MobileSchedule;
 const ScheduleWrap = styled(Wrap)`
   min-height: 100vh;
   height: auto;
+`;
+
+const ScheduleInnerWrap = styled(InnerWrap)`
+  margin: 80px 0;
 `;
 
 const Title = styled.h1`
