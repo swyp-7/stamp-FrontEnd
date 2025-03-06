@@ -40,7 +40,7 @@ const ManageAttend = () => {
   const endDate = endMonth.endOf("week");
   const { storeData } = useStoreInfoStore();
   const { setSideInfo } = useSideInfoStore();
-  const { data } = fetchAllMonthAttend(storeData?.id, currentDate.format("YYYY-MM") + "-01");
+  const { data } = fetchAllMonthAttend(storeData?.store.id, currentDate.format("YYYY-MM") + "-01");
 
   useEffect(() => {
     setCurrentDate(dayjs());

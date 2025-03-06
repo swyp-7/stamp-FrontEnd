@@ -29,12 +29,10 @@ const Mypage = () => {
   const { mutate } = useEditMyPage(storeData?.store.id);
 
   useEffect(() => {
-    // console.log(storeData, "가게정보");
     if (storeData) {
       reset({
-        employerName: storeData.employerName,
-        name: storeData.name,
-        businessName: storeData.store.name,
+        employerName: storeData.name,
+        name: storeData.store.name,
         businessNumber: storeData.store.businessNumber,
         businessType: storeData.store.businessType,
         addressCommon: storeData.store.addressCommon,
@@ -54,7 +52,7 @@ const Mypage = () => {
     }
   }, []);
   const addWorkDay = () => {
-    if (fields.length < 5) append({});
+    if (fields.length < 7) append({});
   };
 
   // 주소팝업

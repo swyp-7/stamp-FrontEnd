@@ -22,7 +22,7 @@ const WorkDetail = ({ height }: Props) => {
     sideInfo?.employeeId,
     sideInfo?.date
   );
-  const { data } = useEmployeeDetail(storeData?.id, sideInfo?.employeeId);
+  const { data } = useEmployeeDetail(storeData?.store.id, sideInfo?.employeeId);
   useEffect(() => {
     if (attendData && data) {
       setFormattedData(processAttendanceData(attendData?.data, data?.data?.scheduleList));
