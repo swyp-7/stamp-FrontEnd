@@ -20,6 +20,7 @@ const MobileMain = () => {
   const { data: extraReqData } = getReqExtra(mobileData?.storeId);
   const { mutate: goWorkMutate } = fetchGoToWork(mobileData?.storeId);
   const { mutate: leaveWorkMutate } = fetchLeaveToWork(mobileData?.storeId);
+
   useEffect(() => {
     if (extraReqData?.data.length > 0) {
       const req = extraReqData?.data.filter((item: any) => item.status === "REQUESTED");
@@ -139,7 +140,7 @@ export default MobileMain;
 
 export const Wrap = styled.div`
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
   background: #f7f6ff;
   display: flex;
   justify-content: center;
@@ -148,7 +149,8 @@ export const Wrap = styled.div`
 export const InnerWrap = styled.main`
   width: 100%;
   max-width: 311px;
-  margin: auto 0;
+  margin: 80px 0 auto;
+  padding-bottom: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
