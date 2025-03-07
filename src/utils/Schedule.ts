@@ -39,28 +39,49 @@ export const filterScheduleByDate = (data: any[], date: any) => {
 };
 
 //현재 근무중인 인원 수 계산
-export const getCurrentWorkingEmployees = (data: any) => {
+export const getCurrentWorkingEmployees = (data: any[]): number => {
   if (!data || !Array.isArray(data)) return 0;
 
   const now = new Date();
   const currentTime = now.getHours() * 60 + now.getMinutes(); // 현재 시간을 분 단위로 변환
 
-  return data.filter(({ scheduleList }: any) => {
-    if (!Array.isArray(scheduleList)) return false;
+  // 현재 요일 가져오기 (0: 일요일, 1: 월요일, ... 6: 토요일)
+  const dayOfWeek = now.getDay();
 
-    return scheduleList.some(({ startTime, endTime, isAdditional }: any) => {
-      if (isAdditional) return false; // 추가 근무는 제외
-      if (!startTime || !endTime) return false; // 유효한 시간이 없으면 제외
+  // 요일을 문자열로 변환
+  const weekDayMap: Record<number, string> = {
+    0: "SUNDAY",
+    1: "MONDAY",
+    2: "TUESDAY",
+    3: "WEDNESDAY",
+    4: "THURSDAY",
+    5: "FRIDAY",
+    6: "SATURDAY"
+  };
 
-      const [startHour, startMin] = startTime.split(":").map(Number);
-      const [endHour, endMin] = endTime.split(":").map(Number);
+  const currentWeekDay = weekDayMap[dayOfWeek];
+
+  const workingEmployees = data.filter((employee) => {
+    if (!Array.isArray(employee.scheduleList)) return false;
+
+    const currentSchedules = employee.scheduleList.filter((schedule: any) => {
+      if (schedule.weekDay !== currentWeekDay) return false;
+      if (schedule.isAdditional) return false;
+      if (!schedule.startTime || !schedule.endTime) return false;
+
+      const [startHour, startMin] = schedule.startTime.split(":").map(Number);
+      const [endHour, endMin] = schedule.endTime.split(":").map(Number);
 
       const startTotal = startHour * 60 + startMin;
       const endTotal = endHour * 60 + endMin;
 
-      return currentTime >= startTotal && currentTime < endTotal; // 현재 시간이 근무 시간 범위 내에 있는지 확인
+      return currentTime >= startTotal && currentTime < endTotal;
     });
-  }).length;
+
+    return currentSchedules.length > 0;
+  });
+
+  return workingEmployees.length;
 };
 
 // 추가근무 가능한 인원 필터링

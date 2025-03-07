@@ -25,7 +25,7 @@ const TaskBar = ({ start, end, duration, name = "김모모", onClick }: Props) =
           const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
           setLeftTime(`${hours}시간 ${minutes}분`);
         } else {
-          setLeftTime("0시간 0분");
+          setLeftTime("근무완료");
         }
       };
 
@@ -40,7 +40,13 @@ const TaskBar = ({ start, end, duration, name = "김모모", onClick }: Props) =
       <TaskBarInfo>
         <NameInfo>{name}</NameInfo>
         <TimeInfo>
-          근무 <span>{leftTime}</span> 남음
+          {leftTime === "근무완료" ? (
+            "근무 완료"
+          ) : (
+            <>
+              근무 <span>{leftTime}</span> 남음
+            </>
+          )}
         </TimeInfo>
       </TaskBarInfo>
     </StyledTaskBar>
