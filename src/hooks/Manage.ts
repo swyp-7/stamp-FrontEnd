@@ -6,7 +6,7 @@ const formatDate = (dateString: string) => {
 export const transformEmployeeData = (data: any) => {
   const scheduleList = [
     ...data.workDays.map((day: any) => ({
-      id: day.id,
+      id: day.id || null,
       weekDay: korToEngDays[day.weekDay] || day.weekDay,
       startTime: day.startTime,
       endTime: day.endTime,
@@ -15,7 +15,7 @@ export const transformEmployeeData = (data: any) => {
     ...data.addWorkDays.map((day: any) => {
       if (!day.weekDay) return;
       return {
-        id: day.id,
+        id: day.id || null,
         weekDay: korToEngDays[day.weekDay] || day.weekDay,
         startTime: null,
         endTime: null,
@@ -74,3 +74,26 @@ export const getDayShort = (data: any[]) =>
     .filter(({ isAdditional }) => !isAdditional)
     .map(({ weekDay }) => engToKorShortDays[weekDay])
     .join(", ");
+
+export const getFormattedSchedule = (scheduleList: any[]) => {
+  const filteredSchedules = scheduleList.filter(({ isAdditional }) => !isAdditional);
+
+  const groupedByTime = filteredSchedules.reduce(
+    (acc, { weekDay, startTime, endTime }) => {
+      const key = `${startTime.slice(0, 5)}-${endTime.slice(0, 5)}`;
+      if (!acc[key]) acc[key] = [];
+      acc[key].push(engToKorShortDays[weekDay]);
+      return acc;
+    },
+    {} as Record<string, string[]>
+  );
+
+  const groupedArray = Object.entries(groupedByTime).map(
+    ([time, days]: any) => `${days.join(", ")} ${time.replace("-", " ~ ")}`
+  );
+
+  const mainText = groupedArray[0] || "";
+  const extraCount = groupedArray.length - 1;
+
+  return extraCount > 0 ? `${mainText} 외 ${extraCount}건` : mainText;
+};

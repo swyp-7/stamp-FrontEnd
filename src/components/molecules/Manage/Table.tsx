@@ -1,5 +1,5 @@
 import Button from "components/atoms/Button";
-import { getDayShort } from "hooks/Manage";
+import { getDayShort, getFormattedSchedule } from "hooks/Manage";
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
@@ -42,11 +42,7 @@ const Table = ({ setModalType, setIsModalActive, setEmploId, employerData }: Pro
                 </Profile>
               </td>
               <td>{getDayShort(data.scheduleList)}</td>
-              <td>
-                {data.scheduleList.find((item: any) => !item.isAdditional).startTime.slice(0, 5) +
-                  "~" +
-                  data.scheduleList.find((item: any) => !item.isAdditional).endTime.slice(0, 5)}
-              </td>
+              <td>{getFormattedSchedule(data.scheduleList)}</td>
               <td>{data.startDate}</td>
               <td>현재 근무 중</td>
               <td>
