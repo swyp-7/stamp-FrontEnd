@@ -121,12 +121,10 @@ const ManageAttend = () => {
       subTitleTxt1={currentDateTxt[0]}
       subTitleTxt2={currentDateTxt[1] + "월"}
       isDetailView={isDetailView}
+      setCurrentDate={setCurrentDate}
+      currentDate={currentDate}
     >
       <CalendarWrapper>
-        {/* <CalendarHeader>
-          <button onClick={() => setCurrentDate(currentDate.subtract(1, "month"))}>&lt;</button>
-          <button onClick={() => setCurrentDate(currentDate.add(1, "month"))}>&gt;</button>
-        </CalendarHeader> */}
         <CalendarGrid>
           {[
             "월 Monday",

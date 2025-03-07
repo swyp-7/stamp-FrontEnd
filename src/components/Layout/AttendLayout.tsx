@@ -1,9 +1,12 @@
 import Button, { ButtonProps } from "components/atoms/Button";
 import MainNav from "components/molecules/Main/MainNav";
-import { ReactElement } from "react";
+import { Dispatch, ReactElement, SetStateAction } from "react";
 import styled from "styled-components";
 import { TitleWrap } from "./MainMenuLayout";
 import WorkDetail from "components/molecules/WorkDetail";
+import { Dayjs } from "dayjs";
+import { ReactComponent as BackIcon } from "assets/LeftArrow.svg";
+import { ReactComponent as GoIcon } from "assets/RightArrow.svg";
 
 interface Props extends ButtonProps {
   children: ReactElement;
@@ -14,6 +17,8 @@ interface Props extends ButtonProps {
   subTitleTxt1: string;
   subTitleTxt2: string;
   isDetailView: boolean;
+  setCurrentDate: Dispatch<SetStateAction<any>>;
+  currentDate: Dayjs;
 }
 
 const Layout = ({
@@ -25,6 +30,8 @@ const Layout = ({
   subTitleTxt1 = "2000",
   subTitleTxt2 = "01월",
   isDetailView,
+  setCurrentDate,
+  currentDate,
   ...props
 }: Props) => {
   return (
@@ -38,7 +45,11 @@ const Layout = ({
           </TitleWrap>
         </div>
         <SubDateTitle>
-          <p>{subTitleTxt2}</p>
+          <MonthTitleWrap>
+            <BackIcon onClick={() => setCurrentDate(currentDate.subtract(1, "month"))} />
+            <span>{subTitleTxt2}</span>
+            <GoIcon onClick={() => setCurrentDate(currentDate.add(1, "month"))} />
+          </MonthTitleWrap>
           <p>{subTitleTxt1}</p>
         </SubDateTitle>
         <div className="second">
@@ -89,16 +100,27 @@ const StyledLayout = styled.div<{ $isDetailView: boolean }>`
 const SubDateTitle = styled.div`
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: 24px;
 
-  p:first-child {
-    font-weight: 700;
-    font-size: 40px;
-    color: var(--main-1);
-  }
   p:last-child {
     font-weight: 600;
     font-size: 24px;
     color: #202020;
+  }
+`;
+
+const MonthTitleWrap = styled.div`
+  display: flex;
+  gap: 16px;
+  align-items: center;
+
+  span {
+    font-weight: 600;
+    font-size: 36px;
+    color: #363636;
+  }
+
+  svg {
+    cursor: pointer;
   }
 `;
