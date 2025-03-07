@@ -62,7 +62,7 @@ const Schedule = () => {
             <Button text="스케줄 추가" area={2} onClick={handleClickAddSchedule} />
           </TopLeft>
           <TopRight>
-            <Today>Today</Today>
+            <Today onClick={() => setDate(dayjs())}>Today</Today>
             <DateWrap>
               <ArrowWrap onClick={handlePrevDay}>
                 <LeftArrow />

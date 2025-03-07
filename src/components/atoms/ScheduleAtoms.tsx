@@ -49,6 +49,7 @@ export const TopRight = styled.div`
 `;
 
 export const Today = styled.div`
+  cursor: pointer;
   width: 53px;
   height: 20px;
   border-radius: 24px;
