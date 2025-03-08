@@ -32,8 +32,6 @@ const WorkDetail = ({ height }: Props) => {
   const { data } = useEmployeeDetail(storeData?.store.id, sideInfo?.employeeId);
   const { mutate } = fetchEmploAttendEdit();
   useEffect(() => {
-    console.log("새로고침");
-
     if (attendData && data) {
       setFormattedData(processAttendanceData(attendData?.data, data?.data?.scheduleList));
     }
