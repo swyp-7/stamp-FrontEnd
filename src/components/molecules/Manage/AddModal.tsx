@@ -94,8 +94,8 @@ const AddModal = ({ setIsModalActive, setEmploId, emploId, storeId }: Props) => 
         ?.map((item: any) => ({
           id: item.id,
           weekDay: engToKorDays[item.weekDay],
-          startTime: item.startTime,
-          endTime: item.endTime
+          startTime: item.startTime.slice(0, 5),
+          endTime: item.endTime.slice(0, 5)
         }));
 
       appendWorkDay(elseItems);
