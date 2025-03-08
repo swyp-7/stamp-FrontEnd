@@ -169,10 +169,10 @@ export const fetchEmploAttendEdit = () => {
   const storeId = storeData?.store?.id || 0;
 
   return useMutation({
-    mutationFn: async ({ formData, earliest }: any) => {
+    mutationFn: async (formData: any[]) => {
       return await axios.put(
-        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/attendance/day/all/?firstDate=${earliest}`,
-        formData,
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/attendance/update`,
+        { attendanceReqs: formData },
         {
           headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
         }

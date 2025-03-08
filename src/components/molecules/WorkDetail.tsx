@@ -8,14 +8,15 @@ import { useEmployeeDetail } from "hooks/api/ManageQuery";
 import { useEffect, useState } from "react";
 import { processAttendanceData } from "utils/WorkDetailUtil";
 import { ClipLoader } from "react-spinners";
-import dayjs from "dayjs";
 import { transformScheduleEditData } from "utils/Schedule";
+import { QueryClient } from "@tanstack/react-query";
 
 interface Props {
   height?: string;
 }
 
 const WorkDetail = ({ height }: Props) => {
+  const queryClient = new QueryClient();
   const [editingTimes, setEditingTimes] = useState<
     { date: string; type: "punchInTime" | "punchOutTime"; value: string }[]
   >([]);
@@ -23,7 +24,7 @@ const WorkDetail = ({ height }: Props) => {
   const [formattedData, setFormattedData] = useState<any[]>([]);
   const { sideInfo } = useSideInfoStore();
   const { storeData } = useStoreInfoStore();
-  const { data: attendData } = fetchMonthAttend(
+  const { data: attendData, refetch } = fetchMonthAttend(
     storeData?.id,
     sideInfo?.employeeId,
     sideInfo?.date
@@ -31,10 +32,12 @@ const WorkDetail = ({ height }: Props) => {
   const { data } = useEmployeeDetail(storeData?.store.id, sideInfo?.employeeId);
   const { mutate } = fetchEmploAttendEdit();
   useEffect(() => {
+    console.log("새로고침");
+
     if (attendData && data) {
       setFormattedData(processAttendanceData(attendData?.data, data?.data?.scheduleList));
     }
-  }, [attendData, data]);
+  }, [attendData, data, isEditing]);
 
   const handleEditClick = (date: string, type: "punchInTime" | "punchOutTime", value: string) => {
     setEditingTimes((prev) => {
@@ -59,23 +62,22 @@ const WorkDetail = ({ height }: Props) => {
   };
 
   const handleSubmit = () => {
-    const earliest = editingTimes.reduce((a, b) => (dayjs(a.date).isBefore(b.date) ? a : b)).date;
     const data = [attendData.data[0].employeeId, ...editingTimes];
     const formData = transformScheduleEditData(data);
 
-    mutate(
-      { formData, earliest },
-      {
-        onError: (err) => {
-          console.log(err);
-          alert("오류 발생");
-        },
-        onSuccess: () => {
-          alert("수정 완료");
-          setIsEditing(false);
-        }
+    mutate(formData, {
+      onError: (err) => {
+        console.log(err);
+        alert("오류 발생");
+      },
+      onSuccess: () => {
+        alert("수정 완료");
+        setIsEditing(false);
+        setEditingTimes([]);
+        queryClient.invalidateQueries({ queryKey: ["monthOfAttend"] });
+        refetch();
       }
-    );
+    });
   };
 
   return (
