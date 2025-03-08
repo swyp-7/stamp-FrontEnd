@@ -3,17 +3,23 @@ import { ReactComponent as MegaphoneIcon } from "assets/Megaphone.svg";
 import Button from "components/atoms/Button";
 import { useSideInfoStore } from "store/ScheduleStore";
 import { useStoreInfoStore } from "store/StoreStore";
-import { fetchMonthAttend } from "hooks/api/ManageAttend";
+import { fetchEmploAttendEdit, fetchMonthAttend } from "hooks/api/ManageAttend";
 import { useEmployeeDetail } from "hooks/api/ManageQuery";
 import { useEffect, useState } from "react";
 import { processAttendanceData } from "utils/WorkDetailUtil";
 import { ClipLoader } from "react-spinners";
+import dayjs from "dayjs";
+import { transformScheduleEditData } from "utils/Schedule";
 
 interface Props {
   height?: string;
 }
 
 const WorkDetail = ({ height }: Props) => {
+  const [editingTimes, setEditingTimes] = useState<
+    { date: string; type: "punchInTime" | "punchOutTime"; value: string }[]
+  >([]);
+  const [isEditing, setIsEditing] = useState(false);
   const [formattedData, setFormattedData] = useState<any[]>([]);
   const { sideInfo } = useSideInfoStore();
   const { storeData } = useStoreInfoStore();
@@ -23,11 +29,54 @@ const WorkDetail = ({ height }: Props) => {
     sideInfo?.date
   );
   const { data } = useEmployeeDetail(storeData?.store.id, sideInfo?.employeeId);
+  const { mutate } = fetchEmploAttendEdit();
   useEffect(() => {
     if (attendData && data) {
       setFormattedData(processAttendanceData(attendData?.data, data?.data?.scheduleList));
     }
   }, [attendData, data]);
+
+  const handleEditClick = (date: string, type: "punchInTime" | "punchOutTime", value: string) => {
+    setEditingTimes((prev) => {
+      const exists = prev.some((entry) => entry.date === date && entry.type === type);
+      if (exists) return prev; // 이미 편집 중이면 변경 없음
+      return [...prev, { date, type, value }];
+    });
+    setIsEditing(true);
+  };
+
+  const handleCancel = () => {
+    setEditingTimes([]); // 모든 편집 상태 초기화
+    setIsEditing(false);
+  };
+
+  const handleChange = (date: string, type: "punchInTime" | "punchOutTime", newValue: string) => {
+    setEditingTimes((prev) =>
+      prev.map((entry) =>
+        entry.date === date && entry.type === type ? { ...entry, value: newValue } : entry
+      )
+    );
+  };
+
+  const handleSubmit = () => {
+    const earliest = editingTimes.reduce((a, b) => (dayjs(a.date).isBefore(b.date) ? a : b)).date;
+    const data = [attendData.data[0].employeeId, ...editingTimes];
+    const formData = transformScheduleEditData(data);
+
+    mutate(
+      { formData, earliest },
+      {
+        onError: (err) => {
+          console.log(err);
+          alert("오류 발생");
+        },
+        onSuccess: () => {
+          alert("수정 완료");
+          setIsEditing(false);
+        }
+      }
+    );
+  };
 
   return (
     <WorkDetailWrap $height={height}>
@@ -57,10 +106,30 @@ const WorkDetail = ({ height }: Props) => {
               <StartAndEnd>
                 <MegaphoneIcon />
                 <div className="right">
-                  <div className="timeCell">{item.punchInTime}</div>
-                  <p>에 출근,</p>
-                  <div className="timeCell">{item.punchOutTime}</div>
-                  <p>에 퇴근했습니다.</p>
+                  {["punchInTime", "punchOutTime"].map((type) => {
+                    const editEntry = editingTimes.find(
+                      (entry) => entry.date === item.date && entry.type === type
+                    );
+                    return (
+                      <div key={type} style={{ display: "flex", alignItems: "center" }}>
+                        {editEntry ? (
+                          <EditInput
+                            value={editEntry.value}
+                            onChange={(e) => handleChange(item.date, type as any, e.target.value)}
+                            placeholder={item[type] || ""}
+                          />
+                        ) : (
+                          <div
+                            className="timeCell"
+                            onClick={() => handleEditClick(item.date, type as any, item[type])}
+                          >
+                            {item[type]}
+                          </div>
+                        )}
+                        <p>{type === "punchInTime" ? "에 출근," : "에 퇴근했습니다."}</p>
+                      </div>
+                    );
+                  })}
                 </div>
               </StartAndEnd>
             </DetailContent>
@@ -70,8 +139,14 @@ const WorkDetail = ({ height }: Props) => {
         <ClipLoader className="loading" color="#4A3AFF" size={60} />
       )}
       <DetailButtonWrap>
-        <Button text="취소하기" isOutline={true} area={1} disabled />
-        <Button text="저장하기" area={1} disabled />
+        <Button
+          text="취소하기"
+          isOutline={true}
+          area={1}
+          disabled={!isEditing}
+          onClick={handleCancel}
+        />
+        <Button text="저장하기" area={1} disabled={!isEditing} onClick={handleSubmit} />
       </DetailButtonWrap>
     </WorkDetailWrap>
   );
@@ -220,4 +295,16 @@ const DetailButtonWrap = styled.div`
   gap: 14px;
   justify-content: flex-end;
   /* border-radius: 0 0 24px 24px; */
+`;
+
+const EditInput = styled.input`
+  width: 49px;
+  height: 26px;
+  border-radius: 4px;
+  background-color: #d2c6fe;
+  border: none;
+  outline: none;
+  margin: 0 2px;
+  padding: 2px;
+  text-align: center;
 `;

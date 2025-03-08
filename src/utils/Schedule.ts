@@ -130,3 +130,15 @@ export const processAttendanceData = (data: any[]) => {
 
   return Object.entries(grouped).map(([date, list]) => ({ date, list }));
 };
+
+// 스케줄 수정시 데이터 가공
+export const transformScheduleEditData = (data: any[]) => {
+  const employeeId = String(data[0]);
+
+  return data.slice(1).map(({ date, type, value }) => ({
+    employeeId,
+    attendanceEnum: type === "punchInTime" ? "PUNCH_IN" : "PUNCH_OUT",
+    date,
+    time: `${value}:00`
+  }));
+};

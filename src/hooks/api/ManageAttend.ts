@@ -162,3 +162,21 @@ export const fetchReqExtraNo = (storeId: string) => {
     }
   });
 };
+
+// 직원 출/퇴근 기록 수정
+export const fetchEmploAttendEdit = () => {
+  const { cookieData: auth, storeData } = useStoreInfoStore();
+  const storeId = storeData?.store?.id || 0;
+
+  return useMutation({
+    mutationFn: async ({ formData, earliest }: any) => {
+      return await axios.put(
+        `https://temp.api-stamp.p-e.kr/api/v1/store/${storeId}/employees/attendance/day/all/?firstDate=${earliest}`,
+        formData,
+        {
+          headers: { Authorization: `Bearer ${auth}`, withCredentials: true }
+        }
+      );
+    }
+  });
+};
