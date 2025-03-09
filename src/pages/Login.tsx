@@ -9,6 +9,7 @@ import { host_kakao_login_uri, local_kakao_login_uri } from "constants/Variable"
 import { useFetchCustomLogin } from "hooks/api/LoginQuery";
 import { setCookie } from "utils/Cookie";
 import { useStoreInfoStore } from "store/StoreStore";
+import { fetchEmployerMypage } from "hooks/api/StoreQuery";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,7 +18,7 @@ const Login = () => {
     register,
     formState: { isValid }
   } = useForm();
-  const { updateCookie } = useStoreInfoStore();
+  const { setStoreData, updateCookie } = useStoreInfoStore();
 
   // 카카오 로그인
   const apiKey = process.env.REACT_APP_KAKAO_KEY;
@@ -37,7 +38,10 @@ const Login = () => {
           const expires = new Date(Date.now() + data.data.data.expirationTime);
           setCookie("Authorization", data.data.data.token, { path: "/", expires });
           updateCookie(data.data.data.token);
-          navigate("/schedule");
+          fetchEmployerMypage(data.data.data.token).then((data) => {
+            setStoreData(data?.data);
+            navigate("/schedule");
+          });
         }
       },
       onError: (err) => {
